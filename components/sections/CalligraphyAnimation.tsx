@@ -9,12 +9,12 @@ const CHARACTERS = [
     meaning: "Ask",
     svg: (
       <g>
-        <path d="M313 760 Q 338 729 365 698 Q 386 679 405 677 Q 421 676 429 697 Q 432 713 421 737 Q 409 756 381 768 Q 338 789 319 792 Q 309 795 307 781 Q 304 771 313 760 Z" />
-        <path d="M189 661 Q 244 529 205 243 Q 198 197 182 149 Q 163 86 202 42 Q 215 26 227 42 Q 261 84 263 251 Q 263 539 276 625 Q 279 646 260 657 Q 233 679 203 688 Q 191 689 184 680 Q 180 673 189 661 Z" />
-        <path d="M518 742 Q 502 742 506 732 Q 513 719 536 709 Q 551 700 574 706 Q 766 761 786 732 Q 796 716 802 657 Q 820 416 807 143 Q 806 103 791 91 Q 772 78 678 103 Q 660 104 662 95 Q 663 88 677 82 Q 759 33 804 -7 Q 826 -28 840 -24 Q 853 -21 864 9 Q 880 57 877 126 Q 856 508 858 651 Q 859 691 871 715 Q 883 737 872 749 Q 862 765 813 789 Q 791 801 728 780 Q 599 750 518 742 Z" />
-        <path d="M412 483 Q 399 487 371 493 Q 358 497 355 491 Q 348 485 357 468 Q 385 405 403 303 Q 406 273 423 252 Q 442 230 447 245 Q 453 261 451 286 L 447 320 Q 431 420 429 451 C 427 479 427 479 412 483 Z" />
-        <path d="M648 346 Q 672 433 705 458 Q 721 477 707 495 Q 638 552 580 523 Q 508 499 412 483 C 382 478 400 445 429 451 L 585 482 Q 603 486 610 479 Q 620 470 618 450 Q 611 395 598 349 C 590 320 640 317 648 346 Z" />
-        <path d="M451 286 Q 455 286 463 287 Q 527 300 663 310 Q 673 311 675 320 Q 675 327 648 346 C 633 357 627 356 598 349 Q 514 330 447 320 C 417 315 421 284 451 286 Z" />
+        <path d="M313 760 Q 338 729 365 698 Q 386 679 405 677 Q 421 676 429 697 Q 432 713 421 737 Q 409 756 381 768 Q 338 789 319 792 Q 309 795 307 781 Q 304 771 313 760 Z" stroke="#222" strokeWidth="6" fill="none" />
+        <path d="M189 661 Q 244 529 205 243 Q 198 197 182 149 Q 163 86 202 42 Q 215 26 227 42 Q 261 84 263 251 Q 263 539 276 625 Q 279 646 260 657 Q 233 679 203 688 Q 191 689 184 680 Q 180 673 189 661 Z" stroke="#222" strokeWidth="6" fill="none" />
+        <path d="M518 742 Q 502 742 506 732 Q 513 719 536 709 Q 551 700 574 706 Q 766 761 786 732 Q 796 716 802 657 Q 820 416 807 143 Q 806 103 791 91 Q 772 78 678 103 Q 660 104 662 95 Q 663 88 677 82 Q 759 33 804 -7 Q 826 -28 840 -24 Q 853 -21 864 9 Q 880 57 877 126 Q 856 508 858 651 Q 859 691 871 715 Q 883 737 872 749 Q 862 765 813 789 Q 791 801 728 780 Q 599 750 518 742 Z" stroke="#222" strokeWidth="6" fill="none" />
+        <path d="M412 483 Q 399 487 371 493 Q 358 497 355 491 Q 348 485 357 468 Q 385 405 403 303 Q 406 273 423 252 Q 442 230 447 245 Q 453 261 451 286 L 447 320 Q 431 420 429 451 C 427 479 427 479 412 483 Z" stroke="#222" strokeWidth="6" fill="none" />
+        <path d="M648 346 Q 672 433 705 458 Q 721 477 707 495 Q 638 552 580 523 Q 508 499 412 483 C 382 478 400 445 429 451 L 585 482 Q 603 486 610 479 Q 620 470 618 450 Q 611 395 598 349 C 590 320 640 317 648 346 Z" stroke="#222" strokeWidth="6" fill="none" />
+        <path d="M451 286 Q 455 286 463 287 Q 527 300 663 310 Q 673 311 675 320 Q 675 327 648 346 C 633 357 627 356 598 349 Q 514 330 447 320 C 417 315 421 284 451 286 Z" stroke="#222" strokeWidth="6" fill="none" />
       </g>
     ),
     pathLength: 3000,
@@ -111,52 +111,50 @@ export default function CalligraphyAnimation() {
     <div className="flex flex-col items-center justify-center w-full h-full">
       <div className="flex flex-row md:flex-col gap-8 md:gap-4 items-center justify-center">
         {CHARACTERS.map((item, i) => (
-          <div
-            key={item.char}
-            className={`flex flex-col items-center transition-opacity duration-500 ${
-              i > index ? "opacity-30" : "opacity-100"
-            }`}
-            style={{ minWidth: 90, minHeight: 120 }}
-          >
-            <svg
-              width="90"
-              height="120"
-              viewBox="0 0 160 200"
-              style={{ display: "block" }}
+          i === index && (
+            <div
+              key={item.char}
+              className="flex flex-col items-center"
+              style={{ minWidth: 120, minHeight: 160 }}
             >
-              <AnimatePresence>
-                {i === index && (
-                  <motion.g
-                    initial={{ pathLength: 0 }}
-                    animate={{ pathLength: 1 }}
-                    transition={{
-                      duration: ANIMATION_DURATION,
-                      ease: "easeInOut",
-                    }}
-                  >
-                    {React.cloneElement(item.svg, {
-                      style: { filter: "drop-shadow(0 2px 8px #0002)" },
-                      stroke: "#222",
-                      strokeWidth: 6,
-                    })}
-                  </motion.g>
-                )}
-                {i < index && <g>{item.svg}</g>}
-              </AnimatePresence>
-            </svg>
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: i <= index ? 1 : 0.3, y: 0 }}
-              transition={{
-                duration: 0.7,
-                delay: i === index ? ANIMATION_DURATION * 0.7 : 0,
-              }}
-              className="mt-2 text-lg md:text-xl font-serif text-gray-700"
-              style={{ letterSpacing: 2 }}
-            >
-              {item.pinyin}
-            </motion.div>
-          </div>
+              <svg
+                width="120"
+                height="160"
+                viewBox="0 0 1024 1024"
+                style={{ display: "block" }}
+              >
+                <g transform="scale(1,-1) translate(0,-1024)">
+  {React.Children.map(item.svg.props.children, (stroke, idx) => (
+    <motion.path
+      key={idx}
+      d={stroke.props.d}
+      stroke="#222"
+      strokeWidth={14}
+      fill="none"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      initial={{ pathLength: 0 }}
+      animate={{ pathLength: 1 }}
+      transition={{
+        duration: ANIMATION_DURATION / item.svg.props.children.length,
+        delay: idx * (ANIMATION_DURATION / item.svg.props.children.length),
+        ease: "easeInOut",
+      }}
+    />
+  ))}
+</g>
+              </svg>
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: ANIMATION_DURATION * 0.8 }}
+                className="mt-2 text-lg md:text-xl font-serif text-gray-700"
+                style={{ letterSpacing: 2 }}
+              >
+                {item.pinyin}
+              </motion.div>
+            </div>
+          )
         ))}
       </div>
     </div>
