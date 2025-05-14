@@ -11,12 +11,9 @@ interface MotionProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const motion = {
   div: ({ initial, animate, transition, ...props }: MotionProps) => {
-    const [isClient, setIsClient] = React.useState(false);
     const ref = React.useRef<HTMLDivElement>(null);
 
     React.useEffect(() => {
-      setIsClient(true);
-      
       if (ref.current && initial && animate) {
         // Simple CSS transition setup
         const element = ref.current;
@@ -56,22 +53,21 @@ export const motion = {
       }
     }, [initial, animate, transition]);
 
-    return isClient ? (
-      <div 
-        ref={ref} 
-        style={{ 
-          opacity: initial?.opacity !== undefined ? initial.opacity : 1,
+    // Always render the animated div, so SSR/CSR matches and content is visible immediately
+    return (
+      <div
+        ref={ref}
+        style={{
+          opacity: animate?.opacity ?? initial?.opacity ?? 1,
           transform: `
-            ${initial?.y !== undefined ? `translateY(${initial.y}px)` : ''} 
-            ${initial?.x !== undefined ? `translateX(${initial.x}px)` : ''}
-            ${initial?.scale !== undefined ? `scale(${initial.scale})` : ''}
+            ${animate?.y !== undefined ? `translateY(${animate.y}px)` : initial?.y !== undefined ? `translateY(${initial.y}px)` : ''}
+            ${animate?.x !== undefined ? `translateX(${animate.x}px)` : initial?.x !== undefined ? `translateX(${initial.x}px)` : ''}
+            ${animate?.scale !== undefined ? `scale(${animate.scale})` : initial?.scale !== undefined ? `scale(${initial.scale})` : ''}
           `.trim() || 'none',
-          transition: 'all 0.3s ease-out',
-        }} 
-        {...props} 
+          transition: `all ${transition?.duration ?? 0.3}s ease-out ${transition?.delay ?? 0}s`,
+        }}
+        {...props}
       />
-    ) : (
-      <div {...props} />
     );
   }
 };

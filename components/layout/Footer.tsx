@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Logo from '@/components/shared/Logo';
 import { PhoneCall, Mail, MapPin, Facebook, Instagram } from 'lucide-react';
 
 const Footer = () => {
@@ -8,10 +9,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="h-10 w-10 rounded-full bg-[#9BC53D] flex items-center justify-center">
-                <span className="text-white font-bold">大地</span>
-              </div>
-              <span className="font-semibold text-lg">Da Di Learning Studio</span>
+              <Logo height={40} />
             </div>
             <p className="text-gray-600 mb-6">
               A new kind of Chinese enrichment — where language meets life.

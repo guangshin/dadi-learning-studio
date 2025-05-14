@@ -1,6 +1,7 @@
 "use client";
 
 import Link from 'next/link';
+import Logo from '@/components/shared/Logo';
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -42,10 +43,7 @@ const Navbar = () => {
     >
       <div className="container mx-auto px-4 flex justify-between items-center">
         <Link href="/" className="flex items-center gap-2">
-          <div className="h-10 w-10 rounded-full bg-[#9BC53D] flex items-center justify-center">
-            <span className="text-white font-bold">大地</span>
-          </div>
-          <span className="font-semibold text-lg">Da Di Learning Studio</span>
+          <Logo height={40} />
         </Link>
 
         {/* Desktop Navigation */}
