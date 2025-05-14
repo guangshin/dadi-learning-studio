@@ -128,8 +128,8 @@ export default function CalligraphyAnimation() {
     <motion.path
       key={idx}
       d={stroke.props.d}
-      stroke="#222"
-      strokeWidth={14}
+      stroke="#000"
+      strokeWidth={24}
       fill="none"
       strokeLinecap="round"
       strokeLinejoin="round"

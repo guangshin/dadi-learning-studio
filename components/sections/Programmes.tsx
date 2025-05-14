@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import ProgrammeCard from '../shared/ProgrammeCard';
+import { BabyIcon, RocketIcon, TargetIcon, UserIcon } from 'lucide-react';
 import { motion } from '@/lib/motion';
 import { useInView } from '@/lib/hooks';
 
@@ -34,7 +35,7 @@ const Programmes = () => {
               title="Preschool"
               subtitle="Ages 3–7"
               description="Mandarin Magic: Growing Confident Little Communicators"
-              icon="🎈"
+              icon={<BabyIcon className="w-7 h-7" />}
               color="#FFE066"
             />
           </motion.div>
@@ -48,7 +49,7 @@ const Programmes = () => {
               title="Primary School"
               subtitle="P1–P6"
               description="Mandarin Adventures: Building Skills, Growing Confidence"
-              icon="🚀"
+              icon={<RocketIcon className="w-7 h-7" />}
               color="#9BC53D"
             />
           </motion.div>
@@ -62,7 +63,7 @@ const Programmes = () => {
               title="Secondary School"
               subtitle="Sec 1–4"
               description="Master Mandarin: Speak Well, Think Deep, Shine Bright"
-              icon="🎯"
+              icon={<TargetIcon className="w-7 h-7" />}
               color="#BFE140"
             />
           </motion.div>
@@ -76,7 +77,7 @@ const Programmes = () => {
               title="Adult Learners"
               subtitle="All Levels"
               description="Mandarin for Life: Connect, Communicate, and Grow"
-              icon="🗣️"
+              icon={<UserIcon className="w-7 h-7" />}
               color="#9BC53D"
             />
           </motion.div>

@@ -2,11 +2,13 @@
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
+import { ReactNode } from "react";
+
 interface ProgrammeCardProps {
   title: string;
   subtitle: string;
   description: string;
-  icon: string;
+  icon: ReactNode;
   color: string;
 }
 
