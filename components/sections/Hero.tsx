@@ -36,9 +36,9 @@ const Hero = () => {
         <div className="absolute top-1/4 right-10 w-64 h-64 bg-[#FFE066]/20 rounded-full blur-3xl"></div>
         <div className="absolute bottom-1/4 left-10 w-80 h-80 bg-[#9BC53D]/10 rounded-full blur-3xl"></div>
       </div>
-      <div className="container mx-auto px-4 z-10 flex-1 flex flex-col md:flex-row items-center justify-between w-full">
-        {/* Left: Headline and CTA */}
-        <div className="max-w-3xl w-full md:w-2/3">
+      <div className="container mx-auto px-4 z-10 flex-1 flex flex-col-reverse md:flex-row items-center justify-between w-full">
+        {/* Headline and CTA */}
+        <div className="max-w-3xl w-full md:w-2/3 mt-8 md:mt-0">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -72,8 +72,8 @@ const Hero = () => {
             </div>
           </motion.div>
         </div>
-        {/* Right: Calligraphy Animation */}
-        <div className="mt-12 md:mt-0 md:ml-12 flex-1 flex items-center justify-center w-full md:w-1/2">
+        {/* Calligraphy Animation */}
+        <div className="mb-8 md:mb-0 md:ml-12 flex-1 flex items-center justify-center w-full md:w-1/2">
           <CalligraphyAnimation />
         </div>
       </div>
