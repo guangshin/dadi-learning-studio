@@ -7,6 +7,7 @@ import Philosophy from '@/components/sections/Philosophy';
 import Programmes from '@/components/sections/Programmes';
 import Founder from '@/components/sections/Founder';
 import Testimonials from '@/components/sections/Testimonials';
+import MediaFeatures from '@/components/sections/MediaFeatures';
 import Contact from '@/components/sections/Contact';
 import WhatsAppButton from '@/components/shared/WhatsAppButton';
 import { ThemeProvider } from '@/components/layout/ThemeProvider';
@@ -27,6 +28,7 @@ export default function Home() {
         <Programmes />
         <Founder />
         <Testimonials />
+        <MediaFeatures />
         <Contact />
         <Footer />
         <WhatsAppButton />

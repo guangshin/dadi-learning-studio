@@ -38,7 +38,7 @@ const Founder = () => {
             <div className="relative">
               <div className="absolute -top-4 -left-4 w-24 h-24 bg-[#FFE066] rounded-full opacity-20"></div>
               <Image
-                src="https://images.pexels.com/photos/3771089/pexels-photo-3771089.jpeg"
+                src="/BenFounder.png"
                 alt="Ben Lim, Founder of Da Di Learning Studio"
                 width={500}
                 height={600}
