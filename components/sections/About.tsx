@@ -20,8 +20,8 @@ const About = () => {
               className="relative rounded-2xl overflow-hidden"
             >
               <Image
-                src="https://images.pexels.com/photos/8471835/pexels-photo-8471835.jpeg"
-                alt="Students learning Chinese with mindfulness"
+                src="/Where-Mandarin-meets-Mindfulness.png"
+                alt="Where Mandarin meets Mindfulness illustration"
                 width={600}
                 height={400}
                 className="w-full h-[500px] object-cover rounded-2xl"
