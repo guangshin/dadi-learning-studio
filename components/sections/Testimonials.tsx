@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { motion } from '@/lib/motion';
-import { useInView } from '@/lib/hooks';
+import { motion, useInView } from 'framer-motion';
 import TestimonialCard from '../shared/TestimonialCard';
 
 const testimonials = [
@@ -40,7 +39,8 @@ const testimonials = [
 const Testimonials = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visibleCount, setVisibleCount] = useState(3);
-  const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
+  const ref = useRef(null);
+  const isInView = useInView(ref, { amount: 0.1, once: true });
 
   useEffect(() => {
     const handleResize = () => {
@@ -71,8 +71,8 @@ const Testimonials = () => {
       <div className="container mx-auto px-4" ref={ref}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
           className="text-center max-w-3xl mx-auto mb-16"
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-6">What Our Community Says</h2>
@@ -85,7 +85,7 @@ const Testimonials = () => {
           <div className="overflow-hidden">
             <motion.div
               initial={{ opacity: 0 }}
-              animate={inView ? { opacity: 1 } : {}}
+              animate={isInView ? { opacity: 1 } : {}}
               transition={{ duration: 0.5, delay: 0.2 }}
               className="flex transition-transform duration-300 ease-in-out"
               style={{ transform: `translateX(-${currentIndex * (100 / visibleCount)}%)` }}
@@ -102,7 +102,7 @@ const Testimonials = () => {
                     content={testimonial.content}
                     image={testimonial.image}
                     delay={index * 0.1}
-                    inView={inView}
+                    inView={isInView}
                   />
                 </div>
               ))}

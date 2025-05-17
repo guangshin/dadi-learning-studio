@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { Card, CardContent } from "@/components/ui/card";
-import { motion } from '@/lib/motion';
+import { motion } from 'framer-motion';
 
 interface TestimonialCardProps {
   name: string;

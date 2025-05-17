@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { PhoneCall, Mail, MapPin } from 'lucide-react';
-import { motion } from '@/lib/motion';
-import { useInView } from '@/lib/hooks';
+import { motion, useInView } from 'framer-motion';
+
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -15,7 +15,8 @@ const Contact = () => {
     phone: '',
     message: '',
   });
-  const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
+  const ref = useRef(null);
+  const isInView = useInView(ref, { amount: 0.1, once: true });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -34,7 +35,7 @@ const Contact = () => {
       <div className="container mx-auto px-4" ref={ref}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.5 }}
           className="text-center max-w-3xl mx-auto mb-16"
         >
@@ -47,7 +48,7 @@ const Contact = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
+            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
             transition={{ duration: 0.6 }}
           >
             <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 h-full">
@@ -85,9 +86,9 @@ const Contact = () => {
           </motion.div>
           
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
           >
             <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
               <h3 className="text-xl font-semibold mb-6">Book a Trial Class</h3>

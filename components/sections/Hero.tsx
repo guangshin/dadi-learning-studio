@@ -1,9 +1,10 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { motion } from "@/lib/motion";
-import CalligraphyAnimation from "./CalligraphyAnimation";
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import CalligraphyAnimation from './CalligraphyAnimation';
 
 const Hero = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -18,24 +19,32 @@ const Hero = () => {
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const scrollToContact = () => {
-    const contactSection = document.getElementById("contact");
+    const contactSection = document.getElementById('contact');
     if (contactSection) {
-      contactSection.scrollIntoView({ behavior: "smooth" });
+      contactSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   return (
-    <section className="relative min-h-screen flex flex-col md:flex-row items-center pt-20 pb-12 overflow-hidden">
+    <section 
+      id="home"
+      className={cn(
+        'relative min-h-screen flex flex-col md:flex-row items-center pt-20 pb-12 overflow-hidden',
+        'bg-gradient-to-b from-background to-background/80',
+        'transition-colors duration-200'
+      )}
+    >
       {/* Background Elements */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute top-1/4 right-10 w-64 h-64 bg-[#FFE066]/20 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 left-10 w-80 h-80 bg-[#9BC53D]/10 rounded-full blur-3xl"></div>
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <div className="absolute top-1/4 right-10 w-64 h-64 bg-primary/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 left-10 w-80 h-80 bg-accent/10 rounded-full blur-3xl" />
       </div>
+
       <div className="container mx-auto px-4 z-10 flex-1 flex flex-col-reverse md:flex-row items-center justify-between w-full">
         {/* Headline and CTA */}
         <div className="max-w-3xl w-full md:w-2/3 mt-8 md:mt-0">
@@ -45,52 +54,80 @@ const Hero = () => {
             transition={{ duration: 0.6 }}
           >
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-              Mandarin. Mindfulness. Mastery.
+              <span className="text-foreground">Mandarin.</span>{' '}
+              <span className="text-foreground/90">Mindfulness.</span>{' '}
+              <span className="text-foreground/80">Mastery.</span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-700 mb-8 leading-relaxed">
+            <p className="text-xl md:text-2xl text-muted-foreground mb-8 leading-relaxed">
               A new kind of Chinese enrichment — where language meets life.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button
+              <Button 
+                size="lg" 
+                className="text-lg px-8 py-6 bg-primary hover:bg-primary/90 text-primary-foreground"
                 onClick={scrollToContact}
-                className="bg-[#9BC53D] hover:bg-[#8AB22E] text-white px-8 py-6 text-lg h-auto"
               >
-                Book a Free Trial Class
+                Start Your Journey
               </Button>
-              <Button
-                variant="outline"
-                className="border-[#9BC53D] text-[#9BC53D] hover:bg-[#9BC53D]/10 px-8 py-6 text-lg h-auto"
-                onClick={() => {
-                  const aboutSection = document.getElementById("about");
-                  if (aboutSection) {
-                    aboutSection.scrollIntoView({ behavior: "smooth" });
-                  }
-                }}
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="text-lg px-8 py-6 border-2 border-foreground/20 hover:bg-accent/10 hover:border-accent/50"
               >
                 Learn More
               </Button>
             </div>
           </motion.div>
         </div>
+
         {/* Calligraphy Animation */}
-        <div className="mb-8 md:mb-0 md:ml-12 flex-1 flex items-center justify-center w-full md:w-1/2">
+        <motion.div 
+          className={cn(
+            'w-full md:w-1/3 flex justify-center items-center',
+            'transition-opacity duration-300',
+            isVisible ? 'opacity-100' : 'opacity-0 md:opacity-100'
+          )}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
           <CalligraphyAnimation />
-        </div>
+        </motion.div>
       </div>
 
-      {/* Fixed CTA button that appears when scrolling past hero */}
-      <div
-        className={`fixed bottom-6 right-6 z-30 transition-all duration-500 transform ${
-          isVisible ? "translate-y-24 opacity-0" : "translate-y-0 opacity-100"
-        }`}
+      {/* Scroll indicator */}
+      <motion.div 
+        className={cn(
+          'absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center',
+          'text-muted-foreground/60 hover:text-foreground/80 transition-colors',
+          'cursor-pointer',
+          'hidden md:flex',
+          'animate-bounce'
+        )}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1 }}
+        onClick={() => {
+          window.scrollTo({
+            top: window.innerHeight,
+            behavior: 'smooth',
+          });
+        }}
       >
-        <Button
-          onClick={scrollToContact}
-          className="bg-[#9BC53D] hover:bg-[#8AB22E] text-white px-6 shadow-lg"
+        <span className="text-sm mb-1">Scroll to explore</span>
+        <svg 
+          width="24" 
+          height="24" 
+          viewBox="0 0 24 24" 
+          fill="none" 
+          stroke="currentColor" 
+          strokeWidth="2" 
+          strokeLinecap="round" 
+          strokeLinejoin="round"
         >
-          Book a Trial Class
-        </Button>
-      </div>
+          <path d="M12 5v14M19 12l-7 7-7-7" />
+        </svg>
+      </motion.div>
     </section>
   );
 };

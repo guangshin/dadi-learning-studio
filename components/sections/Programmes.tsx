@@ -3,18 +3,19 @@
 import { Button } from '@/components/ui/button';
 import ProgrammeCard from '../shared/ProgrammeCard';
 import { BabyIcon, RocketIcon, TargetIcon, UserIcon } from 'lucide-react';
-import { motion } from '@/lib/motion';
-import { useInView } from '@/lib/hooks';
+import { motion, useInView } from 'framer-motion';
+import { useRef } from 'react';
 
 const Programmes = () => {
-  const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
+  const ref = useRef(null);
+  const isInView = useInView(ref, { amount: 0.1, once: true });
 
   return (
     <section id="programmes" className="py-20 bg-white">
       <div className="container mx-auto px-4" ref={ref}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.5 }}
           className="text-center max-w-3xl mx-auto mb-16"
         >
@@ -28,7 +29,7 @@ const Programmes = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
-            animate={inView ? { opacity: 1, scale: 1 } : {}}
+            animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             <ProgrammeCard
@@ -42,7 +43,7 @@ const Programmes = () => {
           
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
-            animate={inView ? { opacity: 1, scale: 1 } : {}}
+            animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <ProgrammeCard
@@ -56,7 +57,7 @@ const Programmes = () => {
           
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
-            animate={inView ? { opacity: 1, scale: 1 } : {}}
+            animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
             <ProgrammeCard
@@ -70,7 +71,7 @@ const Programmes = () => {
           
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
-            animate={inView ? { opacity: 1, scale: 1 } : {}}
+            animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.5, delay: 0.4 }}
           >
             <ProgrammeCard
@@ -85,7 +86,7 @@ const Programmes = () => {
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.5, delay: 0.5 }}
           className="text-center"
         >

@@ -1,25 +1,26 @@
 "use client";
 
-import { motion } from '@/lib/motion';
-import { useInView } from '@/lib/hooks';
+import { motion, useInView } from 'framer-motion';
+import { useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import PhilosophyCard from '../shared/PhilosophyCard';
 import { QuoteIcon } from 'lucide-react';
 
 const Philosophy = () => {
-  const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
+  const ref = useRef(null);
+  const isInView = useInView(ref, { amount: 0.1, once: true });
 
   return (
-    <section id="philosophy" className="py-20 bg-gray-50">
+    <section id="philosophy" className="py-20 bg-background">
       <div className="container mx-auto px-4" ref={ref}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.5 }}
           className="text-center max-w-3xl mx-auto mb-16"
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-6">Our Philosophy</h2>
-          <p className="text-gray-700 leading-relaxed">
+          <p className="text-text leading-relaxed">
             Our teaching approach is built on four pillars that cultivate not just language skills, but lifelong habits of mind.
           </p>
         </motion.div>
@@ -27,7 +28,7 @@ const Philosophy = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             <PhilosophyCard 
@@ -41,7 +42,7 @@ const Philosophy = () => {
           
           <motion.div
             initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <PhilosophyCard 
@@ -49,75 +50,59 @@ const Philosophy = () => {
               pinyin="Sī" 
               meaning="Analyse" 
               description="Think deeply, reflect mindfully"
-              color="#BFE140"
+              color="#9BC53D"
             />
           </motion.div>
           
           <motion.div
             initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
             <PhilosophyCard 
-              character="修" 
-              pinyin="Xiū" 
-              meaning="Apply" 
-              description="Use language in real life"
-              color="#FFE066"
+              character="行" 
+              pinyin="Xíng" 
+              meaning="Act" 
+              description="Practice, apply, create"
+              color="#9BC53D"
             />
           </motion.div>
           
           <motion.div
             initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={{ duration: 0.5, delay: 0.4 }}
           >
             <PhilosophyCard 
-              character="静" 
-              pinyin="Jìng" 
-              meaning="Stillness" 
-              description="Breathe, focus, grow with calm"
+              character="悟" 
+              pinyin="Wù" 
+              meaning="Understand" 
+              description="Gain insight, achieve mastery"
               color="#9BC53D"
             />
           </motion.div>
         </div>
 
-        <motion.div
+        <motion.div 
+          className="bg-background p-8 rounded-xl max-w-4xl mx-auto"
           initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.5, delay: 0.5 }}
-          className="max-w-3xl mx-auto bg-white rounded-2xl p-8 shadow-sm border border-gray-100 mb-12"
         >
-          <div className="flex items-start">
-            <QuoteIcon className="text-[#9BC53D] h-10 w-10 mr-4 flex-shrink-0" />
+          <QuoteIcon className="w-8 h-8 text-[#9BC53D] mb-4" />
+          <blockquote className="text-xl italic text-text mb-6">
+            "At Da Di, we believe language learning is not just about memorizing words and grammar rules. 
+            It's about developing a deeper understanding of oneself and the world through the lens of a new language."
+          </blockquote>
+          <div className="flex items-center">
+            <div className="w-12 h-12 rounded-full bg-[#9BC53D] flex items-center justify-center text-white font-bold text-xl mr-4">
+              BL
+            </div>
             <div>
-              <p className="text-xl md:text-2xl font-medium mb-3 text-gray-800">
-                "心静方能凝神，聚积会神万事通。"
-              </p>
-              <p className="text-gray-600">
-                When the heart is still, the mind can focus — and with focus, all things are possible.
-              </p>
+              <p className="font-semibold">Ben Lim</p>
+              <p className="text-foreground/70">Founder & Lead Educator</p>
             </div>
           </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.6 }}
-          className="text-center"
-        >
-          <Button 
-            className="bg-[#9BC53D] hover:bg-[#8AB22E] text-white"
-            onClick={() => {
-              const programmesSection = document.getElementById('programmes');
-              if (programmesSection) {
-                programmesSection.scrollIntoView({ behavior: 'smooth' });
-              }
-            }}
-          >
-            Experience Our Approach
-          </Button>
         </motion.div>
       </div>
     </section>

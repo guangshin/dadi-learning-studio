@@ -12,7 +12,7 @@ const MEDIA = [
     button: "\u25B6 Watch on YouTube",
     link: "https://www.youtube.com/watch?v=5okAvrruW_4",
     bg: "bg-[#FFFBE6]",
-    platformStyle: "bg-[#FFE066] text-black",
+    platformStyle: "bg-accent/20 text-black",
   },
   {
     platform: "Facebook Live",
@@ -31,13 +31,13 @@ export default function MediaFeatures() {
   return (
     <section
       className="w-full py-16 px-4 md:px-0"
-      style={{ background: "#FFFBE6" }}
+      style={{ background: "bg-accent/20" }}
     >
       <div className="max-w-5xl mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold mb-2 font-sans">
           Media Features
         </h2>
-        <p className="mb-10 text-lg md:text-xl text-gray-700 font-serif">
+        <p className="mb-10 text-lg md:text-xl text-text font-serif">
           Spotlight moments from the national stage and heartfelt interviews
           with our founder.
         </p>
@@ -67,14 +67,14 @@ export default function MediaFeatures() {
                 <h3 className="text-xl font-semibold mb-1 font-sans">
                   {item.title}
                 </h3>
-                <p className="text-gray-700 mb-4 font-serif">
+                <p className="text-text mb-4 font-serif">
                   {item.description}
                 </p>
                 <a
                   href={item.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center px-5 py-3 rounded-xl bg-[#FFE066] text-black font-bold shadow hover:bg-[#FFD700] transition-colors text-base mt-auto"
+                  className="inline-flex items-center justify-center px-5 py-3 rounded-xl bg-accent/20 text-primary font-bold shadow hover:bg-primary transition-colors text-base mt-auto"
                 >
                   {item.button}
                 </a>

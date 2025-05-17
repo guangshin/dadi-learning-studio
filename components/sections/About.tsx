@@ -2,69 +2,126 @@
 
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { motion } from '@/lib/motion';
-import { useInView } from '@/lib/hooks';
+import { motion } from 'framer-motion';
+import { useInView } from 'framer-motion';
+import { useRef } from 'react';
+import Link from 'next/link';
 
 const About = () => {
-  const { ref, inView } = useInView({ threshold: 0.3, triggerOnce: true });
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.3 });
+
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 }
+  };
 
   return (
     <section id="about" className="py-20 bg-white">
       <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row items-center gap-12 md:gap-16">
-          <div className="md:w-1/2" ref={ref}>
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative rounded-2xl overflow-hidden"
+        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+          <motion.div 
+            className="lg:w-1/2 relative"
+            ref={ref}
+            initial="hidden"
+            animate={isInView ? "show" : "hidden"}
+            variants={container}
+          >
+            <motion.div 
+              className="relative rounded-2xl overflow-hidden shadow-xl"
+              variants={item}
             >
               <Image
-                src="/Where-Mandarin-meets-Mindfulness.png"
-                alt="Where Mandarin meets Mindfulness illustration"
+                src="/images/about-hero.jpg"
+                alt="Students learning Mandarin at Da Di"
                 width={600}
-                height={400}
-                className="w-full h-[500px] object-cover rounded-2xl"
+                height={800}
+                className="w-full h-auto object-cover rounded-2xl"
+                priority
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-              <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg">
-                <p className="text-[#9BC53D] font-semibold">大地</p>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#2C2C2C]/40 to-transparent"></div>
+              <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur-sm px-4 py-3 rounded-lg shadow-sm">
+                <p className="text-primary font-semibold text-lg">大地</p>
                 <p className="text-sm text-gray-700">Earth. Foundation. Growth.</p>
               </div>
             </motion.div>
-          </div>
+            
+            {/* Decorative elements */}
+            <motion.div 
+              className="absolute -bottom-6 -left-6 w-32 h-32 bg-accent/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"
+              variants={item}
+            />
+            <motion.div 
+              className="absolute -top-6 -right-6 w-32 h-32 bg-primary/20 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"
+              variants={item}
+              transition={{ delay: 0.2 }}
+            />
+          </motion.div>
           
-          <div className="md:w-1/2">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              <h2 className="text-3xl md:text-4xl font-bold mb-6 leading-tight">
-                Where Mandarin meets Mindfulness
+          <motion.div 
+            className="lg:w-1/2"
+            initial="hidden"
+            animate={isInView ? "show" : "hidden"}
+            variants={container}
+          >
+            <motion.div variants={item}>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight text-gray-900">
+                Where <span className="text-primary">Mandarin</span> Meets <span className="text-accent">Mindfulness</span>
               </h2>
-              <p className="text-gray-700 mb-4 leading-relaxed">
-                At Da Di Learning Studio, we believe in nurturing the mind and spirit — just as the earth nurtures life.
-              </p>
-              <p className="text-gray-700 mb-4 leading-relaxed">
-                Inspired by the quiet strength and generosity of 大地, our unique programme blends the richness of the Chinese language with the practice of mindfulness.
-              </p>
-              <p className="text-gray-700 mb-8 leading-relaxed">
-                Whether it's learning to speak Mandarin fluently, training the mind to be present, or cultivating kindness and resilience, Da Di is where learners grow — deep, steady, and strong.
-              </p>
-              <Button 
-                className="bg-[#9BC53D] hover:bg-[#8AB22E] text-white"
-                onClick={() => {
-                  const philosophySection = document.getElementById('philosophy');
-                  if (philosophySection) {
-                    philosophySection.scrollIntoView({ behavior: 'smooth' });
-                  }
-                }}
+              <div className="h-1 w-20 bg-primary mb-8 rounded-full"></div>
+              
+              <motion.div variants={container} className="space-y-6">
+                <motion.p 
+                  className="text-lg text-gray-700 leading-relaxed"
+                  variants={item}
+                >
+                  At Da Di Learning Studio, we believe in nurturing the mind and spirit through the beauty of Mandarin language and culture. Our name 大地 (Dà Dì) means "earth" or "ground," symbolizing our commitment to providing a solid foundation for lifelong learning.
+                </motion.p>
+                
+                <motion.p 
+                  className="text-lg text-gray-700 leading-relaxed"
+                  variants={item}
+                >
+                  Inspired by the quiet strength and generosity of the earth, our unique programme blends the richness of Chinese language with mindfulness practices, creating a holistic learning experience that goes beyond textbooks and exams.
+                </motion.p>
+              </motion.div>
+              <motion.p 
+                className="text-lg text-gray-700 leading-relaxed"
+                variants={item}
               >
-                Discover Our Philosophy
-              </Button>
+                Whether it's learning to speak Mandarin fluently, training the mind to be present, or cultivating kindness and resilience, Da Di is where learners grow — deep, steady, and strong.
+              </motion.p>
+              <motion.div variants={item} className="mt-8 flex flex-wrap gap-4">
+                <Button 
+                  asChild
+                  variant="outline"
+                  className="px-8 py-6 text-base font-medium border-2 border-primary text-primary hover:bg-primary/10 hover:border-primary hover:text-primary/80 transition-colors"
+                >
+                  <Link href="/about">
+                    Discover Our Story
+                  </Link>
+                </Button>
+                <Button 
+                  asChild
+                  className="px-8 py-6 text-base font-medium bg-primary text-white hover:bg-accent transition-colors"
+                >
+                  <Link href="/philosophy">
+                    Our Teaching Philosophy
+                  </Link>
+                </Button>
+              </motion.div>
             </motion.div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

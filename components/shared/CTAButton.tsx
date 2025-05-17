@@ -20,7 +20,7 @@ const CTAButton = ({
       <Button
         variant="outline"
         onClick={onClick}
-        className={`border-[#9BC53D] text-[#9BC53D] hover:bg-[#9BC53D]/10 ${className}`}
+        className={`border-accent text-text hover:bg-accent/10 ${className}`}
       >
         {text}
       </Button>
@@ -30,7 +30,7 @@ const CTAButton = ({
   return (
     <Button
       onClick={onClick}
-      className={`bg-[#9BC53D] hover:bg-[#8AB22E] text-white ${className}`}
+      className={`bg-accent hover:bg-primary text-text ${className}`}
     >
       {text}
     </Button>
