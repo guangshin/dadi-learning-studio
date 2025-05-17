@@ -18,6 +18,7 @@ export default function PhilosophyPage() {
       
       {/* Individual Pillar Details */}
       <PillarDetail
+        id="pillar-wen"
         chinese="问"
         pinyin="Wèn"
         title="Ask"
@@ -28,6 +29,7 @@ export default function PhilosophyPage() {
       />
       
       <PillarDetail
+        id="pillar-si"
         chinese="思"
         pinyin="Sī"
         title="Analyze"
@@ -39,6 +41,7 @@ export default function PhilosophyPage() {
       />
       
       <PillarDetail
+        id="pillar-xiu"
         chinese="修"
         pinyin="Xiū"
         title="Apply"

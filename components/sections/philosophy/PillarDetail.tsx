@@ -11,6 +11,7 @@ interface PillarDetailProps {
   description: string;
   color: string;
   reverse?: boolean;
+  id?: string;
 }
 
 export function PillarDetail({
@@ -22,9 +23,13 @@ export function PillarDetail({
   description,
   color,
   reverse = false,
+  id,
 }: PillarDetailProps) {
   return (
-    <section className={`py-16 ${reverse ? 'bg-white' : 'bg-[#FAF9F6]'}`}>
+    <section 
+      id={id || `pillar-${chinese}`}
+      className={`py-16 ${reverse ? 'bg-white' : 'bg-[#FAF9F6]'} scroll-mt-20`}
+    >
       <div className="container mx-auto px-4">
         <div className={`flex flex-col ${reverse ? 'md:flex-row-reverse' : 'md:flex-row'} items-center gap-12`}>
           <motion.div 
