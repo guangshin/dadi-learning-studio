@@ -1,9 +1,13 @@
 import { Metadata } from 'next';
-import { AboutHero } from '@/components/sections/AboutHero';
-import Founder from '@/components/sections/Founder';
-import { Timeline } from '@/components/sections/Timeline';
-import { TeamSection } from '@/components/sections/TeamSection';
 import Link from 'next/link';
+import { AboutPageHero } from '@/components/sections/AboutPageHero';
+import { AboutFounder } from '@/components/sections/AboutFounder';
+import { WhyDaDi as WhyDaDiComponent } from '@/components/sections/WhyDaDi';
+import { PhilosophyPillarsGrid } from '@/components/sections/PhilosophyPillarsGrid';
+import { AboutTeam } from '@/components/sections/AboutTeam';
+import { ConfuciusQuote } from '@/components/sections/ConfuciusQuote';
+import { AboutCTA as AboutCTASection } from '@/components/sections/AboutCTA';
+import { ArrowRight } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'About Us | Da Di Learning Studio',
@@ -65,66 +69,46 @@ export default function AboutPage() {
   return (
     <main className="min-h-screen bg-[#F9F7F1]">
       {/* Hero Section */}
-      <AboutHero />
+      <AboutPageHero />
 
       {/* Founder Section */}
-      <section className="py-20 bg-[#E4F2E0]">
-        <div className="container mx-auto px-4 max-w-5xl flex flex-col lg:flex-row items-center gap-16 rounded-3xl shadow-lg bg-white">
-          <div className="lg:w-1/2 px-6 py-10">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-accent">A Father. An Educator. A Mission.</h2>
-            <div className="text-lg text-foreground/80 space-y-4">
-              <p>Ben Lim is a father of six and an educator with over 15 years of experience nurturing young minds.</p>
-              <p>He has seen the full arc of a child’s Mandarin journey — the early enthusiasm, the pressure of exams, and sometimes, the eventual silence.</p>
-              <p>When his older children scored well in school but struggled to speak fluently, Ben realized something painful but powerful: academic success doesn’t guarantee language confidence.</p>
-              <p>Determined to change this pattern, Ben stepped onto the national stage with his youngest daughter in 2023 and won the Speak Mandarin Campaign Family Talent Competition.</p>
-              <p>Through that joyful experience, he rediscovered what truly helps children embrace Mandarin: play, purpose, and presence.</p>
-              <p>In 2025, he founded Da Di Learning Studio — a space where Mandarin is lived, not memorized. Where language builds not just vocabulary, but confidence, character, and calm.</p>
-            </div>
-          </div>
-          <div className="lg:w-1/2 flex justify-center px-6 py-10">
-            <Founder />
-          </div>
-        </div>
-      </section>
+      <AboutFounder />
 
-      {/* Timeline Section */}
+      {/* Why Da Di Exists */}
+      <WhyDaDiComponent />
+
+      {/* Da Di Philosophy */}
       <section className="py-20 bg-background">
-        <div className="container mx-auto px-4 max-w-5xl">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#7EA16B] mb-10">From Preschool Roots to a New Language Movement</h2>
-          <div className="mb-10">
-            <div className="flex flex-col md:flex-row gap-10">
-              {/* Milestone 1 */}
-              <div className="flex-1 bg-white rounded-2xl p-10 shadow-lg border border-[#E4F2E0]">
-                <div className="flex items-center mb-4">
-                  <span className="inline-block w-12 h-12 bg-[#7EA16B] rounded-full mr-4 flex items-center justify-center text-white font-bold text-2xl shadow">2010</span>
-                  <span className="text-lg font-semibold text-accent">My Little Gems Preschool</span>
-                </div>
-                <p className="text-foreground/80">Founded to nurture bilingual learners in a warm, mindfulness-based environment.</p>
-              </div>
-              {/* Milestone 2 */}
-              <div className="flex-1 bg-white rounded-2xl p-10 shadow-lg border border-[#E4F2E0]">
-                <div className="flex items-center mb-4">
-                  <span className="inline-block w-12 h-12 bg-[#7EA16B] rounded-full mr-4 flex items-center justify-center text-white font-bold text-2xl shadow">2025</span>
-                  <span className="text-lg font-semibold text-accent">Da Di Learning Studio</span>
-                </div>
-                <p className="text-foreground/80">Launched to empower students to think deeply, speak confidently, and grow with heart.</p>
-              </div>
-            </div>
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-foreground mb-4">
+              Our Teaching Philosophy
+            </h2>
+            <p className="text-xl text-foreground/80 max-w-3xl mx-auto">
+              Our approach to learning is built on four timeless principles
+            </p>
           </div>
-          <div className="text-right">
-            <Link href="https://mylittlegems.sg" target="_blank" className="text-[#7EA16B] hover:underline font-medium text-lg">&rarr; Learn more about My Little Gems</Link>
+          <PhilosophyPillarsGrid />
+          <div className="text-center mt-12">
+            <Link 
+              href="/philosophy" 
+              className="inline-flex items-center text-primary hover:text-primary/80 font-medium group"
+            >
+              Learn more about our philosophy
+              <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+            </Link>
           </div>
         </div>
       </section>
-
-      {/* Why Da Di Section */}
-      <WhyDaDi />
 
       {/* Team Section */}
-      <TeamSection />
+      <AboutTeam />
 
-      {/* CTA Footer */}
-      <AboutCTA />
+      {/* Confucius Quote */}
+      <ConfuciusQuote />
+
+      {/* CTA Section */}
+      <AboutCTASection />
     </main>
   );
 }

@@ -8,9 +8,9 @@ const pillars = [
     pinyin: 'Wèn',
     english: 'Ask',
     description: 'Encouraging curiosity and inquiry-based learning. We believe that asking questions is the foundation of understanding.',
-    color: 'from-accent to-primary',
-    bgColor: 'bg-accent/10',
-    textColor: 'text-accent',
+    color: '#4C9A2A', // Dark Green from logo
+    bgColor: 'bg-[#4C9A2A]/10',
+    textColor: 'text-[#4C9A2A]',
   },
   {
     id: 2,
@@ -18,29 +18,29 @@ const pillars = [
     pinyin: 'Sī',
     english: 'Analyze',
     description: 'Developing critical thinking and analytical skills to understand the deeper meaning behind the language.',
-    color: 'from-primary to-accent',
-    bgColor: 'bg-primary/10',
-    textColor: 'text-primary',
+    color: '#7BC043', // Green from logo
+    bgColor: 'bg-[#7BC043]/10',
+    textColor: 'text-[#7BC043]',
   },
   {
     id: 3,
-    chinese: '修',
-    pinyin: 'Xiū',
-    english: 'Apply',
+    chinese: '行',
+    pinyin: 'Xíng',
+    english: 'Act',
     description: 'Practical application of language skills in real-life situations to ensure meaningful learning.',
-    color: 'from-primary to-accent',
-    bgColor: 'bg-background',
-    textColor: 'text-text',
+    color: '#B2D732', // Light Green from logo
+    bgColor: 'bg-[#B2D732]/10',
+    textColor: 'text-[#B2D732]',
   },
   {
     id: 4,
-    chinese: '静',
-    pinyin: 'Jìng',
-    english: 'Stillness',
-    description: 'Cultivating mindfulness and focus to enhance learning and retention of the language.',
-    color: 'from-primary to-accent',
-    bgColor: 'bg-accent/10',
-    textColor: 'text-accent',
+    chinese: '悟',
+    pinyin: 'Wù',
+    english: 'Understand',
+    description: 'Gaining insight and achieving mastery through reflection and understanding.',
+    color: '#FDE74C', // Yellow from logo
+    bgColor: 'bg-[#FDE74C]/10',
+    textColor: 'text-[#FDE74C]',
   },
 ];
 
@@ -84,14 +84,22 @@ export function PhilosophyPillars() {
             <motion.div
               key={pillar.id}
               variants={item}
-              className={`p-6 rounded-2xl ${pillar.bgColor} transition-all duration-300 hover:shadow-lg hover:-translate-y-1`}
+              className={`p-6 rounded-2xl ${pillar.bgColor} transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border border-transparent hover:border-[${pillar.color}]/20`}
+              style={{
+                '--pillar-color': pillar.color,
+                '--pillar-bg-color': `${pillar.color}1a`,
+                '--pillar-hover-color': `${pillar.color}33`,
+              } as React.CSSProperties}
             >
-              <div className={`w-16 h-16 rounded-xl mb-4 flex items-center justify-center text-3xl font-bold text-white bg-primary`}>
+              <div 
+                className="w-16 h-16 rounded-xl mb-4 flex items-center justify-center text-3xl font-bold text-white"
+                style={{ backgroundColor: pillar.color }}
+              >
                 {pillar.chinese}
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-1">{pillar.english}</h3>
-              <p className="text-sm font-medium text-gray-500 mb-3">{pillar.pinyin}</p>
-              <p className="text-gray-700">{pillar.description}</p>
+              <h3 className={`text-xl font-bold mb-1 ${pillar.textColor}`}>{pillar.english}</h3>
+              <p className={`text-sm font-medium mb-3 ${pillar.textColor}/80`}>{pillar.pinyin}</p>
+              <p className="text-foreground/80">{pillar.description}</p>
             </motion.div>
           ))}
         </motion.div>

@@ -20,7 +20,7 @@ const Philosophy = () => {
           className="text-center max-w-3xl mx-auto mb-16"
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-6">Our Philosophy</h2>
-          <p className="text-text leading-relaxed">
+          <p className="text-foreground/80 leading-relaxed">
             Our teaching approach is built on four pillars that cultivate not just language skills, but lifelong habits of mind.
           </p>
         </motion.div>
@@ -36,7 +36,7 @@ const Philosophy = () => {
               pinyin="Wèn" 
               meaning="Ask" 
               description="Be curious, explore, express"
-              color="#9BC53D"
+              color="primary"
             />
           </motion.div>
           
@@ -50,7 +50,7 @@ const Philosophy = () => {
               pinyin="Sī" 
               meaning="Analyse" 
               description="Think deeply, reflect mindfully"
-              color="#9BC53D"
+              color="primary"
             />
           </motion.div>
           
@@ -64,7 +64,7 @@ const Philosophy = () => {
               pinyin="Xíng" 
               meaning="Act" 
               description="Practice, apply, create"
-              color="#9BC53D"
+              color="primary"
             />
           </motion.div>
           
@@ -78,7 +78,7 @@ const Philosophy = () => {
               pinyin="Wù" 
               meaning="Understand" 
               description="Gain insight, achieve mastery"
-              color="#9BC53D"
+              color="primary"
             />
           </motion.div>
         </div>
@@ -89,13 +89,13 @@ const Philosophy = () => {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.5, delay: 0.5 }}
         >
-          <QuoteIcon className="w-8 h-8 text-[#9BC53D] mb-4" />
-          <blockquote className="text-xl italic text-text mb-6">
+          <QuoteIcon className="w-8 h-8 text-primary mb-4" />
+          <blockquote className="text-xl italic text-foreground/90 mb-6">
             "At Da Di, we believe language learning is not just about memorizing words and grammar rules. 
             It's about developing a deeper understanding of oneself and the world through the lens of a new language."
           </blockquote>
           <div className="flex items-center">
-            <div className="w-12 h-12 rounded-full bg-[#9BC53D] flex items-center justify-center text-white font-bold text-xl mr-4">
+            <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold text-xl mr-4">
               BL
             </div>
             <div>

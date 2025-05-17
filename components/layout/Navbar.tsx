@@ -63,8 +63,8 @@ const Navbar = () => {
       )}
     >
       <div className="container mx-auto px-4 flex justify-between items-center">
-        <Link href="/" className="flex items-center gap-2">
-          <Logo height={40} className={isHome && !isScrolled ? 'text-white' : ''} />
+        <Link href="/" className="flex items-center gap-2 no-underline hover:no-underline">
+          <Logo height={40} className="text-foreground" />
         </Link>
 
         {/* Desktop Navigation */}
@@ -75,11 +75,9 @@ const Navbar = () => {
                 href={link.href}
                 className={cn(
                   'flex items-center gap-1 py-2 px-3 rounded-md text-sm font-medium transition-colors',
-                  pathname === link.href 
-                    ? 'text-accent' 
-                    : isHome && !isScrolled 
-                      ? 'text-text hover:bg-accent/10' 
-                      : 'text-foreground hover:text-accent hover:bg-accent/10'
+                  pathname === link.href || pathname.startsWith(link.href + '/')
+                    ? 'text-primary' 
+                    : 'text-foreground hover:text-primary hover:bg-primary/10'
                 )}
                 onMouseEnter={() => link.submenu && setIsProgrammesOpen(true)}
                 onMouseLeave={() => link.submenu && setIsProgrammesOpen(false)}
@@ -118,7 +116,7 @@ const Navbar = () => {
           ))}
           <Button 
             asChild
-            className="bg-accent hover:bg-primary text-white"
+            className="bg-primary hover:bg-primary/90 text-white"
           >
             <Link href="/contact">
               Book a Trial
@@ -130,10 +128,7 @@ const Navbar = () => {
         <div className="md:hidden">
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className={cn(
-              'inline-flex items-center justify-center p-2 rounded-md focus:outline-none',
-              isHome && !isScrolled ? 'text-white hover:bg-white/20' : 'text-foreground hover:bg-accent/10'
-            )}
+            className="inline-flex items-center justify-center p-2 rounded-md text-foreground hover:bg-primary/10 focus:outline-none"
           >
             <span className="sr-only">Open main menu</span>
             {isOpen ? <X className="block h-6 w-6" /> : <Menu className="block h-6 w-6" />}
@@ -154,7 +149,12 @@ const Navbar = () => {
             <div key={link.name}>
               <Link
                 href={link.href}
-                className="block px-3 py-3 text-base font-medium text-foreground hover:text-accent hover:bg-accent/10 rounded-md"
+                className={cn(
+                  'block px-3 py-3 text-base font-medium rounded-md transition-colors',
+                  pathname === link.href || pathname.startsWith(link.href + '/')
+                    ? 'text-primary' 
+                    : 'text-foreground hover:text-primary hover:bg-primary/10'
+                )}
                 onClick={() => setIsOpen(false)}
               >
                 {link.name}
@@ -165,7 +165,7 @@ const Navbar = () => {
                     <Link
                       key={item.name}
                       href={item.href}
-                      className="block px-3 py-2 text-sm text-gray-600 hover:text-accent hover:bg-accent/10 rounded-md"
+                      className="block px-3 py-2 text-sm text-foreground/80 hover:text-primary hover:bg-primary/10 rounded-md"
                       onClick={() => {
                         setIsOpen(false);
                         setIsProgrammesOpen(false);
@@ -182,7 +182,7 @@ const Navbar = () => {
         <div className="px-4 pt-6 border-t border-gray-200 mt-4">
           <Button 
             asChild
-            className="w-full bg-accent hover:bg-primary text-white"
+            className="w-full bg-primary hover:bg-primary/90 text-white"
             onClick={() => setIsOpen(false)}
           >
             <Link href="/contact">
