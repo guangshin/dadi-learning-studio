@@ -241,27 +241,13 @@ export function ProgrammesSection() {
             const { testimonial, showGalleryAfter, ...programProps } = program as any;
             // Add ID based on program type
             const programId = programTypes[index] || `program-${index}`;
-                            
+                                    
             return (
               <div key={index} id={programId} className="scroll-mt-24">
                 <ProgrammeCard {...programProps} />
               </div>
             );
           })}
-        </div>
-
-        {/* Single instance of Moments at Da Di Gallery */}
-        <div className="mt-24">
-          <h3 className="text-2xl font-bold text-center mb-8 text-gray-900">
-            Moments at Da Di
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {[...Array(6)].map((_, index) => (
-              <div key={index} className="aspect-square rounded-xl overflow-hidden bg-gray-50 border border-gray-100 flex items-center justify-center text-gray-400">
-                <span className="text-xs">Classroom moment {index + 1}</span>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </section>

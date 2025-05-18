@@ -4,6 +4,7 @@ import { ProgrammesSection } from '@/components/sections/programmes/ProgrammesSe
 import { FAQSection } from '@/components/sections/programmes/FAQSection';
 import { ReviewsComponent } from '@/components/shared/ReviewsComponent';
 import { CTABanner } from '@/components/shared/CTABanner';
+import { MomentsGallery } from '@/components/sections/programmes/MomentsGallery';
 
 export const metadata: Metadata = {
   title: 'Our Programmes | Da Di Learning Studio',
@@ -14,6 +15,7 @@ export default function ProgrammesPage() {
   return (
     <main className="min-h-screen bg-white">
       <ProgrammeHero />
+      <MomentsGallery />
       <ProgrammesSection />
       <ReviewsComponent 
         id="reviews"
