@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { ProgrammeHero } from '@/components/sections/programmes/ProgrammeHero';
-import { ProgrammeOverview } from '@/components/sections/programmes/ProgrammeOverview';
+import { MomentsGallery } from '@/components/sections/programmes/MomentsGallery';
 import { ProgrammesSection } from '@/components/sections/programmes/ProgrammesSection';
 import { FAQSection } from '@/components/sections/programmes/FAQSection';
 import { ProgrammeCTA } from '@/components/sections/programmes/ProgrammeCTA';
@@ -14,7 +14,7 @@ export default function ProgrammesPage() {
   return (
     <main className="min-h-screen bg-white">
       <ProgrammeHero />
-      <ProgrammeOverview />
+      <MomentsGallery />
       <ProgrammesSection />
       <FAQSection />
       <ProgrammeCTA />
