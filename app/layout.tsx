@@ -6,6 +6,7 @@ import { Toaster } from '@/components/ui/toaster';
 // import { siteConfig } from '@/config/site';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
+import WhatsAppButton from '@/components/shared/WhatsAppButton';
 
 // Load fonts
 const inter = Inter({
@@ -97,6 +98,7 @@ export default function RootLayout({
           <Navbar />
           {children}
           <Footer />
+          <WhatsAppButton />
           <Toaster />
         </ThemeProvider>
       </body>

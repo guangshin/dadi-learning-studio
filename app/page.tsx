@@ -13,7 +13,6 @@ import Founder from '@/components/sections/Founder';
 import Testimonials from '@/components/sections/Testimonials';
 import MediaFeatures from '@/components/sections/MediaFeatures';
 import Contact from '@/components/sections/Contact';
-import WhatsAppButton from '@/components/shared/WhatsAppButton';
 
 export const metadata: Metadata = {
   title: {
@@ -81,7 +80,6 @@ export default function Home() {
       <Testimonials />
       <MediaFeatures />
       <Contact />
-      <WhatsAppButton />
     </main>
   );
 }

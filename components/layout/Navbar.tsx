@@ -137,12 +137,19 @@ const Navbar = () => {
       </div>
 
       {/* Mobile menu */}
+      {isOpen && (
+        <div className="fixed inset-0 bg-black/50 z-30 md:hidden" onClick={() => setIsOpen(false)}></div>
+      )}
       <div
         className={cn(
           'md:hidden fixed inset-0 bg-white z-40 transform transition-transform duration-300 ease-in-out overflow-y-auto',
           isOpen ? 'translate-x-0' : '-translate-x-full',
           'pt-20 pb-6'
         )}
+        style={{
+          width: '85%',
+          maxWidth: '320px',
+        }}
       >
         <div className="px-4 space-y-1">
           {navLinks.map((link) => (

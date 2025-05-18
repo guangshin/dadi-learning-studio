@@ -1,7 +1,9 @@
 import { Metadata } from 'next';
-import { ProgramIntro } from '@/components/sections/ProgramIntro';
-import { ProgramGrid } from '@/components/sections/ProgramGrid';
-import Testimonials from '@/components/sections/Testimonials';
+import { ProgrammeHero } from '@/components/sections/programmes/ProgrammeHero';
+import { ProgrammeOverview } from '@/components/sections/programmes/ProgrammeOverview';
+import { ProgrammesSection } from '@/components/sections/programmes/ProgrammesSection';
+import { FAQSection } from '@/components/sections/programmes/FAQSection';
+import { ProgrammeCTA } from '@/components/sections/programmes/ProgrammeCTA';
 
 export const metadata: Metadata = {
   title: 'Our Programmes | Da Di Learning Studio',
@@ -10,10 +12,12 @@ export const metadata: Metadata = {
 
 export default function ProgrammesPage() {
   return (
-    <main className="min-h-screen">
-      <ProgramIntro />
-      <ProgramGrid />
-      <Testimonials />
+    <main className="min-h-screen bg-white">
+      <ProgrammeHero />
+      <ProgrammeOverview />
+      <ProgrammesSection />
+      <FAQSection />
+      <ProgrammeCTA />
     </main>
   );
 }
