@@ -35,11 +35,12 @@ export function AboutFounder() {
           <div className="lg:w-1/2 order-1 lg:order-2">
             <div className="relative rounded-2xl overflow-hidden aspect-[3/4] w-full max-w-md mx-auto shadow-xl">
               <Image
-                src="/images/ben-lim.jpg"
+                src="/BenFounder.png"
                 alt="Ben Lim, Founder of Da Di Learning Studio"
                 fill
                 className="object-cover"
                 priority
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>
           </div>

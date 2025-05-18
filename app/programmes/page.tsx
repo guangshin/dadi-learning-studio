@@ -1,9 +1,9 @@
 import { Metadata } from 'next';
 import { ProgrammeHero } from '@/components/sections/programmes/ProgrammeHero';
-import { MomentsGallery } from '@/components/sections/programmes/MomentsGallery';
 import { ProgrammesSection } from '@/components/sections/programmes/ProgrammesSection';
 import { FAQSection } from '@/components/sections/programmes/FAQSection';
-import { ProgrammeCTA } from '@/components/sections/programmes/ProgrammeCTA';
+import { ReviewsComponent } from '@/components/shared/ReviewsComponent';
+import { CTABanner } from '@/components/shared/CTABanner';
 
 export const metadata: Metadata = {
   title: 'Our Programmes | Da Di Learning Studio',
@@ -14,10 +14,22 @@ export default function ProgrammesPage() {
   return (
     <main className="min-h-screen bg-white">
       <ProgrammeHero />
-      <MomentsGallery />
       <ProgrammesSection />
+      <ReviewsComponent 
+        id="reviews"
+        title="What Our Community Says"
+        subtitle="Hear from parents and learners who have experienced the Da Di difference."
+        maxItems={4}
+        variant="dark"
+      />
       <FAQSection />
-      <ProgrammeCTA />
+      <CTABanner
+        title="Still deciding?"
+        subtitle="Let us help you choose the right programme for your needs."
+        buttonText="Book a Free Trial Class"
+        buttonLink="/contact"
+        variant="primary"
+      />
     </main>
   );
 }

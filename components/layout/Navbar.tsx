@@ -24,7 +24,9 @@ const Navbar = () => {
         { name: 'Preschool (Ages 3-6)', href: '/programmes#preschool' },
         { name: 'Primary School (P1-P6)', href: '/programmes#primary' },
         { name: 'Secondary School', href: '/programmes#secondary' },
-        { name: 'Adults', href: '/programmes#adults' },
+        { name: 'Adults', href: '/programmes#adult' },
+        { name: 'Reviews', href: '/programmes#reviews' },
+        { name: 'FAQs', href: '/programmes#faq' },
       ]
     },
     { name: 'Our Philosophy', href: '/philosophy' },

@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-// // import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
 
 import Hero from '@/components/sections/Hero';
@@ -12,7 +11,7 @@ import Programmes from '@/components/sections/Programmes';
 import Founder from '@/components/sections/Founder';
 import Testimonials from '@/components/sections/Testimonials';
 import MediaFeatures from '@/components/sections/MediaFeatures';
-import Contact from '@/components/sections/Contact';
+import { CTABanner } from '@/components/shared/CTABanner';
 
 export const metadata: Metadata = {
   title: {
@@ -79,7 +78,13 @@ export default function Home() {
       <Founder />
       <Testimonials />
       <MediaFeatures />
-      <Contact />
+      <CTABanner
+        title="Ready to Begin Your Child's Mandarin Journey?"
+        subtitle="Experience our unique approach to Chinese enrichment with a free trial class."
+        buttonText="Book a Free Trial"
+        buttonLink="/contact"
+        variant="primary"
+      />
     </main>
   );
 }

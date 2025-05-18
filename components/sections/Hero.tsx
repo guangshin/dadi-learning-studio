@@ -72,7 +72,7 @@ const Hero = () => {
               <Button 
                 variant="outline" 
                 size="lg" 
-                className="text-lg px-8 py-6 border-2 border-foreground/20 hover:bg-accent/10 hover:border-accent/50"
+                className="text-lg px-8 py-6 border-2 border-green-600 hover:bg-green-50 hover:border-green-700 text-green-700 hover:text-green-800 transition-colors"
               >
                 Learn More
               </Button>
@@ -99,34 +99,28 @@ const Hero = () => {
       <motion.div 
         className={cn(
           'absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center',
-          'text-muted-foreground/60 hover:text-foreground/80 transition-colors',
-          'cursor-pointer',
-          'hidden md:flex',
-          'animate-bounce'
+          'transition-opacity duration-300',
+          isVisible ? 'opacity-100' : 'opacity-0'
         )}
-        initial={{ opacity: 0, y: 10 }}
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1 }}
-        onClick={() => {
-          window.scrollTo({
-            top: window.innerHeight,
-            behavior: 'smooth',
-          });
-        }}
+        transition={{ delay: 0.8 }}
       >
-        <span className="text-sm mb-1">Scroll to explore</span>
-        <svg 
-          width="24" 
-          height="24" 
-          viewBox="0 0 24 24" 
-          fill="none" 
-          stroke="currentColor" 
-          strokeWidth="2" 
-          strokeLinecap="round" 
-          strokeLinejoin="round"
-        >
-          <path d="M12 5v14M19 12l-7 7-7-7" />
-        </svg>
+        <span className="text-sm text-muted-foreground mb-2">Scroll to explore</span>
+        <div className="w-6 h-10 border-2 border-muted-foreground/30 rounded-full flex justify-center p-1">
+          <motion.div
+            className="w-1 h-2 bg-muted-foreground/70 rounded-full"
+            animate={{
+              y: [0, 10, 0],
+              opacity: [0.4, 1, 0.4],
+            }}
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              repeatType: 'loop',
+            }}
+          />
+        </div>
       </motion.div>
     </section>
   );

@@ -57,12 +57,38 @@ export function ProgrammesSection() {
       tagline: 'Mandarin Adventures: Building Skills, Growing Confidence',
       summary: 'Primary years are where Mandarin confidence truly takes off. At Da Di, we blend MOE-aligned academics with expressive language practice and emotional awareness — so students grow as both thinkers and communicators.',
       details: [
-        'Whether your child is discovering storytelling in P1 or preparing for PSLE in P6, we teach them how to stay calm, write smart, and speak with joy.',
-        'What to expect:',
-        '• Structured academic support (P1–P6), including writing and oral prep',
-        '• Story-driven lessons that build connection, not just scores',
-        '• Tools for stress management and test clarity',
-        '• Emphasis on mindful learning — not just rote memorisation'
+        'Whether your child is discovering storytelling in P1 or preparing for PSLE in P6, we guide them to stay calm, write smart, and speak with joy — all while building strong Mandarin foundations through play, practice, and mindfulness.',
+        '',
+        'TABS_START',
+        'P1–P3',
+        'P4–P6',
+        'TABS_END'
+      ],
+      tabContentP1P3: [
+        '**Fun with Words, Joy in Learning**',
+        'In the lower primary years, we focus on nurturing a love for the language through fun, games, and expressive communication.',
+        '',
+        '**What to expect:**',
+        '• Strong foundation in all language skills (speaking, listening, reading, writing)',
+        '• Interactive learning through games, songs, and creative storytelling',
+        '• Weekly composition and oral practice',
+        '• Confidence-building roleplay and conversations',
+        '• Gentle mindfulness for better focus',
+        '',
+        'Goal: Help every child look forward to Chinese class and use Mandarin naturally.'
+      ],
+      tabContentP4P6: [
+        '**Power Up for PSLE — With Heart and Skills**',
+        'Upper primary is when academic pressure rises. We provide the strategy, confidence, and skills to excel.',
+        '',
+        '**What to expect:**',
+        '• Master PSLE composition and comprehension techniques',
+        '• Real-world scenarios for practical learning',
+        '• Step-by-step exam strategy guidance',
+        '• Mindfulness to reduce test anxiety',
+        '• Supportive environment for growth',
+        '',
+        'Outcome: Students communicate powerfully and think clearly under pressure.'
       ],
       features: [
         {
@@ -211,8 +237,8 @@ export function ProgrammesSection() {
         
         <div className="space-y-24">
           {programs.map((program, index) => {
-            // Remove testimonial and gallery from individual programs
-            const { testimonial, showGalleryAfter, ...programProps } = program;
+            // Clean up program props by removing unused properties
+            const { testimonial, showGalleryAfter, ...programProps } = program as any;
             // Add ID based on program type
             const programId = programTypes[index] || `program-${index}`;
                             
@@ -224,7 +250,7 @@ export function ProgrammesSection() {
           })}
         </div>
 
-        {/* Moments at Da Di Gallery */}
+        {/* Single instance of Moments at Da Di Gallery */}
         <div className="mt-24">
           <h3 className="text-2xl font-bold text-center mb-8 text-gray-900">
             Moments at Da Di

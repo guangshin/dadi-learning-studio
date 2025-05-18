@@ -8,13 +8,15 @@ interface ProgrammeCardProps {
   tagline: string;
   summary: string;
   details: string[];
-  color: 'green1' | 'green2' | 'green3' | 'yellow';
-  image: string;
-  features?: {
+  features: Array<{
     title: string;
     description: string;
     icon: React.ReactNode;
-  }[];
+  }>;
+  color: 'green1' | 'green2' | 'green3' | 'yellow';
+  image: string;
+  tabContentP1P3?: string[];
+  tabContentP4P6?: string[];
   showGalleryAfter?: boolean;
 }
 
@@ -45,37 +47,123 @@ const colorMap = {
   },
 };
 
-export function ProgrammeCard({ 
-  title, 
-  tagline, 
-  summary, 
-  details, 
-  color, 
-  image,
+export function ProgrammeCard({
+  title,
+  tagline,
+  summary,
+  details,
   features = [],
-  showGalleryAfter = false
+  color = 'green1',
+  image,
+  tabContentP1P3,
+  tabContentP4P6,
+  showGalleryAfter = false,
 }: ProgrammeCardProps) {
   // Details are collapsed by default
   const [isExpanded, setIsExpanded] = useState(false);
   const colors = colorMap[color];
 
-  // Function to render detail items with special handling for the "What to expect" heading
-  const renderDetailItem = (detail: string, index: number) => {
-    if (detail === 'What to expect:') {
+  // State for active tab
+  const [activeTab, setActiveTab] = useState('P1–P3');
+
+  // Function to render tab navigation and content
+  const renderTabs = (details: string[]) => {
+    const tabNames = [];
+    let i = 0;
+    
+    // Find the TABS_START marker
+    while (i < details.length && details[i] !== 'TABS_START') {
+      i++;
+    }
+    
+    // Collect tab names
+    if (i < details.length) {
+      i++; // Skip TABS_START
+      while (i < details.length && details[i] !== 'TABS_END') {
+        tabNames.push(details[i]);
+        i++;
+      }
+    }
+    
+    // Get the active content based on the selected tab
+    const activeContent = activeTab === 'P1–P3' 
+      ? tabContentP1P3 || []
+      : tabContentP4P6 || [];
+    
+    return (
+      <div key="tab-content">
+        <div className="flex border-b border-gray-200 mb-6">
+          {tabNames.map((tabName) => (
+            <button
+              key={tabName}
+              onClick={() => setActiveTab(tabName)}
+              className={`px-4 py-2 font-medium text-sm ${activeTab === tabName
+                ? 'border-b-2 border-primary text-primary'
+                : 'text-gray-500 hover:text-gray-700'}`}
+            >
+              {tabName}
+            </button>
+          ))}
+        </div>
+        
+        <div className="animate-fadeIn">
+          {activeContent.map((content: string, idx: number) => (
+            <div key={idx} className="mb-4">
+              {renderContent(content, idx)}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+  
+  // Function to render detail items
+  const renderDetailItem = (detail: string, index: number, details: string[]) => {
+    // Handle tab navigation
+    if (detail === 'TABS_START') {
+      return renderTabs(details);
+    }
+    
+    // Skip control markers
+    if (detail === 'TABS_END' || detail.startsWith('TAB_CONTENT_')) {
+      return null;
+    }
+    
+    // Regular content rendering
+    return renderContent(detail, index);
+  };
+  
+  // Helper function to render different content types
+  const renderContent = (content: string, index: number) => {
+    // Skip tab names that are shown in the tab navigation
+    if (content === 'P1–P3' || content === 'P4–P6') {
+      return null;
+    }
+    
+    // Handle section headers (text between ** **)
+    if (content.startsWith('**') && content.endsWith('**')) {
+      const text = content.slice(2, -2);
       return (
-        <h4 key={index} className="text-sm font-semibold mt-4 mb-2 text-gray-900">
-          {detail}
-        </h4>
+        <p key={index} className="font-semibold text-gray-900 mt-4 mb-2">
+          {text}
+        </p>
       );
-    } else if (detail.startsWith('• ')) {
+    }
+    // Handle bullet points
+    else if (content.startsWith('• ')) {
       return (
-        <li key={index} className="flex items-start">
+        <li key={index} className="flex items-start mb-2">
           <span className={`${colors.text} mr-2 mt-1`}>•</span>
-          <span>{detail.substring(2)}</span>
+          <span className="text-gray-800">{content.substring(2)}</span>
         </li>
       );
     }
-    return <p key={index} className="mb-3">{detail}</p>;
+    // Handle regular paragraphs
+      return (
+      <p key={index} className="text-gray-700 mb-4 leading-relaxed">
+        {content}
+      </p>
+    );
   };
 
   return (
@@ -138,7 +226,7 @@ export function ProgrammeCard({
             <div className="mt-6 pt-6 border-t border-gray-100">
               <h3 className="text-sm font-semibold mb-3 text-gray-900">Programme Details</h3>
               <div className="space-y-3 text-sm text-gray-700">
-                {details.map((detail, index) => renderDetailItem(detail, index))}
+                {details.map((detail, index) => renderDetailItem(detail, index, details))}
               </div>
             </div>
           )}

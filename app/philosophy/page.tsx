@@ -3,7 +3,7 @@ import { PhilosophyHero } from '@/components/sections/philosophy/PhilosophyHero'
 import { PillarsOverview } from '@/components/sections/philosophy/PillarsOverview';
 import { PillarDetail } from '@/components/sections/philosophy/PillarDetail';
 import { StillnessSection } from '@/components/sections/philosophy/StillnessSection';
-import { PhilosophyCTA } from '@/components/sections/philosophy/PhilosophyCTA';
+import { CTABanner } from '@/components/shared/CTABanner';
 
 export const metadata: Metadata = {
   title: 'Our Philosophy | Da Di Learning Studio',
@@ -55,7 +55,13 @@ export default function PhilosophyPage() {
       <StillnessSection />
       
       {/* Final CTA */}
-      <PhilosophyCTA />
+      <CTABanner
+        title="Experience Our Philosophy Firsthand"
+        subtitle="Book a trial class to see how our unique approach can benefit your child's Mandarin learning journey."
+        buttonText="Book a Free Trial Class"
+        buttonLink="/contact"
+        variant="primary"
+      />
     </main>
   );
 }

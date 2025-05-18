@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 import ProgrammeCard from '../shared/ProgrammeCard';
 import { BabyIcon, RocketIcon, TargetIcon, UserIcon, BookOpen, Users, MessageSquare, Activity } from 'lucide-react';
 import { motion, useInView } from 'framer-motion';
@@ -104,18 +105,14 @@ const Programmes = () => {
                   </div>
                 </div>
                 <div className="px-6 pb-6 pt-2">
-                  <Button 
-                    className="w-full" 
-                    style={{ backgroundColor: program.color, color: program.title === 'Preschool' ? '#333' : 'white' }}
-                    onClick={() => {
-                      const contactSection = document.getElementById('contact');
-                      if (contactSection) {
-                        contactSection.scrollIntoView({ behavior: 'smooth' });
-                      }
-                    }}
-                  >
-                    Learn More
-                  </Button>
+                  <Link href={`/programmes#${program.title.toLowerCase().replace(/\s+/g, '')}`}>
+                    <Button 
+                      className="w-full" 
+                      style={{ backgroundColor: program.color, color: program.title === 'Preschool' ? '#333' : 'white' }}
+                    >
+                      Learn More
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </motion.div>

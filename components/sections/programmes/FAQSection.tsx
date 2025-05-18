@@ -224,41 +224,47 @@ export function FAQSection() {
   };
 
   return (
-    <section className="py-16 bg-[#FAF9F6]">
+    <section id="faq" className="bg-gray-50 py-16 scroll-mt-24">
       <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
-            <p className="text-lg text-gray-600">
-              Find answers to common questions about learning Mandarin at Da Di
-            </p>
-          </div>
-          
-          <div className="space-y-4">
-            {faqs.map((faq, index) => (
-              <div key={index} className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 hover:shadow-md transition-shadow">
-                <button
-                  className="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none hover:bg-gray-50 transition-colors"
-                  onClick={() => toggleFAQ(index)}
-                >
-                  <span className="text-base md:text-lg font-medium text-gray-900 text-left pr-4">{faq.question}</span>
-                  {openIndex === index ? (
-                    <Minus className="text-gray-500 flex-shrink-0 ml-2" size={20} />
-                  ) : (
-                    <Plus className="text-gray-500 flex-shrink-0 ml-2" size={20} />
-                  )}
-                </button>
-                
-                <div 
-                  className={`px-6 pb-6 pt-0 transition-all duration-300 ${openIndex === index ? 'block' : 'hidden'}`}
-                >
-                  <div className="text-gray-600 leading-relaxed space-y-3">
-                    {faq.answer}
-                  </div>
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-3xl font-bold text-center text-gray-900 mb-4">
+            Frequently Asked Questions
+          </h2>
+          <p className="text-lg text-gray-600 text-center mb-12">
+            Find answers to common questions about learning Mandarin at Da Di
+          </p>
+        </div>
+        
+        <div className="space-y-4">
+          {faqs.map((faq, index) => (
+            <div key={index} className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 hover:shadow-md transition-shadow">
+              <button
+                className="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none hover:bg-gray-50 transition-colors"
+                onClick={() => toggleFAQ(index)}
+                aria-expanded={openIndex === index}
+                aria-controls={`faq-${index}`}
+              >
+                <span className="text-base md:text-lg font-medium text-gray-900 text-left pr-4">
+                  {faq.question}
+                </span>
+                {openIndex === index ? (
+                  <Minus className="text-gray-500 flex-shrink-0 ml-2" size={20} />
+                ) : (
+                  <Plus className="text-gray-500 flex-shrink-0 ml-2" size={20} />
+                )}
+              </button>
+              
+              <div 
+                id={`faq-${index}`}
+                className={`px-6 pb-6 pt-0 transition-all duration-300 ${openIndex === index ? 'block' : 'hidden'}`}
+                aria-hidden={openIndex !== index}
+              >
+                <div className="text-gray-600 leading-relaxed space-y-3">
+                  {faq.answer}
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

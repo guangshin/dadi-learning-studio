@@ -6,7 +6,7 @@ import { WhyDaDi as WhyDaDiComponent } from '@/components/sections/WhyDaDi';
 import { PhilosophyPillarsGrid } from '@/components/sections/PhilosophyPillarsGrid';
 import { AboutTeam } from '@/components/sections/AboutTeam';
 import { ConfuciusQuote } from '@/components/sections/ConfuciusQuote';
-import { AboutCTA as AboutCTASection } from '@/components/sections/AboutCTA';
+import { CTABanner } from '@/components/shared/CTABanner';
 import { ArrowRight } from 'lucide-react';
 
 export const metadata: Metadata = {
@@ -20,32 +20,32 @@ function WhyDaDi() {
       <div className="container mx-auto px-4 max-w-4xl">
         <div className="mb-12">
           <blockquote className="text-2xl md:text-3xl font-semibold text-accent bg-accent/10 rounded-xl p-8 mb-8 shadow-sm">
-            “Learning Chinese should be a joyful, mindful, and life-enriching experience — not just a race for grades.”
+            "Learning Chinese should be a joyful, mindful, and life-enriching experience — not just a race for grades."
           </blockquote>
           <h2 className="text-3xl font-bold text-text mb-6">Why We Exist</h2>
           <p className="text-lg text-foreground/80 mb-6">
             At Da Di, we believe learning Chinese is like opening a treasure chest — full of stories, wisdom, and golden opportunities.
           </p>
           <p className="text-lg text-foreground/80 mb-6">
-            But in today’s world, with distractions everywhere, many children find it hard to focus — and even harder to love the language.
+            But in today's world, with distractions everywhere, many children find it hard to focus — and even harder to love the language.
           </p>
           <p className="text-lg text-foreground/80 mb-6">
             Traditional Chinese classes often turn into drill, memorize, repeat. The joy disappears.
           </p>
           <p className="text-lg text-foreground/80 mb-6">
-            That’s why we do things differently.
+            That's why we do things differently.
           </p>
           <p className="text-lg text-foreground/80 mb-6">
             We teach Mandarin through real conversations, meaningful stories, guided stillness, and mindful listening.
           </p>
           <p className="text-lg text-foreground/80 mb-6">
-            Our students don’t just prepare for exams — they learn to connect.
+            Our students don't just prepare for exams — they learn to connect.
           </p>
           <p className="text-lg text-foreground/80 mb-6">
-            Because Mandarin isn’t just a subject. It’s a life skill — a way to express, to belong, to thrive.
+            Because Mandarin isn't just a subject. It's a life skill — a way to express, to belong, to thrive.
           </p>
           <blockquote className="mt-10 p-6 bg-accent/10 rounded-xl text-xl text-accent italic border-l-4 border-accent">
-            “学而时习之，不亦说乎？”<br/>
+            "学而时习之，不亦说乎？"<br/>
             <span className="block mt-2 text-base text-foreground/70">Is it not a joy to learn and to practice what you have learned?<br/>— Confucius</span>
           </blockquote>
         </div>
@@ -108,7 +108,13 @@ export default function AboutPage() {
       <ConfuciusQuote />
 
       {/* CTA Section */}
-      <AboutCTASection />
+      <CTABanner
+        title="Inspired by our story?"
+        subtitle="Reach out to learn how Da Di's philosophy can support your child's journey."
+        buttonText="Contact Us"
+        buttonLink="/contact"
+        variant="primary"
+      />
     </main>
   );
 }
