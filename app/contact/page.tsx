@@ -173,6 +173,32 @@ const ContactPage = () => {
                 </div>
               </div>
 
+              {/* Book a Trial Section */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                <h2 className="text-2xl font-semibold mb-6 text-gray-900">Book a Trial Class</h2>
+                <div className="space-y-6">
+                  <p className="text-gray-700">
+                    Ready to experience our teaching style? Book a free 30-minute trial class with us!
+                  </p>
+                  <div className="pt-2">
+                    <a
+                      href="https://calendly.com/tanguangshin/30min"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium text-white bg-[#4C9A2A] border border-transparent rounded-md shadow-sm hover:bg-[#3e7e22] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4C9A2A] transition-colors"
+                    >
+                      <svg className="w-5 h-5 mr-2 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+                      </svg>
+                      Book a Free Trial
+                    </a>
+                  </div>
+                  <p className="text-sm text-gray-500">
+                    After booking, you'll receive a confirmation email with the class details.
+                  </p>
+                </div>
+              </div>
+
               {/* Our Locations Section */}
               <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
                 <h2 className="text-2xl font-semibold mb-6 text-gray-900">Our Location(s)</h2>

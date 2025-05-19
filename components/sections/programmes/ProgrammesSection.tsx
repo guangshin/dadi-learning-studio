@@ -1,12 +1,46 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { ProgrammeCard } from './ProgrammeCard';
 import { BookOpen, Users, MessageSquare, Activity, Heart, BookMarked, GraduationCap, Globe, Music, Palette, Users2, Star, BookText, School, Award, Brain, BookKey, BookUser, BookCheck, BookOpenCheck, Edit3, Sun, PenTool, FileText, Briefcase } from 'lucide-react';
+import { fetchAllProgrammeImages } from '@/lib/fetchImageAsset';
+
+interface ProgrammeImages {
+  'preschool'?: string;
+  'primary-school'?: string;
+  'secondary-school'?: string;
+  'adult'?: string;
+}
 
 export function ProgrammesSection() {
+  const [images, setImages] = useState<ProgrammeImages>({});
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadImages = async () => {
+      try {
+        console.log('Fetching programme images...');
+        const imageAssets = await fetchAllProgrammeImages();
+        console.log('Fetched images:', imageAssets);
+        setImages(imageAssets);
+      } catch (error) {
+        console.error('Error loading programme images:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadImages();
+  }, []);
+  
+  // Debug log when images state changes
+  useEffect(() => {
+    console.log('Images state updated:', images);
+  }, [images]);
   const programs = [
     {
       title: 'Preschool Chinese Programme',
+      image: images['preschool'] || '/images/programmes/preschool.jpg',
       tagline: 'Mandarin Magic: Growing Confident Little Communicators',
       summary: 'Da Di\'s preschool learners don\'t just memorise — they explore, express, and grow. We create a nurturing environment where children build a joyful relationship with Mandarin from day one.',
       details: [
@@ -49,11 +83,11 @@ export function ProgrammesSection() {
           icon: <BookMarked className="w-3 h-3" />
         }
       ],
-      color: 'green1' as const,
-      image: '/images/preschool.jpg'
+      color: 'green1' as const
     },
     {
       title: 'Primary School Chinese Programme',
+      image: images['primary-school'] || '/images/programmes/primary.jpg',
       tagline: 'Mandarin Adventures: Building Skills, Growing Confidence',
       summary: 'Primary years are where Mandarin confidence truly takes off. At Da Di, we blend MOE-aligned academics with expressive language practice and emotional awareness — so students grow as both thinkers and communicators.',
       details: [
@@ -122,11 +156,11 @@ export function ProgrammesSection() {
           icon: <Sun className="w-3 h-3" />
         }
       ],
-      color: 'green2' as const,
-      image: '/images/primary.jpg'
+      color: 'green2' as const
     },
     {
       title: 'Secondary School Chinese Programme',
+      image: images['secondary-school'] || '/images/programmes/secondary.jpg',
       tagline: 'Master Mandarin: Speak Well, Think Deep, Shine Bright',
       summary: 'Mandarin at the secondary level becomes a bridge — to culture, to career, and to self-expression. We equip teens with the tools to write clearly, speak thoughtfully, and approach the O-Level syllabus with purpose and confidence.',
       details: [
@@ -169,11 +203,11 @@ export function ProgrammesSection() {
           icon: <Brain className="w-3 h-3" />
         }
       ],
-      color: 'green3' as const,
-      image: '/images/secondary.jpg'
+      color: 'green3' as const
     },
     {
       title: 'Adult Chinese Programme',
+      image: images['adult'] || '/images/programmes/adult.jpg',
       tagline: 'Mandarin for Life: Connect, Communicate, and Grow',
       summary: 'Da Di Communicators is designed for adults from all walks of life — working professionals, expats, or heritage learners — who want to use Mandarin in real life.',
       details: [
@@ -217,8 +251,7 @@ export function ProgrammesSection() {
           icon: <Award className="w-3 h-3" />
         }
       ],
-      color: 'yellow' as const,
-      image: '/images/adult.jpg'
+      color: 'yellow' as const
     }
   ];
 

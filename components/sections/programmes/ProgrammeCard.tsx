@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
 interface ProgrammeCardProps {
@@ -215,10 +216,15 @@ export function ProgrammeCard({
               </button>
             </div>
             
-            <div className="w-full md:w-5/12 lg:w-4/12 h-48 md:h-56 rounded-lg overflow-hidden">
-              <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400 text-xs">
-                <span>Image: {title}</span>
-              </div>
+            <div className="w-full md:w-5/12 lg:w-4/12 h-48 md:h-56 rounded-lg overflow-hidden relative bg-gray-100">
+              <Image
+                src={image || '/images/placeholder.svg'}
+                alt={title}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                priority={false}
+              />
             </div>
           </div>
           
