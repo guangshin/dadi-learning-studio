@@ -20,6 +20,19 @@ const Navbar = () => {
     setIsOpen(false);
   }, [pathname]);
 
+  // Force body overflow hidden when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
   const navLinks = [
     { name: 'About', href: '/about' },
     { 
@@ -143,25 +156,26 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile menu, separate overlay and drawer for better control */}
-      <div
+      {/* Mobile menu overlay - high z-index, outside normal document flow */}
+      <div 
+        aria-hidden={!isOpen}
         className={cn(
-          "fixed inset-0 bg-black/50 z-30 md:hidden transition-all duration-300",
-          isOpen ? "opacity-100 visible" : "opacity-0 invisible"
+          "fixed inset-0 bg-black/50 transition-opacity duration-300 md:hidden", 
+          isOpen ? "opacity-100 visible z-[998]" : "opacity-0 invisible -z-10"
         )}
         onClick={() => setIsOpen(false)}
       />
-
-      {/* Mobile menu drawer - completely separate from overlay */}
+      
+      {/* Mobile menu drawer - highest z-index */}
       <div
+        aria-hidden={!isOpen}
         className={cn(
-          "md:hidden fixed top-0 left-0 bottom-0 w-[85%] max-w-[320px] bg-white z-40 transform transition-transform duration-300 ease-in-out pt-20 pb-6 overflow-y-auto shadow-xl",
+          "fixed top-0 left-0 bottom-0 w-[85%] max-w-[320px] bg-white md:hidden overflow-y-auto",
+          "shadow-xl transition-transform duration-300 ease-in-out pt-20 pb-6 z-[999]",
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
-        style={{
-          // Force hardware acceleration & prevent layout issues during animations
+        style={{ 
           willChange: "transform",
-          backfaceVisibility: "hidden",
         }}
       >
         <div className="px-4 space-y-1">

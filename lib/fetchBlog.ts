@@ -20,46 +20,131 @@ export type BlogPost = z.infer<typeof BlogPostSchema>;
 
 /**
  * Fetches all published blog posts from the CMS
+ * Uses a fallback mechanism to try direct Plasmic API if internal API fails
  */
 export async function fetchAllBlogPosts(): Promise<BlogPost[]> {
   try {
-    console.log('Fetching all blog posts...');
+    console.log('[fetchAllBlogPosts] Starting fetch operation...');
+    
+    // Try the internal API first
+    console.log('[fetchAllBlogPosts] Trying internal API...');
     const url = `${getBaseUrl()}/api/cms`;
-    console.log('Fetching from URL:', url);
+    console.log('[fetchAllBlogPosts] Fetching from internal URL:', url);
     
-    const response = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        collection: "blog",
-        where: { published: true },
-        orderBy: { date: 'desc' },
-      }),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('CMS API Error:', {
-        status: response.status,
-        statusText: response.statusText,
-        error: errorText
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        cache: 'no-store',
+        headers: { 
+          "Content-Type": "application/json",
+          "Cache-Control": "no-cache"
+        },
+        body: JSON.stringify({
+          collection: "blog",
+          where: { published: true },
+          orderBy: { date: 'desc' },
+        }),
       });
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
 
-    const data = await response.json();
-    console.log('Raw blog posts response:', data);
+      if (response.ok) {
+        const data = await response.json();
+        console.log(`[fetchAllBlogPosts] Successfully fetched ${data?.rows?.length || 0} blog posts via internal API`);
+        
+        // Process the data and return
+        return processAndFormatBlogPosts(data);
+      } else {
+        const contentType = response.headers.get('content-type') || '';
+        let errorDetail = '';
+        
+        try {
+          errorDetail = await response.text();
+        } catch (err) {
+          errorDetail = String(err);
+        }
+        
+        console.error('[fetchAllBlogPosts] Internal API Error:', {
+          status: response.status,
+          statusText: response.statusText,
+          contentType,
+          error: errorDetail
+        });
+        
+        throw new Error(`Internal API error: ${response.status}`);
+      }
+    } catch (internalApiError) {
+      console.error('[fetchAllBlogPosts] Failed with internal API, trying direct Plasmic API...', internalApiError);
+      
+      // Try direct Plasmic API as fallback
+      // Fetch directly from Plasmic
+      const CMS_ID = process.env.PLASMIC_PROJECT_ID;
+      const PUBLIC_TOKEN = process.env.NEXT_PUBLIC_PLASMIC_API_TOKEN;
+      
+      if (!CMS_ID || !PUBLIC_TOKEN) {
+        console.error('[fetchAllBlogPosts] Missing required Plasmic environment variables');
+        return [];
+      }
+      
+      const queryObj = { published: true };
+      const query = '?q=' + encodeURIComponent(JSON.stringify(queryObj));
+      const plasmicUrl = `https://data.plasmic.app/api/v1/cms/databases/${CMS_ID}/tables/blog/query${query}`;
+      
+      console.log('[fetchAllBlogPosts] Trying direct Plasmic API:', plasmicUrl);
+      
+      const authToken = `${CMS_ID}:${PUBLIC_TOKEN}`;
+      const directResponse = await fetch(plasmicUrl, {
+        method: 'GET',
+        headers: {
+          'x-plasmic-api-cms-tokens': authToken,
+        },
+        cache: 'no-store',
+      });
+      
+      if (!directResponse.ok) {
+        console.error('[fetchAllBlogPosts] Direct Plasmic API also failed:', {
+          status: directResponse.status,
+          statusText: directResponse.statusText,
+        });
+        return [];
+      }
+      
+      const directData = await directResponse.json();
+      console.log(`[fetchAllBlogPosts] Successfully fetched ${directData?.rows?.length || 0} blog posts via direct Plasmic API`);
+      
+      // Process the data and return
+      return processAndFormatBlogPosts(directData);
+    }
+  } catch (error) {
+    console.error('[fetchAllBlogPosts] Critical error fetching blog posts:', error);
+    return [];
+  }
+}
+
+/**
+ * Helper function to process and format raw blog posts data from CMS
+ */
+function processAndFormatBlogPosts(data: any): BlogPost[] {
+  try {
+    if (!data || (!data.rows && !Array.isArray(data))) {
+      console.error('[processAndFormatBlogPosts] Invalid data format:', data);
+      return [];
+    }
     
-    // Handle API response structure (rows array or direct array)
-    const items = Array.isArray(data) ? data : (data.rows || []);
+    // Handle different data formats from Plasmic or our internal API
+    const items = data.rows || data;
     
-    // Map and validate each blog post
-    const blogPosts = items.map((item: any) => {
+    if (!Array.isArray(items) || items.length === 0) {
+      console.log('[processAndFormatBlogPosts] No blog posts found');
+      return [];
+    }
+    
+    console.log(`[processAndFormatBlogPosts] Processing ${items.length} blog posts`);
+    
+    // Map the items to our blog post schema
+    const posts = items.map((item: any) => {
       const post = item.data || item;
       
-      // Handle coverImage which could be in different formats based on CMS
+      // Handle different coverImage formats
       let coverImage = undefined;
-      
       if (post.coverImage) {
         if (typeof post.coverImage === 'object' && post.coverImage.url) {
           coverImage = post.coverImage;
@@ -68,26 +153,30 @@ export async function fetchAllBlogPosts(): Promise<BlogPost[]> {
         }
       }
       
-      // Format the post data to match our schema
-      const formattedPost = {
+      // Create a blog post object conforming to our schema
+      const blogPost: BlogPost = {
         id: post.id || item.id,
-        title: post.title,
-        slug: post.slug,
-        author: post.author,
-        date: post.date,
+        title: post.title || 'Untitled Blog Post',
+        slug: post.slug || '',
+        author: post.author || 'Da Di Learning Studio',
+        date: post.date || new Date().toISOString(),
         coverImage,
-        content: post.content,
-        published: post.published !== undefined ? post.published : true
+        content: post.content || '',
+        published: post.published !== false, // Default to published unless explicitly false
       };
       
-      // Validate with Zod schema
-      return BlogPostSchema.parse(formattedPost);
-    }).filter(Boolean);
+      try {
+        // Validate using the schema
+        return BlogPostSchema.parse(blogPost);
+      } catch (validationError) {
+        console.error(`[processAndFormatBlogPosts] Validation error for post ${blogPost.slug}:`, validationError);
+        return null;
+      }
+    }).filter(Boolean) as BlogPost[];
     
-    console.log(`Fetched ${blogPosts.length} blog posts`);
-    return blogPosts;
+    return posts;
   } catch (error) {
-    console.error('Error fetching blog posts:', error);
+    console.error('[processAndFormatBlogPosts] Error processing blog posts:', error);
     return [];
   }
 }

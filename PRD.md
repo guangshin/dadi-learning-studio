@@ -153,9 +153,8 @@ class Program {
 ## 6. Outstanding Bugs / Risks
 
 - Performance optimization for animations
-- Form submission handling
-- CMS integration for blog
-- Mobile responsiveness testing
+- Form submission handling 
+- Ongoing monitoring of Plasmic CMS integration
 
 ## 7. Changelog
 
