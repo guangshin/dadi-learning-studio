@@ -33,7 +33,7 @@ export async function POST(request: Request) {
     const requestBody = await request.json();
     console.log('Request body:', JSON.stringify(requestBody, null, 2));
     
-    const { collection, filters } = requestBody;
+    const { collection, filters, limit } = requestBody;
     
     if (!collection) {
       throw new Error('Collection name is required');
@@ -48,12 +48,15 @@ export async function POST(request: Request) {
     if (!PUBLIC_TOKEN) throw new Error('Missing NEXT_PUBLIC_PLASMIC_API_TOKEN (public token)');
     
     // Build query string for limit/filter if needed
-    let query = '';
+    let queryObj: any = {};
     if (filters && typeof filters === 'object' && Object.keys(filters).length > 0) {
-      query = '?q=' + encodeURIComponent(JSON.stringify(filters));
-    } else {
-      query = '?q=' + encodeURIComponent(JSON.stringify({ limit: 1 }));
+      queryObj = { ...filters };
     }
+    if (limit) {
+      queryObj.limit = limit;
+    }
+    // If no limit is specified, fetch all (do not set limit)
+    const query = '?q=' + encodeURIComponent(JSON.stringify(queryObj));
     const url = `https://data.plasmic.app/api/v1/cms/databases/${CMS_ID}/tables/${collection}/query${query}`;
     
     console.log('Making request to Plasmic CMS API...');
