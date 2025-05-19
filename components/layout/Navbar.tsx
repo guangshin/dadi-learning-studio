@@ -76,16 +76,20 @@ const Navbar = () => {
   };
 
   return (
-    <nav
-      className={cn(
-        'fixed w-full z-50 transition-all duration-300',
-        isScrolled || !isHome ? 'bg-background/95 backdrop-blur-sm shadow-sm py-2' : 'bg-transparent py-4'
-      )}
-    >
-      <div className="container mx-auto px-4 flex justify-between items-center">
-        <Link href="/" className="flex items-center gap-2 no-underline hover:no-underline">
-          <Logo height={40} className="text-foreground" />
-        </Link>
+    <nav className={cn(
+      'fixed top-0 left-0 right-0 w-full transition-all duration-300',
+      isScrolled || !isHome ? 'bg-white shadow-sm' : 'bg-transparent',
+      'z-50' // Consistent z-index for the nav container
+    )}>
+      <div className={cn(
+        "flex items-center justify-between px-4 py-3 md:py-4 max-w-7xl mx-auto relative",
+        isScrolled || !isHome || isOpen ? 'bg-white' : 'bg-transparent'
+      )}>
+        <div className="flex-shrink-0">
+          <Link href="/" className="flex items-center">
+            <Logo className="h-10 w-auto" />
+          </Link>
+        </div>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-6">
@@ -156,26 +160,27 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile menu overlay - high z-index, outside normal document flow */}
-      <div 
-        aria-hidden={!isOpen}
-        className={cn(
-          "fixed inset-0 bg-black/50 transition-opacity duration-300 md:hidden", 
-          isOpen ? "opacity-100 visible z-[998]" : "opacity-0 invisible -z-10"
-        )}
-        onClick={() => setIsOpen(false)}
-      />
+      {/* Mobile menu overlay - outside normal document flow */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 transition-opacity duration-300 md:hidden z-[100]"
+          onClick={() => setIsOpen(false)}
+          style={{ pointerEvents: 'auto' }}
+        />
+      )}
       
-      {/* Mobile menu drawer - highest z-index */}
+      {/* Mobile menu drawer - should appear on top of everything */}
       <div
-        aria-hidden={!isOpen}
         className={cn(
-          "fixed top-0 left-0 bottom-0 w-[85%] max-w-[320px] bg-white md:hidden overflow-y-auto",
-          "shadow-xl transition-transform duration-300 ease-in-out pt-20 pb-6 z-[999]",
+          "fixed top-0 left-0 bottom-0 w-[85%] max-w-[320px] bg-white md:hidden",
+          "shadow-xl transition-transform duration-300 ease-in-out pb-6",
+          "z-[110] overflow-y-auto", // Extremely high z-index to ensure visibility
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
         style={{ 
           willChange: "transform",
+          paddingTop: "5rem", // Increased padding to make sure content is below the header
+          display: isOpen ? 'block' : 'none' // Use display to entirely hide when closed
         }}
       >
         <div className="px-4 space-y-1">
