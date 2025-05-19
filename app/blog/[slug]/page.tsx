@@ -1,157 +1,216 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { format } from 'date-fns';
+import { Metadata } from 'next';
+import { fetchBlogPostBySlug } from '@/lib/fetchBlog';
+import { processImageUrl, extractTextFromHtml, calculateReadTime } from '@/lib/clientUtils';
+import Link from 'next/link';
 
-// This would normally fetch from a CMS
+// Fallback placeholder image
+const PLACEHOLDER_IMAGE = '/images/placeholder.svg';
+
+// Fetch a post by slug from the CMS
 async function getPost(slug: string) {
-  // In a real app, you would fetch this from your CMS
-  const posts = [
-    {
-      id: '1',
-      slug: '5-fun-ways-to-practice-mandarin',
-      title: '5 Fun Ways to Practice Mandarin with Your Child',
-      content: `
-        <p>Learning Mandarin can be a fun and rewarding experience for children when approached in the right way. Here are five engaging activities to make language learning enjoyable for your little ones at home:</p>
-        
-        <h2>1. Sing-Along Sessions</h2>
-        <p>Children love music, and singing is a fantastic way to learn new words and phrases. Create a playlist of popular Chinese children's songs and have regular sing-along sessions. Encourage your child to mimic the pronunciation and actions.</p>
-        
-        <h2>2. Story Time with Props</h2>
-        <p>Use props and visual aids when reading Chinese storybooks. Point to pictures and name objects in Mandarin. Ask simple questions about the story to encourage comprehension and speaking practice.</p>
-        
-        <h2>3. Label Your Home</h2>
-        <p>Create colorful labels for everyday items around your home with their Chinese names. This visual reinforcement helps with character recognition and vocabulary building.</p>
-        
-        <h2>4. Cooking Together</h2>
-        <p>Prepare simple Chinese dishes together while naming ingredients and cooking actions in Mandarin. This multisensory approach makes learning more memorable.</p>
-        
-        <h2>5. Language Games</h2>
-        <p>Incorporate Mandarin into board games or create simple matching games with Chinese characters and pictures. Make it a fun family activity!</p>
-        
-        <p>Remember, the key is to keep it light, fun, and pressure-free. Celebrate small victories and make language learning a natural part of your child's daily routine.</p>
-      `,
-      excerpt: 'Discover engaging activities to make Mandarin learning enjoyable for your little ones at home.',
-      date: '2025-05-10',
-      category: 'Parenting Tips',
-      image: '/images/blog/practice-mandarin.jpg',
-      readTime: '5 min read',
-      author: {
-        name: 'Li Wei',
-        role: 'Lead Preschool Educator',
-        image: '/images/team/li-wei.jpg',
-      },
-    },
-  ];
-
-  return posts.find((post) => post.slug === slug) || null;
+  try {
+    const post = await fetchBlogPostBySlug(slug);
+    
+    // Return null if not found or not published
+    if (!post || !post.published) {
+      return null;
+    }
+    
+    return post;
+  } catch (error) {
+    console.error(`Error fetching blog post with slug ${slug}:`, error);
+    return null;
+  }
 }
 
 export async function generateStaticParams() {
-  // Return all slugs for static generation
-  return [
-    { slug: '5-fun-ways-to-practice-mandarin' }
-  ];
+  try {
+    // This would typically fetch all slugs from your CMS
+    // For demo purposes, we'll return our predefined set
+    return [
+      { slug: '5-fun-ways-to-practice-mandarin' },
+      { slug: 'importance-of-early-language-learning' },
+      { slug: 'cultural-insights-mid-autumn-festival' },
+      { slug: 'overcoming-fear-of-speaking-mandarin' },
+      { slug: 'role-of-calligraphy-in-chinese-culture' },
+      { slug: 'preparing-for-psle-chinese' }
+    ];
+  } catch (error) {
+    console.error('Error generating static params:', error);
+    return [];
+  }
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const post = await getPost(params.slug);
   
   if (!post) {
     return {
       title: 'Post Not Found',
+      description: 'The requested blog post could not be found',
     };
   }
 
+  // Create a content excerpt using utility function
+  const contentExcerpt = extractTextFromHtml(post.content, 160);
+
   return {
     title: `${post.title} | Da Di Learning Studio Blog`,
-    description: post.excerpt,
+    description: contentExcerpt,
     openGraph: {
       title: post.title,
-      description: post.excerpt,
-      images: [post.image],
+      description: contentExcerpt,
       type: 'article',
       publishedTime: post.date,
-      authors: [post.author.name],
+      images: post.coverImage ? [{
+        url: post.coverImage.url,
+        alt: post.coverImage.alt || post.title,
+      }] : [],
+    },
+    alternates: {
+      canonical: `https://dadi-learning-studio.vercel.app/blog/${post.slug}`,
     },
   };
 }
 
 export default async function BlogPost({ params }: { params: { slug: string } }) {
   const post = await getPost(params.slug);
-
+  
   if (!post) {
     notFound();
   }
 
+  // Format the date
+  const formattedDate = format(new Date(post.date), 'MMMM d, yyyy');
+  
+  // Calculate estimated read time using utility function
+  const readTime = calculateReadTime(post.content);
+  
+  // Determine category based on title content
+  const category = post.title.toLowerCase().includes('mandarin') 
+    ? 'Mandarin' 
+    : post.title.toLowerCase().includes('chinese') 
+      ? 'Chinese' 
+      : 'Education';
+  
+  // Process the image URL to ensure it's valid
+  const imageUrl = processImageUrl(post.coverImage?.url, PLACEHOLDER_IMAGE);
+
   return (
-    <article className="max-w-4xl mx-auto px-4 py-12">
-      <div className="mb-8">
-        <span className="inline-block px-3 py-1 text-sm font-medium rounded-full bg-accent/10 text-accent mb-4">
-          {post.category}
-        </span>
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-          {post.title}
-        </h1>
-        <div className="flex items-center text-gray-500 text-sm">
-          <time dateTime={post.date} className="mr-4">
-            {format(new Date(post.date), 'MMMM d, yyyy')}
-          </time>
-          <span>{post.readTime}</span>
+    <main className="min-h-screen bg-[#f8f9fa] pt-28 pb-16">
+      {/* Hero Image Section */}
+      <div className="w-full mb-8 relative">
+        <div className="relative h-[40vh] md:h-[50vh] w-full max-h-[600px] overflow-hidden">
+          <Image
+            src={imageUrl}
+            alt={post.title}
+            fill
+            className="object-cover"
+            priority
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-black/20"></div>
         </div>
       </div>
-
-      <div className="relative h-96 w-full rounded-xl overflow-hidden mb-8">
-        <Image
-          src={post.image}
-          alt={post.title}
-          fill
-          className="object-cover"
-          priority
-        />
-      </div>
-
-      <div className="prose prose-accent max-w-none">
-        <div dangerouslySetInnerHTML={{ __html: post.content }} />
-      </div>
-
-      <div className="mt-12 pt-8 border-t border-gray-200">
-        <div className="flex items-center">
-          <div className="h-16 w-16 rounded-full overflow-hidden mr-4">
-            <Image
-              src={post.author.image}
-              alt={post.author.name}
-              width={64}
-              height={64}
-              className="h-full w-full object-cover"
-            />
+      
+      <div className="container mx-auto px-4 relative">
+        {/* Title Card - Positioned to overlap with hero image */}
+        <div className="max-w-3xl mx-auto -mt-20 bg-white rounded-2xl p-8 shadow-md border border-gray-100 mb-10">
+          <div className="text-center">
+            <h1 className="text-3xl md:text-4xl font-bold mb-6 text-gray-800 leading-tight">
+              {post.title}
+            </h1>
+            <div className="flex items-center justify-center text-gray-500 text-sm mb-3">
+              <span className="font-medium">By {post.author}</span>
+              <span className="mx-2">·</span>
+              <time dateTime={post.date} className="italic">
+                {formattedDate}
+              </time>
+            </div>
+            
+            <span className="inline-block bg-[#4C9A2A]/10 text-[#4C9A2A] px-3 py-1 rounded-full text-xs font-medium">
+              {category}
+            </span>
           </div>
-          <div>
-            <h3 className="text-lg font-medium text-gray-900">{post.author.name}</h3>
-            <p className="text-gray-500">{post.author.role}</p>
+        </div>
+
+        <div className="flex flex-col lg:flex-row gap-8 max-w-6xl mx-auto">
+          {/* Main Content */}
+          <div className="lg:w-3/4">
+            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+              {/* Content */}
+              <div 
+                className="prose prose-lg max-w-none text-gray-700 prose-headings:text-gray-800 prose-headings:font-bold prose-a:text-[#4C9A2A] prose-a:no-underline hover:prose-a:underline prose-img:rounded-lg prose-strong:text-[#4C9A2A]/90 prose-headings:leading-relaxed prose-p:leading-relaxed prose-li:leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: post.content }}
+              />
+            </div>
+          </div>
+          
+          {/* Sidebar - Sticky on desktop */}
+          <div className="lg:w-1/4">
+            <div className="lg:sticky lg:top-32">
+              <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6">
+                <div className="flex flex-col">
+                  <h3 className="font-bold text-gray-800 mb-3 text-lg">About the Author</h3>
+                  <div className="flex items-center mb-4">
+                    <div className="w-12 h-12 bg-[#4C9A2A]/20 rounded-full flex items-center justify-center text-[#4C9A2A] font-bold mr-3">
+                      {post.author.charAt(0)}
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-800">{post.author}</p>
+                      <p className="text-sm text-[#4C9A2A]/80">Da Di Learning Studio</p>
+                    </div>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-4">
+                    Passionate about making Mandarin learning enjoyable and effective for students of all ages.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                <h3 className="font-bold text-gray-800 mb-3 text-lg">Explore More</h3>
+                <Link 
+                  href="/blog"
+                  className="flex items-center justify-center w-full px-4 py-3 bg-[#4C9A2A] hover:bg-[#3e7e22] text-white font-medium rounded-lg transition-colors mb-3"
+                >
+                  Back to Blog
+                </Link>
+                <Link 
+                  href="/contact"
+                  className="flex items-center justify-center w-full px-4 py-3 bg-[#F0F7E6] hover:bg-[#E0EDD1] text-[#4C9A2A] font-medium rounded-lg transition-colors"
+                >
+                  Book a Trial Class
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Bottom CTA */}
+        <div className="max-w-4xl mx-auto mt-16 bg-[#F0F7E6] rounded-2xl p-8 shadow-sm border border-[#4C9A2A]/10 text-center">
+          <h3 className="text-2xl font-bold text-gray-800 mb-4">Enjoyed this article?</h3>
+          <p className="text-lg text-gray-700 mb-6">
+            Explore more ways Da Di brings Mandarin to life.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link 
+              href="/blog"
+              className="px-6 py-3 bg-white hover:bg-gray-50 text-[#4C9A2A] font-medium rounded-lg transition-colors border border-[#4C9A2A]/20 shadow-sm"
+            >
+              Read More Articles
+            </Link>
+            <Link 
+              href="/contact"
+              className="px-6 py-3 bg-[#4C9A2A] hover:bg-[#3e7e22] text-white font-medium rounded-lg transition-colors shadow-sm"
+            >
+              Book a Trial Class
+            </Link>
           </div>
         </div>
       </div>
-
-      <div className="mt-12 pt-8 border-t border-gray-200">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Read Next</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* You would map through related posts here */}
-          <div className="p-6 bg-gray-50 rounded-lg">
-            <h3 className="text-lg font-medium text-gray-900 mb-2">The Importance of Early Language Learning</h3>
-            <p className="text-gray-600 line-clamp-2">Research shows that early exposure to a second language has numerous cognitive benefits for children.</p>
-            <a href="/blog/early-language-learning" className="mt-3 inline-flex items-center text-sm font-medium text-accent hover:text-accent">
-              Read more <span className="ml-1">→</span>
-            </a>
-          </div>
-          <div className="p-6 bg-gray-50 rounded-lg">
-            <h3 className="text-lg font-medium text-gray-900 mb-2">Cultural Insights: Mid-Autumn Festival</h3>
-            <p className="text-gray-600 line-clamp-2">Learn about the traditions and stories behind one of the most important Chinese festivals.</p>
-            <a href="/blog/mid-autumn-festival" className="mt-3 inline-flex items-center text-sm font-medium text-accent hover:text-accent">
-              Read more <span className="ml-1">→</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </article>
+    </main>
   );
 }

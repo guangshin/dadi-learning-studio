@@ -8,9 +8,9 @@ export const metadata: Metadata = {
 
 export default function BlogPage() {
   return (
-    <main className="min-h-screen py-12">
+    <main className="min-h-screen py-12 pt-24">
       <div className="container mx-auto px-4">
-        <h1 className="text-4xl font-bold text-text text-center mb-12">Insights & Articles</h1>
+        <h1 className="text-4xl font-bold text-text text-center mb-16">Insights & Articles</h1>
         <BlogList />
       </div>
     </main>

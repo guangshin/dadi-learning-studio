@@ -1,3 +1,5 @@
+import { getBaseUrl, processImageUrl } from './clientUtils';
+
 interface ImageAsset {
   id: string;
   key: string;
@@ -16,7 +18,8 @@ interface ImageAsset {
 
 export async function fetchImageAsset(key: string): Promise<string | null> {
   try {
-    const response = await fetch("/api/cms", {
+    const url = `${getBaseUrl()}/api/cms`;
+    const response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -48,7 +51,8 @@ export async function fetchImageAsset(key: string): Promise<string | null> {
 export async function fetchAllProgrammeImages() {
   console.log('Starting to fetch all programme images...');
   try {
-    const response = await fetch("/api/cms", {
+    const url = `${getBaseUrl()}/api/cms`;
+    const response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

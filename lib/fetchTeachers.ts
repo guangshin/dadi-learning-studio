@@ -1,3 +1,5 @@
+import { getBaseUrl, processImageUrl } from './clientUtils';
+
 // Types for Teacher data
 export interface Teacher {
   id: string;
@@ -34,7 +36,8 @@ interface TeachersResponse {
  */
 export async function fetchTeachers(page = 1, limit = 10): Promise<{ teachers: Teacher[]; total?: number }> {
   try {
-    const response = await fetch("/api/cms", {
+    const url = `${getBaseUrl()}/api/cms`;
+    const response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

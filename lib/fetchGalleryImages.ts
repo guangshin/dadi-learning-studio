@@ -1,6 +1,9 @@
+import { getBaseUrl, processImageUrl } from './clientUtils';
+
 // Fetch all images from the 'Gallery' collection in Plasmic CMS via your API route
 export async function fetchGalleryImages() {
-  const response = await fetch('/api/cms', {
+  const url = `${getBaseUrl()}/api/cms`;
+  const response = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ collection: 'gallery', filters: { limit: 100 } })
