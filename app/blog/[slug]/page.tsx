@@ -3,33 +3,59 @@ import Image from 'next/image';
 import { format } from 'date-fns';
 import { Metadata } from 'next';
 import { fetchBlogPostBySlug } from '@/lib/fetchBlog';
+import { fetchBlogPostDirectFromPlasmic } from '@/lib/plasmicDirectApi';
 import { processImageUrl, extractTextFromHtml, calculateReadTime } from '@/lib/clientUtils';
 import Link from 'next/link';
 
 // Fallback placeholder image
 const PLACEHOLDER_IMAGE = '/images/placeholder.svg';
 
-// Fetch a post by slug from the CMS
+// Fetch a post by slug from the CMS with fallback to direct Plasmic API
 async function getPost(slug: string) {
+  console.log(`[getPost] Starting to fetch blog post with slug: ${slug}`);
+  
   try {
-    const post = await fetchBlogPostBySlug(slug);
+    // First attempt: Try internal API
+    console.log(`[getPost] Trying internal API first...`);
+    let post = await fetchBlogPostBySlug(slug).catch(err => {
+      console.error(`[getPost] Error with internal API:`, err);
+      return null;
+    });
+    
+    // If internal API fails, try direct Plasmic API
+    if (!post) {
+      console.log(`[getPost] Internal API failed or returned no post, trying direct Plasmic API...`);
+      post = await fetchBlogPostDirectFromPlasmic(slug).catch(err => {
+        console.error(`[getPost] Error with direct Plasmic API:`, err);
+        return null;
+      });
+      
+      if (post) {
+        console.log(`[getPost] Successfully retrieved post via direct Plasmic API`);
+      }
+    } else {
+      console.log(`[getPost] Successfully retrieved post via internal API`);
+    }
     
     // Return null if not found or not published
     if (!post || !post.published) {
+      console.log(`[getPost] No published post found with slug: ${slug}`);
       return null;
     }
     
     return post;
   } catch (error) {
-    console.error(`Error fetching blog post with slug ${slug}:`, error);
+    console.error(`[getPost] Error fetching blog post with slug ${slug}:`, error);
     return null;
   }
 }
 
-// Set to dynamic rendering to fix issues with 404s on deployment
+// Force dynamic rendering to fix issues with 404s on deployment
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
+export const revalidate = 0;
 
-// We've removed generateStaticParams to allow dynamic rendering of all blog posts
+// We're using fully dynamic rendering to handle all blog posts
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const post = await getPost(params.slug);

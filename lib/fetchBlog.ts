@@ -98,12 +98,24 @@ export async function fetchAllBlogPosts(): Promise<BlogPost[]> {
 export async function fetchBlogPostBySlug(slug: string): Promise<BlogPost | null> {
   try {
     console.log(`Fetching blog post with slug: ${slug}`);
-    const url = `${getBaseUrl()}/api/cms`;
+    
+    // Try direct API connection to Plasmic if possible (more reliable in production)
+    const directApiEnabled = process.env.NEXT_PUBLIC_USE_DIRECT_PLASMIC_API === 'true';
+    
+    // Get URL based on environment
+    const baseUrl = getBaseUrl();
+    const url = `${baseUrl}/api/cms`;
     console.log('Fetching from URL:', url);
+    console.log('Environment:', process.env.NODE_ENV);
+    console.log('Using direct API?', directApiEnabled);
     
     const response = await fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      cache: 'no-store', // Ensure we don't get cached responses
+      headers: { 
+        "Content-Type": "application/json",
+        "Cache-Control": "no-cache"
+      },
       body: JSON.stringify({
         collection: "blog",
         where: { slug },
@@ -111,18 +123,32 @@ export async function fetchBlogPostBySlug(slug: string): Promise<BlogPost | null
       }),
     });
 
+    // Enhanced error handling
     if (!response.ok) {
-      const errorText = await response.text();
+      const contentType = response.headers.get('content-type') || '';
+      let errorDetail;
+      
+      if (contentType.includes('application/json')) {
+        // If the response is JSON, parse it
+        errorDetail = await response.json();
+      } else {
+        // Otherwise, get the text
+        const errorText = await response.text();
+        errorDetail = { text: errorText };
+      }
+      
       console.error('CMS API Error:', {
         status: response.status,
         statusText: response.statusText,
-        error: errorText
+        contentType,
+        error: errorDetail
       });
-      throw new Error(`HTTP error! status: ${response.status}`);
+      
+      throw new Error(`HTTP error! status: ${response.status} - Content type: ${contentType}`);
     }
 
     const data = await response.json();
-    console.log('Raw blog post response:', data);
+    console.log('Raw blog post response:', typeof data === 'object' ? 'Valid JSON object' : typeof data);
     
     // Handle API response structure
     const items = Array.isArray(data) ? data : (data.rows || []);
