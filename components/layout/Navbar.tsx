@@ -15,6 +15,11 @@ const Navbar = () => {
   const pathname = usePathname();
   const isHome = pathname === '/';
 
+  // Close mobile menu on page navigation
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
   const navLinks = [
     { name: 'About', href: '/about' },
     { 
@@ -77,7 +82,7 @@ const Navbar = () => {
                 href={link.href}
                 className={cn(
                   'flex items-center gap-1 py-2 px-3 rounded-md text-sm font-medium transition-colors',
-                  pathname === link.href || pathname.startsWith(link.href + '/')
+                  pathname === link.href || (pathname && pathname.startsWith(link.href + '/'))
                     ? 'text-primary' 
                     : 'text-foreground hover:text-primary hover:bg-primary/10'
                 )}
@@ -138,20 +143,21 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile menu */}
-      {isOpen && (
-        <div className="fixed inset-0 bg-black/50 z-30 md:hidden" onClick={() => setIsOpen(false)}></div>
-      )}
+      {/* Mobile menu and overlay */}
+      <div 
+        className={cn(
+          "fixed inset-0 bg-black/50 z-30 md:hidden transition-opacity duration-300",
+          isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        )}
+        onClick={() => setIsOpen(false)}
+      />
+      
+      {/* Mobile menu drawer */}
       <div
         className={cn(
-          'md:hidden fixed inset-0 bg-white z-40 transform transition-transform duration-300 ease-in-out overflow-y-auto',
-          isOpen ? 'translate-x-0' : '-translate-x-full',
-          'pt-20 pb-6'
+          "md:hidden fixed top-0 left-0 bottom-0 w-[85%] max-w-[320px] bg-white z-40 transform transition-transform duration-300 pt-20 pb-6 overflow-y-auto", 
+          isOpen ? "translate-x-0" : "-translate-x-full"
         )}
-        style={{
-          width: '85%',
-          maxWidth: '320px',
-        }}
       >
         <div className="px-4 space-y-1">
           {navLinks.map((link) => (
@@ -160,7 +166,7 @@ const Navbar = () => {
                 href={link.href}
                 className={cn(
                   'block px-3 py-3 text-base font-medium rounded-md transition-colors',
-                  pathname === link.href || pathname.startsWith(link.href + '/')
+                  pathname === link.href || (pathname && pathname.startsWith(link.href + '/'))
                     ? 'text-primary' 
                     : 'text-foreground hover:text-primary hover:bg-primary/10'
                 )}
@@ -192,9 +198,8 @@ const Navbar = () => {
           <Button 
             asChild
             className="w-full bg-primary hover:bg-primary/90 text-white"
-            onClick={() => setIsOpen(false)}
           >
-            <Link href="/contact">
+            <Link href="/contact" onClick={() => setIsOpen(false)}>
               Book a Trial
             </Link>
           </Button>
