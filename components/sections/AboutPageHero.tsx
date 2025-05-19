@@ -2,28 +2,36 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { fetchImagesByKey } from '@/lib/fetchPlasmicImages';
+
+type ImageData = {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+};
+
+type ImagesByKey = {
+  [key: string]: ImageData;
+};
 
 export function AboutPageHero() {
-  const [image, setImage] = useState<{ src: string; alt: string } | null>(null);
+  const [image, setImage] = useState<ImageData>({
+    src: '/images/classroom.jpg',
+    alt: 'Da Di Learning Studio classroom',
+    width: 800,
+    height: 600
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchImage = async () => {
       try {
-        const response = await fetch('/api/cms', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            collection: 'imageAsset', 
-            filters: { key: 'about-hero' } 
-          })
-        });
-        const data = await response.json();
-        if (data?.data?.[0]?.data?.image?.url) {
-          setImage({
-            src: data.data[0].data.image.url,
-            alt: data.data[0].data.alt || 'Da Di Learning Studio classroom'
-          });
+        setLoading(true);
+        const images: ImagesByKey = await fetchImagesByKey(['about-hero']);
+        const imageKey = 'about-hero';
+        if (images && images[imageKey]?.src) {
+          setImage(images[imageKey]);
         }
       } catch (error) {
         console.error('Error fetching hero image:', error);
@@ -40,29 +48,18 @@ export function AboutPageHero() {
         <div className="flex flex-col lg:flex-row items-center gap-12">
           <div className="lg:w-1/2">
             <div className="relative rounded-2xl overflow-hidden aspect-video">
-              {/* Fallback image */}
-              <div className={`absolute inset-0 transition-opacity duration-500 ${!loading && !image ? 'opacity-100' : 'opacity-0'}`}>
+              {!loading ? (
                 <Image
-                  src="/images/classroom.jpg"
-                  alt="Da Di Learning Studio classroom"
-                  fill
-                  className="object-cover"
+                  src={image.src}
+                  alt={image.alt}
+                  width={image.width}
+                  height={image.height}
+                  className="object-cover w-full h-full"
                   priority
+                  unoptimized={image.src.startsWith('http')}
                 />
-              </div>
-              
-              {/* CMS Image */}
-              {!loading && image?.src && (
-                <div className="absolute inset-0 transition-opacity duration-500">
-                  <Image
-                    src={image.src}
-                    alt={image.alt}
-                    fill
-                    className="object-cover"
-                    priority
-                    unoptimized
-                  />
-                </div>
+              ) : (
+                <div className="w-full h-full bg-gray-100 animate-pulse"></div>
               )}
               
               {/* Skeleton loader */}

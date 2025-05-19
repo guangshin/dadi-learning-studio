@@ -1,74 +1,171 @@
-import Image from 'next/image';
+'use client';
 
-interface TeamMember {
-  name: string;
-  role: string;
-  quote: string;
-  image: string;
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import { Button } from '@/components/ui/button';
+import { fetchTeachers, Teacher } from '@/lib/fetchTeachers';
+import { Skeleton } from '@/components/ui/skeleton';
+
+interface AboutTeamProps {
+  title?: string;
+  description?: string;
 }
 
-const teamMembers: TeamMember[] = [
-  {
-    name: 'Li Wei',
-    role: 'Lead Mandarin Educator',
-    quote: 'I teach so children feel brave using Mandarin.',
-    image: '/images/team/li-wei.jpg'
-  },
-  {
-    name: 'Mei Ling',
-    role: 'Early Years Specialist',
-    quote: "Every child's first Mandarin words are magical moments.",
-    image: '/images/team/mei-ling.jpg'
-  },
-  {
-    name: 'Jia Hao',
-    role: 'Primary Program Coordinator',
-    quote: 'Building confidence through storytelling and play.',
-    image: '/images/team/jia-hao.jpg'
-  },
-  {
-    name: 'Xiao Ying',
-    role: 'Mindfulness & Mandarin Coach',
-    quote: 'Language learning begins with presence and patience.',
-    image: '/images/team/xiao-ying.jpg'
+export function AboutTeam({ 
+  title = 'Meet Our Educators', 
+  description = 'Our team of passionate educators is dedicated to providing the best learning experience for your child.' 
+}: AboutTeamProps) {
+  const [teachers, setTeachers] = useState<Teacher[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [showAll, setShowAll] = useState(false);
+  const itemsToShow = 3; // Default number of items to show initially
+
+  useEffect(() => {
+    const loadTeachers = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        
+        // Fetch all teachers (up to 100)
+        const { teachers } = await fetchTeachers(1, 100);
+        
+        if (Array.isArray(teachers)) {
+          setTeachers(teachers);
+        } else {
+          setError('Invalid data format received');
+        }
+      } catch (err) {
+        console.error('Failed to fetch teachers:', err);
+        setError('Failed to load teachers. Please try again later.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadTeachers();
+  }, []);
+
+  // Determine which teachers to show based on showAll state
+  const teachersToShow = showAll ? teachers : teachers.slice(0, itemsToShow);
+
+  // Only show the View More button if there are more teachers to show
+  const showViewMoreButton = teachers.length > itemsToShow;
+
+  if (isLoading) {
+    return (
+      <section className="py-16 md:py-24 lg:py-28 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">{title}</h2>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">{description}</p>
+          </div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="bg-white rounded-2xl overflow-hidden shadow-sm">
+                <Skeleton className="h-64 w-full" />
+                <div className="p-6">
+                  <Skeleton className="h-6 w-3/4 mb-2" />
+                  <Skeleton className="h-5 w-1/2 mb-3" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-5/6 mt-2" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
   }
-];
 
-export function AboutTeam() {
+  if (error) {
+    return (
+      <section className="py-16 md:py-24 lg:py-28 bg-gray-50">
+        <div className="container mx-auto px-4 text-center">
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg inline-block">
+            {error}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section className="py-20 bg-background">
-      <div className="container mx-auto px-4 max-w-6xl">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Meet Our Educators
-          </h2>
-          <p className="text-xl text-foreground/80 max-w-3xl mx-auto">
-            At Da Di, our educators are mentors — not just instructors. They guide students with warmth, presence, and purpose.
-          </p>
+    <section className="py-16 md:py-24 lg:py-28 bg-gray-50">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">{title}</h2>
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">{description}</p>
         </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {teamMembers.map((member, index) => (
-            <div 
-              key={index}
-              className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300"
-            >
-              <div className="relative h-64 w-full">
-                <Image
-                  src={member.image}
-                  alt={`${member.name}, ${member.role}`}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-foreground">{member.name}</h3>
-                <p className="text-primary font-medium mb-3">{member.role}</p>
-                <p className="text-foreground/80 italic">"{member.quote}"</p>
-              </div>
+        
+        {teachers.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground">No educators found.</p>
+          </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {teachersToShow.map((teacher) => (
+                <div
+                  key={teacher.id}
+                  className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col h-full"
+                >
+                  <div className="relative h-64 w-full bg-gray-100 overflow-hidden">
+                    {(!teacher.photo || teacher.photo.endsWith('.svg')) ? (
+                      <img
+                        src={teacher.photo || '/images/placeholder-teacher.svg'}
+                        alt={teacher.imageAlt || `${teacher.name || 'Teacher'}`}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.onerror = null;
+                          target.src = '/images/placeholder-teacher.svg';
+                        }}
+                      />
+                    ) : (
+                      <Image
+                        src={teacher.photo}
+                        alt={teacher.imageAlt || `${teacher.name || 'Teacher'}`}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        priority={false}
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.onerror = null;
+                          target.src = '/images/placeholder-teacher.svg';
+                        }}
+                      />
+                    )}
+                  </div>
+                  <div className="p-6 flex-1 flex flex-col">
+                    <h3 className="text-xl font-bold text-foreground">{teacher.name}</h3>
+                    <p className="text-primary font-medium mb-3">{teacher.role}</p>
+                    {teacher.role !== teacher.description && (
+                      <p className="text-muted-foreground mb-4 flex-1">
+                        {teacher.description}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+            
+            {showViewMoreButton && (
+              <div className="mt-10 text-center">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onClick={() => setShowAll(!showAll)}
+                  className="px-8 py-2 text-base font-medium"
+                >
+                  {showAll ? 'View Less' : 'View More'}
+                </Button>
+              </div>
+            )}
+          </>
+        )}
       </div>
     </section>
   );
