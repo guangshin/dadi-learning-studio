@@ -159,11 +159,11 @@ class Program {
 ## 7. Changelog
 
 ### 2025-05-20
-- **Blog and Mobile Navigation Fixes**
-  - Fixed 404 errors for `/blog/[slug]` pages in Vercel deployments
-  - Improved blog post fetching with redundant fallback mechanism
-  - Enhanced static generation with dynamic fallback for blog posts
-  - Fixed mobile navigation menu issues with improved z-index management
+- Enhanced blog post fetching with direct Plasmic API fallback
+- Improved `/blog/[slug]` page handling with dynamic routing
+- Completely overhauled mobile navigation with proper z-index management and display handling
+- Fixed Logo link styling to ensure black text and no underline on hover
+- Added improved error handling for Plasmic API responses
   - Enhanced error handling and diagnostics for CMS data fetching
   - Added automatic detection and recovery for API failures
   - Improved client-side experience with better state management during navigation

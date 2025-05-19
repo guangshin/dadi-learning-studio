@@ -86,7 +86,10 @@ const Navbar = () => {
         isScrolled || !isHome || isOpen ? 'bg-white' : 'bg-transparent'
       )}>
         <div className="flex-shrink-0">
-          <Link href="/" className="flex items-center">
+          <Link 
+            href="/" 
+            className="flex items-center no-underline hover:no-underline text-black"
+          >
             <Logo className="h-10 w-auto" />
           </Link>
         </div>
