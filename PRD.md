@@ -158,6 +158,16 @@ class Program {
 
 ## 7. Changelog
 
+### 2025-05-20
+- **Blog and Mobile Navigation Fixes**
+  - Fixed 404 errors for `/blog/[slug]` pages in Vercel deployments
+  - Improved blog post fetching with redundant fallback mechanism
+  - Enhanced static generation with dynamic fallback for blog posts
+  - Fixed mobile navigation menu issues with improved z-index management
+  - Enhanced error handling and diagnostics for CMS data fetching
+  - Added automatic detection and recovery for API failures
+  - Improved client-side experience with better state management during navigation
+
 ### 2025-05-18
 - **Contact Page Redesign**
   - Implemented new two-column layout with location cards and contact form

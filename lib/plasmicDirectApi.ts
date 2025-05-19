@@ -60,7 +60,16 @@ export async function fetchBlogPostDirectFromPlasmic(slug: string): Promise<Blog
       return null;
     }
     
-    const post = data.rows[0];
+    // Get actual post data from Plasmic response
+    const plasmicPost = data.rows[0];
+    const post = plasmicPost.data || plasmicPost;
+    
+    console.log('Raw post from Plasmic:', post);
+    
+    if (!post) {
+      console.error('Invalid post data format from Plasmic');
+      return null;
+    }
     
     // Handle coverImage which could be in different formats
     let coverImage = undefined;
@@ -72,21 +81,33 @@ export async function fetchBlogPostDirectFromPlasmic(slug: string): Promise<Blog
       }
     }
     
-    // Format the post data to match our schema
+    // Generate fallback values for required fields
+    const generatedId = plasmicPost.id || `post-${Date.now()}`;
+    const generatedTitle = post.title || 'Untitled Blog Post';
+    const generatedSlug = post.slug || slug; // Use the requested slug as fallback
+    
+    // Format the post data to match our schema with fallbacks for all required fields
     const formattedPost = {
-      id: post.id,
-      title: post.title,
-      slug: post.slug,
+      id: generatedId,
+      title: generatedTitle,
+      slug: generatedSlug,
       author: post.author || 'Da Di Learning Studio',
       date: post.date || new Date().toISOString(),
-      coverImage,
-      content: post.content || '',
+      coverImage: coverImage || { url: '/images/placeholder.svg' },
+      content: post.content || '<p>Content coming soon</p>',
       published: post.published !== false, // Default to published unless explicitly false
     };
     
-    // Validate using the schema
-    const validatedPost = BlogPostSchema.parse(formattedPost);
-    return validatedPost;
+    console.log('Formatted post before validation:', formattedPost);
+    
+    try {
+      // Validate using the schema
+      const validatedPost = BlogPostSchema.parse(formattedPost);
+      return validatedPost;
+    } catch (validationError) {
+      console.error('Validation error for post:', validationError);
+      return null;
+    }
     
   } catch (error) {
     console.error('Error fetching blog post directly from Plasmic:', error);
