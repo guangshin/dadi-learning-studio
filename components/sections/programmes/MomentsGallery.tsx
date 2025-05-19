@@ -10,55 +10,36 @@ type ImageItem = {
   height: number;
 };
 
-// Sample images - replace with your actual image paths
-const galleryImages: ImageItem[] = [
-  {
-    src: '/images/gallery/classroom-1.jpg',
-    alt: 'Students engaged in a classroom activity',
-    width: 400,
-    height: 300,
-  },
-  {
-    src: '/images/gallery/activity-1.jpg',
-    alt: 'Children participating in a learning game',
-    width: 400,
-    height: 300,
-  },
-  {
-    src: '/images/gallery/classroom-2.jpg',
-    alt: 'Teacher working with small group',
-    width: 400,
-    height: 300,
-  },
-  {
-    src: '/images/gallery/activity-2.jpg',
-    alt: 'Students presenting their work',
-    width: 400,
-    height: 300,
-  },
-  {
-    src: '/images/gallery/classroom-3.jpg',
-    alt: 'Interactive learning session',
-    width: 400,
-    height: 300,
-  },
-  {
-    src: '/images/gallery/activity-3.jpg',
-    alt: 'Group activity in progress',
-    width: 400,
-    height: 300,
-  },
-  {
-    src: '/images/gallery/classroom-4.jpg',
-    alt: 'Students working on projects',
-    width: 400,
-    height: 300,
-  },
-];
+import { fetchGalleryImages } from '@/lib/fetchGalleryImages';
+
+// Remove static galleryImages
+
 
 export function MomentsGallery() {
+  const [galleryImages, setGalleryImages] = useState<ImageItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [isPaused, setIsPaused] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    setLoading(true);
+    fetchGalleryImages()
+      .then(images => {
+        if (mounted) {
+          setGalleryImages(images);
+          setLoading(false);
+          console.log('Fetched gallery images:', images);
+        }
+      })
+      .catch(e => {
+        setError(e.message || 'Failed to load gallery');
+        setLoading(false);
+      });
+    return () => { mounted = false; };
+  }, []);
+
   const scrollInterval = useRef<NodeJS.Timeout>();
 
   // Duplicate the images for infinite scroll effect
@@ -97,6 +78,21 @@ export function MomentsGallery() {
   return (
     <section className="py-16 bg-[#FAF9F6]">
       <div className="container mx-auto px-4">
+        {loading && (
+          <div className="flex space-x-6 mb-8 animate-pulse">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div
+                key={i}
+                className="flex-shrink-0 w-64 md:w-80 h-48 md:h-64 rounded-lg overflow-hidden bg-gray-200 relative"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-shimmer" style={{backgroundSize: '200% 100%'}} />
+              </div>
+            ))}
+          </div>
+        )}
+        {error && (
+          <div className="text-center text-red-500 mb-6">{error}</div>
+        )}
         <div className="max-w-4xl mx-auto text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">Moments at Da Di</h2>
           <p className="text-gray-600 mb-8">
@@ -113,8 +109,6 @@ export function MomentsGallery() {
         <div 
           ref={containerRef}
           className="flex overflow-x-auto no-scrollbar pb-8 -mx-4 md:-mx-8 px-4 md:px-8"
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
         >
           <div className="flex space-x-6">
             {duplicatedImages.map((image, index) => (
@@ -123,19 +117,20 @@ export function MomentsGallery() {
                 className="flex-shrink-0 w-64 md:w-80 h-48 md:h-64 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 hover:scale-[1.02]"
               >
                 <div className="relative w-full h-full bg-gray-100">
-                  {/* Replace with your actual Image component */}
-                  <div className="w-full h-full flex items-center justify-center text-gray-400">
-                    {image.alt}
-                  </div>
-                  {/* Uncomment when you have actual images */}
-                  {/* <Image
-                    src={image.src}
-                    alt={image.alt}
-                    width={image.width}
-                    height={image.height}
-                    className="w-full h-full object-cover"
-                    priority={index < 4} // Only prioritize first few images
-                  /> */}
+                  {image.src ? (
+                    <Image
+                      src={image.src}
+                      alt={image.alt}
+                      width={image.width}
+                      height={image.height}
+                      className="w-full h-full object-cover"
+                      priority={index < 4}
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-gray-400">
+                      {image.alt}
+                    </div>
+                  )}
                 </div>
               </div>
             ))}

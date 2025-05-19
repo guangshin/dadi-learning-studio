@@ -1,14 +1,15 @@
-import { Metadata } from 'next';
-import { ProgrammeHero } from '@/components/sections/programmes/ProgrammeHero';
-import { ProgrammesSection } from '@/components/sections/programmes/ProgrammesSection';
-import { FAQSection } from '@/components/sections/programmes/FAQSection';
-import { ReviewsComponent } from '@/components/shared/ReviewsComponent';
-import { CTABanner } from '@/components/shared/CTABanner';
-import { MomentsGallery } from '@/components/sections/programmes/MomentsGallery';
+import { Metadata } from "next";
+import { ProgrammeHero } from "@/components/sections/programmes/ProgrammeHero";
+import { ProgrammesSection } from "@/components/sections/programmes/ProgrammesSection";
+import { FAQSection } from "@/components/sections/programmes/FAQSection";
+import { ReviewsComponent } from "@/components/shared/ReviewsComponent";
+import { CTABanner } from "@/components/shared/CTABanner";
+import { MomentsGallery } from "@/components/sections/programmes/MomentsGallery";
 
 export const metadata: Metadata = {
-  title: 'Our Programmes | Da Di Learning Studio',
-  description: 'Explore our range of Mandarin programmes designed for all ages - from preschoolers to adults. Discover the perfect learning path for you or your child.',
+  title: "Our Programmes | Da Di Learning Studio",
+  description:
+    "Explore our range of Mandarin programmes designed for all ages - from preschoolers to adults. Discover the perfect learning path for you or your child.",
 };
 
 export default function ProgrammesPage() {
@@ -17,7 +18,7 @@ export default function ProgrammesPage() {
       <ProgrammeHero />
       <MomentsGallery />
       <ProgrammesSection />
-      <ReviewsComponent 
+      <ReviewsComponent
         id="reviews"
         title="What Our Community Says"
         subtitle="Hear from parents and learners who have experienced the Da Di difference."

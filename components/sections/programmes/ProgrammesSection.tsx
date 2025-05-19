@@ -1,7 +1,7 @@
 'use client';
 
 import { ProgrammeCard } from './ProgrammeCard';
-import { BookOpen, Users, MessageSquare, Activity, Heart, BookMarked, GraduationCap, Globe, Music, Palette, Users2, Star } from 'lucide-react';
+import { BookOpen, Users, MessageSquare, Activity, Heart, BookMarked, GraduationCap, Globe, Music, Palette, Users2, Star, BookText, School, Award, Brain, BookKey, BookUser, BookCheck, BookOpenCheck, Edit3, Sun, PenTool, FileText, Briefcase } from 'lucide-react';
 
 export function ProgrammesSection() {
   const programs = [
@@ -36,7 +36,7 @@ export function ProgrammesSection() {
         {
           title: 'Mindfulness',
           description: 'Short exercises to improve focus and emotional regulation',
-          icon: <Activity className="w-3 h-3" />
+          icon: <Brain className="w-3 h-3" />
         },
         {
           title: 'Phonics & Sounds',
@@ -99,27 +99,27 @@ export function ProgrammesSection() {
         {
           title: 'Exam Preparation',
           description: 'Focused practice for PSLE success',
-          icon: <BookOpen className="w-3 h-3" />
+          icon: <BookCheck className="w-3 h-3" />
         },
         {
           title: 'Interactive Learning',
           description: 'Engaging activities that make learning fun',
-          icon: <Users className="w-3 h-3" />
+          icon: <Users2 className="w-3 h-3" />
         },
         {
           title: 'Writing Skills',
           description: 'Step-by-step composition guidance',
-          icon: <MessageSquare className="w-3 h-3" />
+          icon: <Edit3 className="w-3 h-3" />
         },
         {
           title: 'Oral Excellence',
           description: 'Confidence-building speaking practice',
-          icon: <Activity className="w-3 h-3" />
+          icon: <Brain className="w-3 h-3" />
         },
         {
           title: 'Mindfulness',
           description: 'Techniques to reduce test anxiety',
-          icon: <Heart className="w-3 h-3" />
+          icon: <Sun className="w-3 h-3" />
         }
       ],
       color: 'green2' as const,
@@ -141,22 +141,22 @@ export function ProgrammesSection() {
         {
           title: 'Exam Excellence',
           description: 'Targeted O-Level preparation',
-          icon: <Star className="w-3 h-3" />
+          icon: <Award className="w-3 h-3" />
         },
         {
           title: 'Critical Thinking',
           description: 'Analysis of texts and media',
-          icon: <MessageSquare className="w-3 h-3" />
+          icon: <Edit3 className="w-3 h-3" />
         },
         {
           title: 'Debate & Discussion',
           description: 'Confident expression of ideas',
-          icon: <Users className="w-3 h-3" />
+          icon: <Users2 className="w-3 h-3" />
         },
         {
           title: 'Academic Writing',
           description: 'Structured essay composition',
-          icon: <BookOpen className="w-3 h-3" />
+          icon: <BookCheck className="w-3 h-3" />
         },
         {
           title: 'Business Chinese',
@@ -166,7 +166,7 @@ export function ProgrammesSection() {
         {
           title: 'Stress Management',
           description: 'Mindfulness for exam success',
-          icon: <Activity className="w-3 h-3" />
+          icon: <Brain className="w-3 h-3" />
         }
       ],
       color: 'green3' as const,
@@ -189,12 +189,12 @@ export function ProgrammesSection() {
         {
           title: 'Conversational Focus',
           description: 'Real-life speaking practice',
-          icon: <MessageSquare className="w-3 h-3" />
+          icon: <Edit3 className="w-3 h-3" />
         },
         {
           title: 'Business Chinese',
           description: 'Workplace communication skills',
-          icon: <Users className="w-3 h-3" />
+          icon: <Users2 className="w-3 h-3" />
         },
         {
           title: 'Cultural Insights',
@@ -204,7 +204,7 @@ export function ProgrammesSection() {
         {
           title: 'Flexible Learning',
           description: 'Tailored to your schedule',
-          icon: <Activity className="w-3 h-3" />
+          icon: <Brain className="w-3 h-3" />
         },
         {
           title: 'Practical Skills',
@@ -214,7 +214,7 @@ export function ProgrammesSection() {
         {
           title: 'Confidence Building',
           description: 'Supportive learning environment',
-          icon: <Star className="w-3 h-3" />
+          icon: <Award className="w-3 h-3" />
         }
       ],
       color: 'yellow' as const,
