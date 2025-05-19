@@ -26,23 +26,10 @@ async function getPost(slug: string) {
   }
 }
 
-export async function generateStaticParams() {
-  try {
-    // This would typically fetch all slugs from your CMS
-    // For demo purposes, we'll return our predefined set
-    return [
-      { slug: '5-fun-ways-to-practice-mandarin' },
-      { slug: 'importance-of-early-language-learning' },
-      { slug: 'cultural-insights-mid-autumn-festival' },
-      { slug: 'overcoming-fear-of-speaking-mandarin' },
-      { slug: 'role-of-calligraphy-in-chinese-culture' },
-      { slug: 'preparing-for-psle-chinese' }
-    ];
-  } catch (error) {
-    console.error('Error generating static params:', error);
-    return [];
-  }
-}
+// Set to dynamic rendering to fix issues with 404s on deployment
+export const dynamic = 'force-dynamic';
+
+// We've removed generateStaticParams to allow dynamic rendering of all blog posts
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const post = await getPost(params.slug);

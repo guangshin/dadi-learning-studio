@@ -143,21 +143,26 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile menu and overlay */}
-      <div 
+      {/* Mobile menu, separate overlay and drawer for better control */}
+      <div
         className={cn(
-          "fixed inset-0 bg-black/50 z-30 md:hidden transition-opacity duration-300",
-          isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+          "fixed inset-0 bg-black/50 z-30 md:hidden transition-all duration-300",
+          isOpen ? "opacity-100 visible" : "opacity-0 invisible"
         )}
         onClick={() => setIsOpen(false)}
       />
-      
-      {/* Mobile menu drawer */}
+
+      {/* Mobile menu drawer - completely separate from overlay */}
       <div
         className={cn(
-          "md:hidden fixed top-0 left-0 bottom-0 w-[85%] max-w-[320px] bg-white z-40 transform transition-transform duration-300 pt-20 pb-6 overflow-y-auto", 
+          "md:hidden fixed top-0 left-0 bottom-0 w-[85%] max-w-[320px] bg-white z-40 transform transition-transform duration-300 ease-in-out pt-20 pb-6 overflow-y-auto shadow-xl",
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
+        style={{
+          // Force hardware acceleration & prevent layout issues during animations
+          willChange: "transform",
+          backfaceVisibility: "hidden",
+        }}
       >
         <div className="px-4 space-y-1">
           {navLinks.map((link) => (
