@@ -39,6 +39,12 @@ const nextConfig = {
   },
   // Add custom webpack configuration to handle image paths
   webpack: (config, { isServer }) => {
+    // Add the @ alias for the project root
+    const path = require('path');
+    config.resolve = config.resolve || {};
+    config.resolve.alias = config.resolve.alias || {};
+    config.resolve.alias['@'] = path.resolve(__dirname);
+
     // Add a rule to handle the image paths
     config.module.rules.push({
       test: /\.(png|jpg|jpeg|gif|svg)$/i,
