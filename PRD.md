@@ -163,6 +163,11 @@ class Program {
 - Improved `/blog/[slug]` page handling with dynamic routing
 - Completely overhauled mobile navigation with proper z-index management and display handling
 - Fixed Logo link styling to ensure black text and no underline on hover
+- Improved "Scroll to explore" indicator handling on different screen sizes
+  - Hidden completely on mobile screens to prevent layout conflicts
+  - Only visible on sm (small) screens and above
+  - Properly centered on desktop/tablet displays
+- Optimized Logo component to prevent text cutoff on mobile navbar
 - Added improved error handling for Plasmic API responses
   - Enhanced error handling and diagnostics for CMS data fetching
   - Added automatic detection and recovery for API failures
