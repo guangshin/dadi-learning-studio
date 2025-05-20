@@ -177,6 +177,10 @@ class Program {
   - Added loading state with spinner during submission
   - Improved success/error notifications with icons
   - Fixed all form structure issues and syntax errors
+- Improved mobile responsiveness for About page
+  - Added founder image above text on mobile devices
+  - Created dedicated mobile image container with appropriate sizing
+  - Ensured logical content flow on small screens
 
 ### 2025-05-18
 - **Contact Page Redesign**

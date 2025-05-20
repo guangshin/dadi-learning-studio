@@ -2,11 +2,25 @@ import Image from 'next/image';
 
 export function AboutFounder() {
   return (
-    <section className="py-20 bg-accent/5">
+    <section className="py-16 md:py-20 bg-accent/5">
       <div className="container mx-auto px-4">
+        {/* Mobile-only founder image (shows only on small screens) */}
+        <div className="block lg:hidden mb-8">
+          <div className="relative rounded-2xl overflow-hidden aspect-[4/3] w-full max-w-sm mx-auto shadow-xl">
+            <Image
+              src="/BenFounder.png"
+              alt="Ben Lim, Founder of Da Di Learning Studio"
+              fill
+              className="object-cover object-center"
+              priority
+              sizes="(max-width: 768px) 90vw, 50vw"
+            />
+          </div>
+        </div>
+        
         <div className="flex flex-col lg:flex-row items-center gap-12">
-          <div className="lg:w-1/2 order-2 lg:order-1">
-            <div className="bg-white p-8 rounded-2xl shadow-lg">
+          <div className="lg:w-1/2 order-1 lg:order-1">
+            <div className="bg-white p-6 md:p-8 rounded-2xl shadow-lg">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
                 Meet Our Founder — <span className="text-primary">Ben Lim</span>
               </h2>
@@ -32,7 +46,7 @@ export function AboutFounder() {
             </div>
           </div>
           
-          <div className="lg:w-1/2 order-1 lg:order-2">
+          <div className="hidden lg:block lg:w-1/2 order-2 lg:order-2">
             <div className="relative rounded-2xl overflow-hidden aspect-[3/4] w-full max-w-md mx-auto shadow-xl">
               <Image
                 src="/BenFounder.png"
@@ -40,7 +54,7 @@ export function AboutFounder() {
                 fill
                 className="object-cover"
                 priority
-                sizes="(max-width: 768px) 100vw, 50vw"
+                sizes="50vw"
               />
             </div>
           </div>
