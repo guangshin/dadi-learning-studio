@@ -40,8 +40,45 @@ export function PillarDetail({
             reverse ? "md:flex-row-reverse" : "md:flex-row"
           } items-center gap-12`}
         >
+          {/* Image container - always rendered first for mobile stacking */}
           <motion.div
-            className="md:w-1/2"
+            className="w-full md:w-1/2 rounded-2xl overflow-hidden shadow-lg relative"
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+          >
+            {/* Fixed aspect ratio container */}
+            <div className="relative pb-[75%] w-full">
+              {/* Fallback background (always present) */}
+              <div 
+                className="absolute inset-0 bg-cover bg-center"
+                style={{
+                  backgroundImage: `url(/images/philosophy/${chinese.toLowerCase()}.jpg)`,
+                  backgroundColor: `${color}20`,
+                }}
+              ></div>
+              
+              {/* CMS Image overlay (fades in when loaded) */}
+              {image?.src && (
+                <div className={`absolute inset-0 transition-opacity duration-500 ${image?.src ? 'opacity-100' : 'opacity-0'}`}>
+                  <Image
+                    src={image.src}
+                    alt={image.alt}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    unoptimized
+                    priority
+                  />
+                </div>
+              )}
+            </div>
+          </motion.div>
+
+          {/* Text container - always rendered second for mobile stacking */}
+          <motion.div
+            className="w-full md:w-1/2"
             initial={{ opacity: 0, x: reverse ? 40 : -40 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
@@ -77,41 +114,6 @@ export function PillarDetail({
               <p className="text-[#2C2C2C]/90 leading-relaxed font-opensans">
                 {description}
               </p>
-            </div>
-          </motion.div>
-
-          <motion.div
-            className="md:w-1/2 rounded-2xl overflow-hidden shadow-lg relative"
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true }}
-          >
-            {/* Fixed aspect ratio container */}
-            <div className="relative pb-[75%] w-full">
-              {/* Fallback background (always present) */}
-              <div 
-                className="absolute inset-0 bg-cover bg-center"
-                style={{
-                  backgroundImage: `url(/images/philosophy/${chinese.toLowerCase()}.jpg)`,
-                  backgroundColor: `${color}20`,
-                }}
-              ></div>
-              
-              {/* CMS Image overlay (fades in when loaded) */}
-              {image?.src && (
-                <div className={`absolute inset-0 transition-opacity duration-500 ${image?.src ? 'opacity-100' : 'opacity-0'}`}>
-                  <Image
-                    src={image.src}
-                    alt={image.alt}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    unoptimized
-                    priority
-                  />
-                </div>
-              )}
             </div>
           </motion.div>
         </div>
