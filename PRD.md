@@ -159,6 +159,11 @@ class Program {
 ## 7. Changelog
 
 ### 2025-05-20
+- Updated contact form to send emails directly to contact@dadi.com.sg
+- Improved Google Maps embed on Contact page with specific marker for Da Di Learning Studio at "10 Jalan Ubi, Kampong Ubi Community Centre, #02-03, Singapore 409075"
+- Added "Open in Google Maps" link with icon below the embedded map for better user experience
+- Modified Book a Free Trial button to have no behavior (removed Calendly link) for future implementation
+- Updated Facebook link to point to new business profile URL
 - Enhanced blog post fetching with direct Plasmic API fallback
 - Improved `/blog/[slug]` page handling with dynamic routing
 - Completely overhauled mobile navigation with proper z-index management and display handling

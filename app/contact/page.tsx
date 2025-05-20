@@ -25,7 +25,7 @@ const locations: Location[] = [
     address: '10 Jalan Ubi, Kampong Ubi Community Centre, #02-03, Singapore 409075',
     phone: '+65 8699 8667',
     email: 'contact@dadi.com.sg',
-    mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.788755105551!2d103.892723!3d1.2950088!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da197a4d9f0a1f%3A0x9b5a3a11b3fcf166!2sKampong%20Ubi%20Community%20Club!5e0!3m2!1sen!2ssg',
+    mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.785197998048!2d103.89041258255615!3d1.319989299999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da18335cf5ef73%3A0xdf6e31cfca048cfd!2sDa%20Di%20Learning%20Studio!5e0!3m2!1sen!2ssg!4v1716347995637!5m2!1sen!2ssg',
     operatingHours: {
       weekdays: '9:00 AM - 6:00 PM',
       saturday: '9:00 AM - 1:00 PM',
@@ -89,7 +89,7 @@ const ContactPage = () => {
       
       // Send the form data using fetch
       const response = await fetch(
-        'https://formsubmit.co/ajax/guangshin.tan@zerotoonestudios.com', 
+        'https://formsubmit.co/ajax/contact@dadi.com.sg', 
         {
           method: 'POST',
           body: formDataToSend
@@ -223,7 +223,7 @@ const ContactPage = () => {
                       </a>
                       
                       <a 
-                        href="https://www.facebook.com/dadilearningstudio" 
+                        href="https://www.facebook.com/profile.php?id=61575097831744" 
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="text-gray-600 hover:text-[#4C9A2A] transition-colors flex flex-col items-center group"
@@ -249,17 +249,14 @@ const ContactPage = () => {
                     Ready to experience our teaching style? Book a free 30-minute trial class with us!
                   </p>
                   <div className="pt-2">
-                    <a
-                      href="https://calendly.com/tanguangshin/30min"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <button
                       className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium text-white bg-[#4C9A2A] border border-transparent rounded-md shadow-sm hover:bg-[#3e7e22] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4C9A2A] transition-colors"
                     >
                       <svg className="w-5 h-5 mr-2 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
                       </svg>
                       Book a Free Trial
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -297,7 +294,7 @@ const ContactPage = () => {
                         </div>
                       </div>
                       
-                      <div className="mt-4 aspect-video rounded-lg overflow-hidden">
+                      <div className="mt-4 aspect-video rounded-lg overflow-hidden relative group">
                         <iframe
                           src={location.mapEmbedUrl}
                           width="100%"
@@ -308,6 +305,20 @@ const ContactPage = () => {
                           referrerPolicy="no-referrer-when-downgrade"
                           title={`${location.title} on Google Maps`}
                         />
+                        <a 
+                          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.address)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        >
+                          <div className="bg-white hover:bg-gray-50 px-6 py-3 rounded-full shadow-lg flex items-center text-gray-800 font-medium text-lg transition-colors">
+                            <svg className="w-6 h-6 mr-2 text-[#4C9A2A]" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                              <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                              <path d="M12 10a2 2 0 100-4 2 2 0 000 4z" />
+                            </svg>
+                            Open in Google Maps
+                          </div>
+                        </a>
                       </div>
                     </div>
                   </div>
