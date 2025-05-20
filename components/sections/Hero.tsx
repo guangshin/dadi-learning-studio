@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import CalligraphyAnimation from './CalligraphyAnimation';
+import Link from 'next/link';
 
 const Hero = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -23,12 +24,7 @@ const Hero = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToContact = () => {
-    const contactSection = document.getElementById('contact');
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+  // Removed scrollToContact as we're using direct navigation now
 
   return (
     <section 
@@ -62,19 +58,20 @@ const Hero = () => {
               A new kind of Chinese enrichment — where language meets life.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button 
-                size="lg" 
-                className="text-lg px-8 py-6 bg-primary hover:bg-primary/90 text-primary-foreground"
-                onClick={scrollToContact}
-              >
-                Start Your Journey
+              <Button asChild size="lg" className="text-lg px-8 py-6 bg-primary hover:bg-primary/90 text-white">
+                <Link href="/programmes" className="text-white hover:text-white">
+                  Start Your Journey
+                </Link>
               </Button>
               <Button 
+                asChild
                 variant="outline" 
                 size="lg" 
                 className="text-lg px-8 py-6 border-2 border-green-600 hover:bg-green-50 hover:border-green-700 text-green-700 hover:text-green-800 transition-colors"
               >
-                Learn More
+                <Link href="/about">
+                  Learn More
+                </Link>
               </Button>
             </div>
           </motion.div>
