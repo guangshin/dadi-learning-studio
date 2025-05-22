@@ -22,7 +22,7 @@ function WhyDaDi() {
           <blockquote className="text-2xl md:text-3xl font-semibold text-accent bg-accent/10 rounded-xl p-8 mb-8 shadow-sm">
             "Learning Chinese should be a joyful, mindful, and life-enriching experience — not just a race for grades."
           </blockquote>
-          <h2 className="text-3xl font-bold text-text mb-6">Why We Exist</h2>
+          <h2 className="text-3xl font-bold text-text mb-6">The Heart Behind Da Di</h2>
           <p className="text-lg text-foreground/80 mb-6">
             At Da Di, we believe learning Chinese is like opening a treasure chest — full of stories, wisdom, and golden opportunities.
           </p>
@@ -74,7 +74,7 @@ export default function AboutPage() {
       {/* Founder Section */}
       <AboutFounder />
 
-      {/* Why Da Di Exists */}
+      {/* The Heart Behind Da Di */}
       <WhyDaDiComponent />
 
       {/* Da Di Philosophy */}

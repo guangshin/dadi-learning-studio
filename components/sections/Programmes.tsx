@@ -17,7 +17,7 @@ const Programmes = () => {
       subtitle: "Ages 3–7",
       description: "Mandarin Magic: Growing Confident Little Communicators",
       icon: <BabyIcon className="w-6 h-6" />,
-      color: "#FFD54F",
+      color: "#4C9A2A", // Dark Green
       features: [
         { icon: <BookOpen className="w-4 h-4" />, text: "Interactive Storytelling" },
         { icon: <MessageSquare className="w-4 h-4" />, text: "Basic Conversation" },
@@ -29,7 +29,7 @@ const Programmes = () => {
       subtitle: "P1–P6",
       description: "Mandarin Adventures: Building Skills, Growing Confidence",
       icon: <RocketIcon className="w-6 h-6" />,
-      color: "#81C784",
+      color: "#7BC043", // Green
       features: [
         { icon: <BookOpen className="w-4 h-4" />, text: "Reading & Writing" },
         { icon: <MessageSquare className="w-4 h-4" />, text: "Conversation Practice" },
@@ -41,7 +41,7 @@ const Programmes = () => {
       subtitle: "Sec 1–4",
       description: "Master Mandarin: Speak Well, Think Deep, Shine Bright",
       icon: <TargetIcon className="w-6 h-6" />,
-      color: "4CAF50",
+      color: "#B2D732", // Light Green
       features: [
         { icon: <BookOpen className="w-4 h-4" />, text: "Advanced Curriculum" },
         { icon: <MessageSquare className="w-4 h-4" />, text: "Debate & Discussion" },
@@ -53,7 +53,7 @@ const Programmes = () => {
       subtitle: "All Levels",
       description: "Mandarin for Life: Connect, Communicate, and Grow",
       icon: <UserIcon className="w-6 h-6" />,
-      color: "#81C784",
+      color: "#FDE74C", // Yellow
       features: [
         { icon: <MessageSquare className="w-4 h-4" />, text: "Conversational Focus" },
         { icon: <BookOpen className="w-4 h-4" />, text: "Practical Vocabulary" },
@@ -88,7 +88,7 @@ const Programmes = () => {
             >
               <div className="h-full bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden border border-gray-100 flex flex-col">
                 <div className="p-6 pb-4 flex-1">
-                  <div className={`w-12 h-12 rounded-full bg-opacity-20 flex items-center justify-center mb-4`} style={{ backgroundColor: `${program.color}20` }}>
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-4`} style={{ backgroundColor: `${program.color}10` }}>
                     <span style={{ color: program.color }}>{program.icon}</span>
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-1">{program.title}</h3>

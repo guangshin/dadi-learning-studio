@@ -105,7 +105,7 @@ export function ProgrammesSection() {
         '**What to expect:**',
         '• Strong foundation in all language skills (speaking, listening, reading, writing)',
         '• Interactive learning through games, songs, and creative storytelling',
-        '• Weekly composition and oral practice',
+        '• Regular composition and oral practice',
         '• Confidence-building roleplay and conversations',
         '• Gentle mindfulness for better focus',
         '',
@@ -213,7 +213,7 @@ export function ProgrammesSection() {
       details: [
         'Whether you\'re ordering food, chatting with friends, or giving a work presentation, our sessions blend practical phrases, cultural fluency, and confidence-building speaking practice.',
         'What to expect:',
-        '• Level-based progression (Beginner to Intermediate+)',
+        '• Level-based progression (Beginner to Advanced)',
         '• Hands-on conversation and real-life simulations',
         '• Flexible options tailored to your schedule',
         '• Friendly, low-pressure learning environment',

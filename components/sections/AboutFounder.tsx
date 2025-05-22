@@ -40,7 +40,16 @@ export function AboutFounder() {
                   In 2023, Ben and his youngest daughter took the stage together, winning the prestigious Speak Mandarin Family Talent Competition. This experience reinforced his belief that language learning should be joyful, engaging, and deeply connected to real life.
                 </p>
                 <p className="font-medium">
-                  In 2010, Ben founded <span className="text-primary">My Little Gems Preschool</span> — a bilingual, heart-led preschool that continues to thrive today, laying the foundation for what would eventually become Da Di Learning Studio.
+                  In 2010, Ben founded{' '}
+                  <a 
+                    href="https://www.my-littlegems.com/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline"
+                  >
+                    My Little Gems Preschool
+                  </a>{' '}
+                  — a bilingual, heart-led preschool that continues to thrive today, laying the foundation for what would eventually become Da Di Learning Studio.
                 </p>
               </div>
             </div>

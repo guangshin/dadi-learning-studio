@@ -9,7 +9,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <Logo height={40} />
+              <Logo height={50} />
             </div>
             <p className="text-gray-600 mb-6">
               A new kind of Chinese enrichment — where language meets life.
@@ -44,8 +44,8 @@ const Footer = () => {
             <h3 className="font-semibold text-lg mb-4">Quick Links</h3>
             <ul className="space-y-3">
               <li><Link href="/about" className="text-gray-600 hover:text-[#4C9A2A] transition-colors">About</Link></li>
-              <li><Link href="/programmes" className="text-gray-600 hover:text-[#4C9A2A] transition-colors">Programmes</Link></li>
               <li><Link href="/philosophy" className="text-gray-600 hover:text-[#4C9A2A] transition-colors">Our Philosophy</Link></li>
+              <li><Link href="/programmes" className="text-gray-600 hover:text-[#4C9A2A] transition-colors">Programmes</Link></li>
               <li><Link href="/blog" className="text-gray-600 hover:text-[#4C9A2A] transition-colors">Blog</Link></li>
               <li><Link href="/contact" className="text-gray-600 hover:text-[#4C9A2A] transition-colors">Contact</Link></li>
             </ul>

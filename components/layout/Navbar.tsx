@@ -35,6 +35,7 @@ const Navbar = () => {
 
   const navLinks = [
     { name: 'About', href: '/about' },
+    { name: 'Our Philosophy', href: '/philosophy' },
     { 
       name: 'Programmes', 
       href: '/programmes',
@@ -47,8 +48,7 @@ const Navbar = () => {
         { name: 'FAQs', href: '/programmes#faq' },
       ]
     },
-    { name: 'Our Philosophy', href: '/philosophy' },
-    { name: 'Blog', href: '/blog' },
+    { name: 'Insights', href: '/blog' },
     { name: 'Contact', href: '/contact' },
   ];
 
@@ -90,7 +90,7 @@ const Navbar = () => {
             href="/" 
             className="flex items-center no-underline hover:no-underline text-black"
           >
-            <Logo className="h-10 w-auto" />
+            <Logo height={55} />
           </Link>
         </div>
 

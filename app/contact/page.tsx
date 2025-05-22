@@ -20,16 +20,16 @@ interface Location {
 // This would typically come from a CMS in production
 const locations: Location[] = [
   {
-    id: 'ubi',
-    title: 'Ubi Branch (Main Studio)',
-    address: '10 Jalan Ubi, Kampong Ubi Community Centre, #02-03, Singapore 409075',
+    id: 'eunos',
+    title: 'Eunos Branch (Main Studio)',
+    address: '10 Jalan Ubi, Kampong Ubi Community Centre, #02-03, Singapore 409075 (Opposite Eunos MRT)',
     phone: '+65 8699 8667',
     email: 'contact@dadi.com.sg',
     mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.785197998048!2d103.89041258255615!3d1.319989299999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da18335cf5ef73%3A0xdf6e31cfca048cfd!2sDa%20Di%20Learning%20Studio!5e0!3m2!1sen!2ssg!4v1716347995637!5m2!1sen!2ssg',
     operatingHours: {
-      weekdays: '9:00 AM - 6:00 PM',
-      saturday: '9:00 AM - 1:00 PM',
-      sunday: 'Closed'
+      weekdays: 'Wednesday to Sunday: 9:00 AM - 6:00 PM',
+      saturday: 'Monday and Tuesday: Closed',
+      sunday: 'Public Holidays: Closed'
     }
   }
 ];
@@ -154,7 +154,7 @@ const ContactPage = () => {
             </h1>
             <div className="w-24 h-1.5 bg-primary mx-auto mb-6"></div>
             <p className="text-xl text-foreground/80 max-w-2xl mx-auto leading-relaxed">
-              Ready to begin your child's learning adventure with Da Di? Our team is here to answer your questions and guide you through the enrollment process.
+              Start your child's learning journey with Da Di today. We're here to help with any questions and guide you through enrollment.
             </p>
           </div>
         </section>
@@ -246,7 +246,7 @@ const ContactPage = () => {
                 <h2 className="text-2xl font-semibold mb-6 text-gray-900">Book a Trial Class</h2>
                 <div className="space-y-6">
                   <p className="text-gray-700">
-                    Ready to experience our teaching style? Book a free 30-minute trial class with us!
+                    Ready to experience our teaching style? Book a free trial class with us!
                   </p>
                   <div className="pt-2">
                     <button
@@ -327,9 +327,11 @@ const ContactPage = () => {
             </div>
             
             {/* Contact Form */}
-            <div>
-              <h2 className="text-2xl font-semibold mb-2">Send Us a Message</h2>
-              <p className="text-gray-600 mb-6">We'll get back to you within 1 working day.</p>
+            <div id="enquiryform" className="scroll-mt-20">
+              <div className="mb-6">
+                <h2 className="text-2xl font-semibold mb-2">Send Us a Message</h2>
+                <p className="text-gray-600">We'll get back to you within 1 working day.</p>
+              </div>
               
               <form 
                 id="contact-form"
@@ -372,7 +374,7 @@ const ContactPage = () => {
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#4C9A2A] focus:border-[#4C9A2A] outline-none transition"
-                    placeholder="John Doe"
+                    placeholder="De Cheng Lim"
                   />
                 </div>
                 
@@ -488,14 +490,14 @@ const ContactPage = () => {
               <p className="text-gray-700 mb-6">Passionate about teaching Mandarin? We're always looking for dedicated educators to join our growing family.</p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a 
-                  href="mailto:careers@dadi.com.sg" 
+                  href="mailto:contact@dadi.com.sg" 
                   className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-[#4C9A2A] hover:bg-[#3a7a21] transition-colors"
                 >
                   <Mail className="mr-2 h-5 w-5" />
-                  careers@dadi.com.sg
+                  contact@dadi.com.sg
                 </a>
                 <button 
-                  onClick={() => handleCopy('careers@dadi.com.sg')}
+                  onClick={() => handleCopy('contact@dadi.com.sg')}
                   className="inline-flex items-center px-4 py-2 text-sm font-medium text-[#4C9A2A] hover:text-[#3a7a21]"
                 >
                   <Copy className="mr-1.5 h-4 w-4" />

@@ -12,13 +12,12 @@ type CMSImage = {
 };
 
 export function WhyDaDi() {
-
   return (
     <section className="py-20 bg-background">
       <div className="container mx-auto px-4 max-w-5xl">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
-            Why Da Di Exists
+            The Heart Behind Dadi
           </h2>
           <div className="w-24 h-1.5 bg-primary mx-auto mb-8"></div>
         </div>

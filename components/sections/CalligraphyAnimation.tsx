@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const CHARACTERS = [
   {
     char: "问",
-    pinyin: "Wèn",
+    pinyin: "wèn",
     meaning: "Ask",
     svg: (
       <g>
@@ -21,7 +21,7 @@ const CHARACTERS = [
   },
   {
     char: "思",
-    pinyin: "Sī",
+    pinyin: "sī",
     meaning: "Think",
     svg: (
       <g>
@@ -40,7 +40,7 @@ const CHARACTERS = [
   },
   {
     char: "修",
-    pinyin: "Xiū",
+    pinyin: "xiū",
     meaning: "Apply",
     svg: (
       <g>
@@ -59,7 +59,7 @@ const CHARACTERS = [
   },
   {
     char: "静",
-    pinyin: "Jìng",
+    pinyin: "jìng",
     meaning: "Be still",
     svg: (
       <g>

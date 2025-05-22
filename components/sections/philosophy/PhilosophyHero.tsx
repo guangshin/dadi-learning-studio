@@ -25,9 +25,9 @@ export function PhilosophyHero({
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-medium text-[#2C2C2C] mb-6 font-quicksand leading-tight">
+            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
               Our Teaching Philosophy:
-              <span className="block text-[#4C9A2A] mt-2">
+              <span className="block text-primary mt-2">
                 问 · 思 · 修 · 静
               </span>
             </h1>
@@ -48,25 +48,34 @@ export function PhilosophyHero({
           >
             <div className="relative aspect-video rounded-2xl overflow-hidden shadow-lg bg-[#FCE569]/20">
               {/* Always render the image but hide it when loading to prevent layout shift */}
-              <div className={`w-full h-full transition-opacity duration-300 ${loading ? 'opacity-0 absolute' : 'opacity-100'}`}>
+              <div
+                className={`w-full h-full transition-opacity duration-300 ${
+                  loading ? "opacity-0 absolute" : "opacity-100"
+                }`}
+              >
                 <Image
                   src={image?.src || "/images/philosophy/classroom.jpg"}
-                  alt={image?.alt || "Teacher and children learning Mandarin together"}
+                  alt={
+                    image?.alt ||
+                    "Teacher and children learning Mandarin together"
+                  }
                   fill
                   className="object-cover"
                   priority
                   unoptimized={!!image?.src}
                 />
               </div>
-              
+
               {/* Skeleton loader that fades out when image is loaded */}
-              <div 
-                className={`w-full h-full bg-gray-200 transition-opacity duration-300 ${loading ? 'opacity-100' : 'opacity-0'}`}
+              <div
+                className={`w-full h-full bg-gray-200 transition-opacity duration-300 ${
+                  loading ? "opacity-100" : "opacity-0"
+                }`}
                 aria-hidden={!loading}
               >
                 <div className="w-full h-full bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-pulse" />
               </div>
-              
+
               {/* Fallback background with calligraphy */}
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <span className="text-9xl font-noto text-[#2C2C2C]/5">

@@ -6,7 +6,7 @@ const pillars = [
   {
     id: 1,
     chinese: "问",
-    pinyin: "Wèn",
+    pinyin: "wèn",
     english: "Ask",
     description:
       "Encouraging curiosity and inquiry-based learning. We believe that asking questions is the foundation of understanding.",
@@ -17,7 +17,7 @@ const pillars = [
   {
     id: 2,
     chinese: "思",
-    pinyin: "Sī",
+    pinyin: "sī",
     english: "Analyze",
     description:
       "Developing critical thinking and analytical skills to understand the deeper meaning behind the language.",
@@ -28,7 +28,7 @@ const pillars = [
   {
     id: 3,
     chinese: "修",
-    pinyin: "Xiū",
+    pinyin: "xiū",
     english: "Apply",
     description:
       "Practical application of language skills in real-life situations to ensure meaningful learning.",
@@ -39,7 +39,7 @@ const pillars = [
   {
     id: 4,
     chinese: "静",
-    pinyin: "Jìng",
+    pinyin: "jìng",
     english: "Stillness",
     description:
       "Gaining insight and achieving mastery through reflection and understanding.",

@@ -20,6 +20,9 @@ export function CTABanner({
   variant = 'primary',
 }: CTABannerProps) {
   const isExternal = buttonLink?.startsWith('http');
+  // Add hash to contact page links
+  const href = isExternal ? buttonLink : 
+    buttonLink === '/contact' ? `${buttonLink}#enquiryform` : buttonLink;
   
   const containerClasses = cn(
     'py-16 px-4 sm:px-6 lg:px-8',
@@ -62,7 +65,7 @@ export function CTABanner({
               variant={buttonVariant}
               className="px-8 py-6 text-base"
             >
-              <Link href={buttonLink}>{buttonText}</Link>
+              <Link href={href}>{buttonText}</Link>
             </Button>
           )}
         </div>

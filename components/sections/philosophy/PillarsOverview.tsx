@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 const pillars = [
   {
     chinese: '问',
-    pinyin: 'Wèn',
+    pinyin: 'wèn',
     title: 'Ask',
     description: 'Cultivate curiosity through meaningful questions.',
     color: '#4C9A2A',
@@ -14,7 +14,7 @@ const pillars = [
   },
   {
     chinese: '思',
-    pinyin: 'Sī',
+    pinyin: 'sī',
     title: 'Analyze',
     description: 'Encourage mindful reflection and critical thinking.',
     color: '#7BC043',
@@ -23,7 +23,7 @@ const pillars = [
   },
   {
     chinese: '修',
-    pinyin: 'Xiū',
+    pinyin: 'xiū',
     title: 'Apply',
     description: 'Apply Mandarin in real life with purpose and kindness.',
     color: '#B2D732',
@@ -32,7 +32,7 @@ const pillars = [
   },
   {
     chinese: '静',
-    pinyin: 'Jìng',
+    pinyin: 'jìng',
     title: 'Stillness',
     description: 'Be still, focused, and emotionally present.',
     color: '#FDE74C',
@@ -77,8 +77,8 @@ export function PillarsOverview() {
               onKeyDown={(e) => e.key === 'Enter' && scrollToSection(pillar.id || `pillar-${pillar.chinese}`)}
             >
               <div 
-                className="w-16 h-16 rounded-xl mb-4 flex items-center justify-center text-4xl font-bold"
-                style={{ color: pillar.color }}
+                className="w-16 h-16 rounded-xl mb-4 flex items-center justify-center text-4xl font-bold text-white"
+                style={{ backgroundColor: pillar.color }}
               >
                 {pillar.chinese}
               </div>

@@ -40,11 +40,11 @@ export default function PhilosophyPage() {
       <PillarDetail
         id="pillar-wen"
         chinese="问"
-        pinyin="Wèn"
+        pinyin="wèn"
         title="Ask"
         proverb="问中求知，知而能言"
         translation="In asking, we gain knowledge; through knowledge, we speak with confidence."
-        description="Learning begins with curiosity. We encourage students to ask questions in Mandarin, uncover insights, and develop strong communication skills. Through interactive discussions, they gain confidence in using the language actively."
+        description="We nurture curiosity through Mandarin questions and discussions, building confident communicators who actively engage with the language."
         color="#4C9A2A"
         image={images["Philosophy-wen"] ?? undefined}
       />
@@ -52,7 +52,7 @@ export default function PhilosophyPage() {
       <PillarDetail
         id="pillar-si"
         chinese="思"
-        pinyin="Sī"
+        pinyin="sī"
         title="Analyze"
         proverb="专中入思，思中成长"
         translation="Through focused reflection, true growth emerges."
@@ -65,7 +65,7 @@ export default function PhilosophyPage() {
       <PillarDetail
         id="pillar-xiu"
         chinese="修"
-        pinyin="Xiū"
+        pinyin="xiū"
         title="Apply"
         proverb="持之进修，修中蜕变"
         translation="Through committed practice, transformation begins."
@@ -78,12 +78,12 @@ export default function PhilosophyPage() {
       <PillarDetail
         id="pillar-jing"
         chinese="静"
-        pinyin="Jìng"
+        pinyin="jìng"
         title="Stillness"
-        proverb="心静方能凝神，聚积会神万事通"
+        proverb="心静凝神，慧通万事"
         translation="When the heart is still, the mind can focus — and with focus, all things are possible."
         description={
-          "At Da Di, we begin each lesson with 15 minutes of mindfulness practice — a sacred pause for breathing, reflection, and emotional reset. This practice of 静 (Stillness) is not just about being quiet; it's about cultivating presence and awareness. Students learn to center themselves, developing focus that carries through their language learning journey. These mindful moments help our learners become not just better speakers — but better people: calm, resilient, and ready to connect deeply with others."
+          "At Da Di, every lesson includes 15mins of mindfulness practice — a sacred pause for breathing, reflection, and emotional reset. This practice of 静 (Stillness) is not just about being quiet; it's about cultivating presence and awareness. Students learn to center themselves, developing focus that carries through their language learning journey. These mindful moments help our learners become not just better speakers — but better people: calm, resilient, and ready to connect deeply with others."
         }
         color="#A5D66F"
         reverse={true}
