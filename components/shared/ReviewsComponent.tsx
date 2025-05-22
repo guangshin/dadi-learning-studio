@@ -47,7 +47,7 @@ export function ReviewsComponent({
         });
         
         const data = await response.json();
-        console.log('Raw CMS response:', data);
+
         
         // Check both data.rows and data.data for compatibility
         const reviews = data.rows || data.data || [];
@@ -55,7 +55,7 @@ export function ReviewsComponent({
         if (reviews.length > 0) {
           // Map CMS data to match Testimonial type
           const formattedReviews = reviews.map((review: any) => {
-            console.log('Processing review:', review);
+
             const reviewData = review.data || {};
             const createdAt = review.createdAt || review._createdAt;
             
@@ -75,10 +75,10 @@ export function ReviewsComponent({
             };
           });
           
-          console.log('Formatted reviews:', formattedReviews);
+
           setTestimonials(formattedReviews);
         } else {
-          console.log('No reviews found in CMS, using default testimonials');
+
           const module = await import('@/data/testimonials');
           setTestimonials(module.testimonials);
         }  

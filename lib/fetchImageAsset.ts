@@ -37,7 +37,7 @@ export async function fetchImageAsset(key: string): Promise<string | null> {
     const asset = data.rows?.[0]?.data;
     
     if (!asset?.image?.url) {
-      console.log('No image URL found for key:', key, asset);
+
       return null;
     }
     
@@ -49,7 +49,7 @@ export async function fetchImageAsset(key: string): Promise<string | null> {
 }
 
 export async function fetchAllProgrammeImages() {
-  console.log('Starting to fetch all programme images...');
+
   try {
     const url = `${getBaseUrl()}/api/cms`;
     const response = await fetch(url, {
@@ -77,7 +77,7 @@ export async function fetchAllProgrammeImages() {
     }
 
     const data = await response.json();
-    console.log('Raw CMS response:', data);
+
     
     const assets: Record<string, string> = {};
     
@@ -95,15 +95,15 @@ export async function fetchAllProgrammeImages() {
             : null;
             
         if (imageUrl) {
-          console.log(`Found image: ${asset.key} => ${imageUrl}`);
+
           assets[asset.key] = imageUrl;
         } else {
-          console.log(`No valid image URL found for key: ${asset.key}`, asset);
+
         }
       }
     });
     
-    console.log('Processed assets:', assets);
+
     return assets;
   } catch (error) {
     console.error('Error fetching programme images:', error);

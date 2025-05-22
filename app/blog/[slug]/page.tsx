@@ -12,11 +12,11 @@ const PLACEHOLDER_IMAGE = '/images/placeholder.svg';
 
 // Fetch a post by slug from the CMS with fallback to direct Plasmic API
 async function getPost(slug: string) {
-  console.log(`[getPost] Starting to fetch blog post with slug: ${slug}`);
+
   
   try {
     // First attempt: Try internal API
-    console.log(`[getPost] Trying internal API first...`);
+
     let post = await fetchBlogPostBySlug(slug).catch(err => {
       console.error(`[getPost] Error with internal API:`, err);
       return null;
@@ -24,22 +24,22 @@ async function getPost(slug: string) {
     
     // If internal API fails, try direct Plasmic API
     if (!post) {
-      console.log(`[getPost] Internal API failed or returned no post, trying direct Plasmic API...`);
+
       post = await fetchBlogPostDirectFromPlasmic(slug).catch(err => {
         console.error(`[getPost] Error with direct Plasmic API:`, err);
         return null;
       });
       
       if (post) {
-        console.log(`[getPost] Successfully retrieved post via direct Plasmic API`);
+
       }
     } else {
-      console.log(`[getPost] Successfully retrieved post via internal API`);
+
     }
     
     // Return null if not found or not published
     if (!post || !post.published) {
-      console.log(`[getPost] No published post found with slug: ${slug}`);
+
       return null;
     }
     
@@ -60,7 +60,7 @@ export const revalidate = 0;
 // because we can't access the API yet
 // We'll handle all slug generation at runtime
 export function generateStaticParams() {
-  console.log('Using empty static params for blog posts to avoid build errors');
+
   // Return an empty array to avoid fetching during build
   // The pages will be generated on-demand at runtime
   return [];

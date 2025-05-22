@@ -11,7 +11,7 @@ import { BlogPostSchema, type BlogPost } from './fetchBlog';
  */
 export async function fetchBlogPostDirectFromPlasmic(slug: string): Promise<BlogPost | null> {
   try {
-    console.log(`Directly fetching blog post from Plasmic with slug: ${slug}`);
+
     
     // Ensure we have the required environment variables
     const CMS_ID = process.env.PLASMIC_PROJECT_ID;
@@ -27,7 +27,7 @@ export async function fetchBlogPostDirectFromPlasmic(slug: string): Promise<Blog
     const query = '?q=' + encodeURIComponent(JSON.stringify(queryObj));
     const url = `https://data.plasmic.app/api/v1/cms/databases/${CMS_ID}/tables/blog/query${query}`;
     
-    console.log('Fetching directly from Plasmic URL:', url);
+
     
     // Use public token for read operations
     const authToken = `${CMS_ID}:${PUBLIC_TOKEN}`;
@@ -52,11 +52,11 @@ export async function fetchBlogPostDirectFromPlasmic(slug: string): Promise<Blog
     }
     
     const data = await response.json();
-    console.log('Plasmic API response received:', typeof data === 'object' ? 'Valid JSON' : typeof data);
+
     
     // Process the Plasmic CMS response, which has rows
     if (!data.rows || !data.rows.length) {
-      console.log('No blog post found with slug:', slug);
+
       return null;
     }
     
@@ -64,7 +64,7 @@ export async function fetchBlogPostDirectFromPlasmic(slug: string): Promise<Blog
     const plasmicPost = data.rows[0];
     const post = plasmicPost.data || plasmicPost;
     
-    console.log('Raw post from Plasmic:', post);
+
     
     if (!post) {
       console.error('Invalid post data format from Plasmic');
@@ -98,7 +98,7 @@ export async function fetchBlogPostDirectFromPlasmic(slug: string): Promise<Blog
       published: post.published !== false, // Default to published unless explicitly false
     };
     
-    console.log('Formatted post before validation:', formattedPost);
+
     
     try {
       // Validate using the schema

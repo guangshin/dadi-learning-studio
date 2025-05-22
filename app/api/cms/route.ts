@@ -19,21 +19,21 @@ function validateEnvVars() {
 }
 
 export async function POST(request: Request) {
-  console.log("\n=== New CMS API Request ===");
+
 
   try {
     // Log request details
-    console.log("Request URL:", request.url);
-    console.log("Request method:", request.method);
+
+
 
     // Validate environment variables
-    console.log("Validating environment variables...");
+
     validateEnvVars();
 
     // Parse request body
-    console.log("Parsing request body...");
+
     const requestBody = await request.json();
-    console.log("Request body:", JSON.stringify(requestBody, null, 2));
+
 
     const { collection, filters, limit } = requestBody;
 
@@ -42,7 +42,7 @@ export async function POST(request: Request) {
     }
 
     // Log collection being accessed
-    console.log(`Accessing collection: ${collection}`);
+
 
     // Plasmic CMS REST API endpoint (read)
     const CMS_ID = process.env.PLASMIC_PROJECT_ID;
@@ -66,11 +66,11 @@ export async function POST(request: Request) {
     const query = "?q=" + encodeURIComponent(JSON.stringify(queryObj));
     const url = `https://data.plasmic.app/api/v1/cms/databases/${CMS_ID}/tables/${collection}/query${query}`;
 
-    console.log("Making request to Plasmic CMS API...");
-    console.log("URL:", url);
+
+
     // Use public token for read
     const authToken = `${CMS_ID}:${PUBLIC_TOKEN}`;
-    console.log("Using auth token:", authToken.substring(0, 10) + "...");
+
 
     const response = await fetch(url, {
       method: "GET",

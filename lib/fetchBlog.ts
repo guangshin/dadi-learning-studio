@@ -24,12 +24,12 @@ export type BlogPost = z.infer<typeof BlogPostSchema>;
  */
 export async function fetchAllBlogPosts(): Promise<BlogPost[]> {
   try {
-    console.log('[fetchAllBlogPosts] Starting fetch operation...');
+
     
     // Try the internal API first
-    console.log('[fetchAllBlogPosts] Trying internal API...');
+
     const url = `${getBaseUrl()}/api/cms`;
-    console.log('[fetchAllBlogPosts] Fetching from internal URL:', url);
+
     
     try {
       const response = await fetch(url, {
@@ -48,7 +48,7 @@ export async function fetchAllBlogPosts(): Promise<BlogPost[]> {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(`[fetchAllBlogPosts] Successfully fetched ${data?.rows?.length || 0} blog posts via internal API`);
+
         
         // Process the data and return
         return processAndFormatBlogPosts(data);
@@ -88,7 +88,7 @@ export async function fetchAllBlogPosts(): Promise<BlogPost[]> {
       const query = '?q=' + encodeURIComponent(JSON.stringify(queryObj));
       const plasmicUrl = `https://data.plasmic.app/api/v1/cms/databases/${CMS_ID}/tables/blog/query${query}`;
       
-      console.log('[fetchAllBlogPosts] Trying direct Plasmic API:', plasmicUrl);
+
       
       const authToken = `${CMS_ID}:${PUBLIC_TOKEN}`;
       const directResponse = await fetch(plasmicUrl, {
@@ -108,7 +108,7 @@ export async function fetchAllBlogPosts(): Promise<BlogPost[]> {
       }
       
       const directData = await directResponse.json();
-      console.log(`[fetchAllBlogPosts] Successfully fetched ${directData?.rows?.length || 0} blog posts via direct Plasmic API`);
+
       
       // Process the data and return
       return processAndFormatBlogPosts(directData);
@@ -133,11 +133,11 @@ function processAndFormatBlogPosts(data: any): BlogPost[] {
     const items = data.rows || data;
     
     if (!Array.isArray(items) || items.length === 0) {
-      console.log('[processAndFormatBlogPosts] No blog posts found');
+
       return [];
     }
     
-    console.log(`[processAndFormatBlogPosts] Processing ${items.length} blog posts`);
+
     
     // Map the items to our blog post schema
     const posts = items.map((item: any) => {
@@ -186,7 +186,7 @@ function processAndFormatBlogPosts(data: any): BlogPost[] {
  */
 export async function fetchBlogPostBySlug(slug: string): Promise<BlogPost | null> {
   try {
-    console.log(`Fetching blog post with slug: ${slug}`);
+
     
     // Try direct API connection to Plasmic if possible (more reliable in production)
     const directApiEnabled = process.env.NEXT_PUBLIC_USE_DIRECT_PLASMIC_API === 'true';
@@ -194,9 +194,9 @@ export async function fetchBlogPostBySlug(slug: string): Promise<BlogPost | null
     // Get URL based on environment
     const baseUrl = getBaseUrl();
     const url = `${baseUrl}/api/cms`;
-    console.log('Fetching from URL:', url);
-    console.log('Environment:', process.env.NODE_ENV);
-    console.log('Using direct API?', directApiEnabled);
+
+
+
     
     const response = await fetch(url, {
       method: "POST",
@@ -237,7 +237,7 @@ export async function fetchBlogPostBySlug(slug: string): Promise<BlogPost | null
     }
 
     const data = await response.json();
-    console.log('Raw blog post response:', typeof data === 'object' ? 'Valid JSON object' : typeof data);
+
     
     // Handle API response structure
     const items = Array.isArray(data) ? data : (data.rows || []);

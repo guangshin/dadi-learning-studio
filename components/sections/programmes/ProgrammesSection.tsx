@@ -19,9 +19,9 @@ export function ProgrammesSection() {
   useEffect(() => {
     const loadImages = async () => {
       try {
-        console.log('Fetching programme images...');
+
         const imageAssets = await fetchAllProgrammeImages();
-        console.log('Fetched images:', imageAssets);
+
         setImages(imageAssets);
       } catch (error) {
         console.error('Error loading programme images:', error);
@@ -35,7 +35,7 @@ export function ProgrammesSection() {
   
   // Debug log when images state changes
   useEffect(() => {
-    console.log('Images state updated:', images);
+
   }, [images]);
   const programs = [
     {

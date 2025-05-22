@@ -30,7 +30,7 @@ export function MomentsGallery() {
         if (mounted) {
           setGalleryImages(images);
           setLoading(false);
-          console.log('Fetched gallery images:', images);
+
         }
       })
       .catch(e => {
