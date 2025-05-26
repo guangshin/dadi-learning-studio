@@ -57,8 +57,24 @@ export function processImageUrl(url?: string, fallback = '/images/placeholder.sv
 export function extractTextFromHtml(html: string, maxLength = 160): string {
   if (!html) return '';
   
-  // Remove HTML tags
-  const text = html.replace(/<[^>]*>/g, '');
+  // Create a temporary div to parse HTML
+  let text;
+  if (typeof document !== 'undefined') {
+    // Client-side
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    text = div.textContent || div.innerText || '';
+  } else {
+    // Server-side
+    // Remove HTML tags and replace common entities
+    text = html.replace(/<[^>]*>/g, '')
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'");
+  }
   
   // Trim and limit length
   return text.trim().slice(0, maxLength) + (text.length > maxLength ? '...' : '');

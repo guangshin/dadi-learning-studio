@@ -76,8 +76,8 @@ export default function Home() {
       </section>
       <Programmes />
       <Founder />
-      <Testimonials />
       <MediaFeatures />
+      <Testimonials />
       <CTABanner
         title="Ready to Begin Your Child's Mandarin Journey?"
         subtitle="Experience our unique approach to Chinese enrichment with a free trial class."

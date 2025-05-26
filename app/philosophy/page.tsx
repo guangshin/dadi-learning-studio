@@ -71,7 +71,7 @@ export default function PhilosophyPage() {
         translation="Through committed practice, transformation begins."
         description="Beyond textbooks, students apply Mandarin in real-life conversations. They learn to speak with clarity, listen with empathy, and communicate with purpose. Respect, gratitude, and kindness are woven into every word."
         color="#B2D732"
-        image={images["Philosophy-jing"] ?? undefined}
+        image={images["Philosophy-xiu"] ?? undefined}
       />
 
       {/* Special Stillness Section */}
@@ -87,7 +87,7 @@ export default function PhilosophyPage() {
         }
         color="#A5D66F"
         reverse={true}
-        image={images["Philosophy-xiu"] ?? undefined}
+        image={images["Philosophy-jing"] ?? undefined}
       />
 
       {/* Final CTA */}

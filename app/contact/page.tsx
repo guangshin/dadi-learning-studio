@@ -1,8 +1,11 @@
 'use client';
 
-import { useState, FormEvent, ChangeEvent } from 'react';
+import { useState, FormEvent, ChangeEvent, useEffect } from 'react';
 import { MapPin, Phone, Mail, Clock, Copy, MessageSquare } from 'lucide-react';
+import { fetchContactInfo, type ContactInfo } from '@/lib/fetchContactInfo';
+import { fetchBranches, type Branch } from '@/lib/fetchBranches';
 
+// Represents a location with contact information and operating hours
 interface Location {
   id: string;
   title: string;
@@ -16,23 +19,6 @@ interface Location {
     sunday: string;
   };
 }
-
-// This would typically come from a CMS in production
-const locations: Location[] = [
-  {
-    id: 'eunos',
-    title: 'Eunos Branch (Main Studio)',
-    address: '10 Jalan Ubi, Kampong Ubi Community Centre, #02-03, Singapore 409075 (Opposite Eunos MRT)',
-    phone: '+65 8699 8667',
-    email: 'contact@dadi.com.sg',
-    mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.785197998048!2d103.89041258255615!3d1.319989299999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da18335cf5ef73%3A0xdf6e31cfca048cfd!2sDa%20Di%20Learning%20Studio!5e0!3m2!1sen!2ssg!4v1716347995637!5m2!1sen!2ssg',
-    operatingHours: {
-      weekdays: 'Wednesday to Sunday: 9:00 AM - 6:00 PM',
-      saturday: 'Monday and Tuesday: Closed',
-      sunday: 'Public Holidays: Closed'
-    }
-  }
-];
 
 interface FormData {
   name: string;
@@ -53,8 +39,98 @@ const ContactPage = () => {
     childAge: ''
   });
   
+  const [contactInfo, setContactInfo] = useState<ContactInfo>({
+    phone: "+6586998667",
+    email: "contact@dadi.com.sg",
+    calendlyUrl: "https://calendly.com/contact-dadi/2hrs",
+    instagramLink: "https://www.instagram.com/dadilearningstudio",
+    facebookLink: "https://www.facebook.com/profile.php?id=61575097831744"
+  });
+  
+  const [locations, setLocations] = useState<Location[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<{success: boolean; message: string} | null>(null);
+  
+  useEffect(() => {
+    const loadData = async () => {
+      setIsLoading(true);
+      try {
+        // Fetch contact info
+        const info = await fetchContactInfo();
+        setContactInfo(info);
+        console.log('Contact info loaded from CMS:', info);
+        
+        // Fetch branches
+        const branches = await fetchBranches();
+        console.log('Branches loaded from CMS:', branches);
+        
+        // Convert branch data to location format
+        if (branches.length > 0) {
+          const formattedLocations = branches.map(branch => {
+            // Parse operating hours from the CMS text field
+            const hoursLines = branch.operatingHours.split('\n');
+            let weekdays = '', saturday = '', sunday = '';
+            
+            if (hoursLines.length >= 1) weekdays = hoursLines[0];
+            if (hoursLines.length >= 2) saturday = hoursLines[1];
+            if (hoursLines.length >= 3) sunday = hoursLines[2];
+            
+            return {
+              id: branch.id,
+              title: branch.title,
+              address: branch.address,
+              phone: info.phone,
+              email: info.email,
+              mapEmbedUrl: branch.mapEmbedUrl,
+              operatingHours: {
+                weekdays,
+                saturday,
+                sunday
+              }
+            };
+          });
+          
+          setLocations(formattedLocations);
+        } else {
+          // Fallback location if no branches found
+          setLocations([{
+            id: 'eunos',
+            title: 'Eunos Branch (Main Studio)',
+            address: '10 Jalan Ubi, Kampong Ubi Community Centre, #02-03, Singapore 409075 (Opposite Eunos MRT)',
+            phone: info.phone,
+            email: info.email,
+            mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.785197998048!2d103.89041258255615!3d1.319989299999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da18335cf5ef73%3A0xdf6e31cfca048cfd!2sDa%20Di%20Learning%20Studio!5e0!3m2!1sen!2ssg!4v1716347995637!5m2!1sen!2ssg',
+            operatingHours: {
+              weekdays: 'Wednesday to Sunday: 9:00 AM - 6:00 PM',
+              saturday: 'Monday and Tuesday: Closed',
+              sunday: 'Public Holidays: Closed'
+            }
+          }]);
+        }
+      } catch (error) {
+        console.error('Error loading data:', error);
+        // Set fallback location if data fetching fails
+        setLocations([{
+          id: 'eunos',
+          title: 'Eunos Branch (Main Studio)',
+          address: '10 Jalan Ubi, Kampong Ubi Community Centre, #02-03, Singapore 409075 (Opposite Eunos MRT)',
+          phone: contactInfo.phone,
+          email: contactInfo.email,
+          mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.785197998048!2d103.89041258255615!3d1.319989299999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da18335cf5ef73%3A0xdf6e31cfca048cfd!2sDa%20Di%20Learning%20Studio!5e0!3m2!1sen!2ssg!4v1716347995637!5m2!1sen!2ssg',
+          operatingHours: {
+            weekdays: 'Wednesday to Sunday: 9:00 AM - 6:00 PM',
+            saturday: 'Monday and Tuesday: Closed',
+            sunday: 'Public Holidays: Closed'
+          }
+        }]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    loadData();
+  }, []);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -154,7 +230,7 @@ const ContactPage = () => {
             </h1>
             <div className="w-24 h-1.5 bg-primary mx-auto mb-6"></div>
             <p className="text-xl text-foreground/80 max-w-2xl mx-auto leading-relaxed">
-              Start your child's learning journey with Da Di today. We're here to help with any questions and guide you through enrollment.
+              Start your child's learning journey with Da Di today.
             </p>
           </div>
         </section>
@@ -172,10 +248,10 @@ const ContactPage = () => {
                       <Phone className="h-5 w-5 text-[#4C9A2A]" />
                     </div>
                     <div>
-                      <p className="text-gray-700">+65 8699 8667</p>
+                      <p className="text-gray-700">{contactInfo.phone}</p>
                       <button 
                         className="text-sm text-[#4C9A2A] hover:underline mt-1 flex items-center"
-                        onClick={() => handleCopy('+6586998667')}
+                        onClick={() => handleCopy(contactInfo.phone)}
                       >
                         <Copy className="h-3.5 w-3.5 mr-1" /> Copy Number
                       </button>
@@ -187,10 +263,10 @@ const ContactPage = () => {
                       <Mail className="h-5 w-5 text-[#4C9A2A]" />
                     </div>
                     <div>
-                      <p className="text-gray-700">contact@dadi.com.sg</p>
+                      <p className="text-gray-700">{contactInfo.email}</p>
                       <button 
                         className="text-sm text-[#4C9A2A] hover:underline mt-1 flex items-center"
-                        onClick={() => handleCopy('contact@dadi.com.sg')}
+                        onClick={() => handleCopy(contactInfo.email)}
                       >
                         <Copy className="h-3.5 w-3.5 mr-1" /> Copy Email
                       </button>
@@ -206,7 +282,7 @@ const ContactPage = () => {
                     </div>
                     <div className="flex space-x-6 pl-14">
                       <a 
-                        href="https://www.instagram.com/dadilearningstudio" 
+                        href={contactInfo.instagramLink} 
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="text-gray-600 hover:text-[#4C9A2A] transition-colors flex flex-col items-center group"
@@ -223,7 +299,7 @@ const ContactPage = () => {
                       </a>
                       
                       <a 
-                        href="https://www.facebook.com/profile.php?id=61575097831744" 
+                        href={contactInfo.facebookLink} 
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="text-gray-600 hover:text-[#4C9A2A] transition-colors flex flex-col items-center group"
@@ -249,14 +325,17 @@ const ContactPage = () => {
                     Ready to experience our teaching style? Book a free trial class with us!
                   </p>
                   <div className="pt-2">
-                    <button
+                    <a
+                      href={contactInfo.calendlyUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium text-white bg-[#4C9A2A] border border-transparent rounded-md shadow-sm hover:bg-[#3e7e22] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4C9A2A] transition-colors"
                     >
                       <svg className="w-5 h-5 mr-2 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
                       </svg>
                       Book a Free Trial
-                    </button>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -264,7 +343,13 @@ const ContactPage = () => {
               {/* Our Locations Section */}
               <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
                 <h2 className="text-2xl font-semibold mb-6 text-gray-900">Our Location(s)</h2>
-                {locations.map((location) => (
+                {isLoading ? (
+                  <div className="animate-pulse space-y-4">
+                    <div className="h-6 bg-gray-200 rounded w-3/4"></div>
+                    <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                    <div className="h-20 bg-gray-200 rounded"></div>
+                  </div>
+                ) : locations.map((location) => (
                   <div key={location.id} className="space-y-4">
                     <h3 className="text-xl font-medium text-gray-900">{location.title}</h3>
                     <div className="space-y-4">

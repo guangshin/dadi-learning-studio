@@ -158,6 +158,34 @@ class Program {
 
 ## 7. Changelog
 
+### 2025-05-26
+- Enhanced Contact page with comprehensive CMS integration:
+  - Integrated branches information with CMS model
+  - Created utility function to fetch branch data from CMS
+  - Added loading state to location section with animated placeholder
+  - Updated API endpoint to handle branches data type
+  - Improved branch data parsing to handle multi-line operating hours
+  - Created new ContactInfo model in CMS to store contact information
+  - Added API endpoint to fetch contact information from CMS
+  - Simplified hero text to be more concise
+  - Connected Book a Trial button to Calendly URL from CMS (https://calendly.com/contact-dadi/2hrs)
+  - All contact information (phone, email, social media links) now dynamically loaded from CMS
+- Improved consistency across blog/insights section:
+  - Changed "Insights & Articles" to "Insights" on the blog page header
+  - Changed "Blog" to "Insights" in the footer quick links
+  - Changed "Back to Blog" to "Back to Insights" on blog post pages
+  - Fixed HTML entity rendering in blog post previews to properly handle &nbsp; and other entities
+- Fixed images on Philosophy page: swapped the incorrectly assigned images between "修 · Apply" and "静 · Stillness" sections
+- Reordered homepage sections to follow the sequence: Meet the Founder, Media Features, What the Community Says
+- Fixed programme section links in the homepage:
+  - Updated Primary School link to '/programmes#primary'
+  - Updated Secondary School link to '/programmes#secondary'
+  - Updated Adult Learners link to '/programmes#adult'
+  - Made Preschool button text color white for consistency
+  - Changed Book a Free Trial button to link to the contact page
+- Changed "Our Philosophy" to "Philosophy" in both header and footer for consistency
+- Removed the "Scroll to explore" mouse animation from the homepage hero section
+
 ### 2025-05-20
 - Updated contact form to send emails directly to contact@dadi.com.sg
 - Improved Google Maps embed on Contact page with specific marker for Da Di Learning Studio at "10 Jalan Ubi, Kampong Ubi Community Centre, #02-03, Singapore 409075"

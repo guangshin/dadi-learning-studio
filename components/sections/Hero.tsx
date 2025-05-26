@@ -92,35 +92,7 @@ const Hero = () => {
         </motion.div>
       </div>
 
-      {/* Scroll indicator - hidden on mobile, visible on larger screens */}
-      <div className="absolute bottom-8 w-full left-0 right-0 mx-auto text-center hidden sm:block" style={{ pointerEvents: 'none' }}>
-        <motion.div 
-          className={cn(
-            'inline-flex flex-col items-center justify-center',
-            'transition-opacity duration-300',
-            isVisible ? 'opacity-100' : 'opacity-0'
-          )}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
-        >
-          <span className="text-sm text-muted-foreground mb-2 block">Scroll to explore</span>
-          <div className="w-6 h-10 border-2 border-muted-foreground/30 rounded-full flex justify-center p-1 mx-auto">
-            <motion.div
-              className="w-1 h-2 bg-muted-foreground/70 rounded-full"
-              animate={{
-                y: [0, 10, 0],
-                opacity: [0.4, 1, 0.4],
-              }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                repeatType: 'loop',
-              }}
-            />
-          </div>
-        </motion.div>
-      </div>
+      {/* Scroll indicator removed as requested */}
     </section>
   );
 };

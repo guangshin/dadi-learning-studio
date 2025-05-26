@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
+import { headers } from "next/headers";
 
 // Helper function to validate environment variables
 function validateEnvVars() {
@@ -14,6 +15,121 @@ function validateEnvVars() {
   if (missingVars.length > 0) {
     throw new Error(
       `Missing required environment variables: ${missingVars.join(", ")}`
+    );
+  }
+}
+
+export async function GET(request: Request) {
+  try {
+    validateEnvVars();
+    
+    const headersList = headers();
+    const referer = headersList.get('referer') || 'Unknown';
+    const url = new URL(request.url);
+    const type = url.searchParams.get('type');
+    
+    if (!type) {
+      return NextResponse.json(
+        { error: "Missing 'type' parameter" },
+        { status: 400 }
+      );
+    }
+    
+    console.log(`GET request for CMS type: ${type} from ${referer}`);
+    
+    // Plasmic CMS REST API endpoint (read)
+    const CMS_ID = process.env.PLASMIC_PROJECT_ID;
+    const PUBLIC_TOKEN = process.env.NEXT_PUBLIC_PLASMIC_API_TOKEN;
+    if (!PUBLIC_TOKEN) {
+      throw new Error("Missing NEXT_PUBLIC_PLASMIC_API_TOKEN (public token)");
+    }
+    
+    let collection = '';
+    let queryObj: any = {};
+    
+    // Determine which collection to query based on type
+    switch (type) {
+      case 'contactInfo':
+        collection = 'contactInfo';
+        break;
+      case 'branches':
+        collection = 'branches';
+        break;
+      case 'gallery':
+        collection = 'Gallery';
+        break;
+      default:
+        return NextResponse.json(
+          { error: `Unsupported type: ${type}` },
+          { status: 400 }
+        );
+    }
+    
+    const query = "?q=" + encodeURIComponent(JSON.stringify(queryObj));
+    const apiUrl = `https://data.plasmic.app/api/v1/cms/databases/${CMS_ID}/tables/${collection}/query${query}`;
+    const authToken = `${CMS_ID}:${PUBLIC_TOKEN}`;
+    
+    console.log(`Fetching from Plasmic CMS: ${apiUrl}`);
+    
+    const response = await fetch(apiUrl, {
+      method: "GET",
+      headers: {
+        "x-plasmic-api-cms-tokens": authToken,
+      },
+    });
+    
+    if (!response.ok) {
+      console.error(`CMS API responded with status: ${response.status} ${response.statusText}`);
+      return NextResponse.json(
+        { error: `Failed to fetch from CMS: ${response.status}` },
+        { status: response.status }
+      );
+    }
+    
+    const responseData = await response.json();
+    console.log(`Received ${responseData?.rows?.length || 0} items from CMS for type: ${type}`);
+    
+    // Process the data based on type
+    let result = {};
+    
+    if (type === 'contactInfo' && responseData.rows && responseData.rows.length > 0) {
+      const contactData = responseData.rows[0].data;
+      result = {
+        contactInfo: {
+          phone: contactData.phone || "+6586998667",
+          email: contactData.email || "contact@dadi.com.sg",
+          calendlyUrl: contactData.calendlyUrl || "https://calendly.com/contact-dadi/2hrs",
+          instagramLink: contactData.instagramLink || "https://www.instagram.com/dadilearningstudio",
+          facebookLink: contactData.facebookLink || "https://www.facebook.com/profile.php?id=61575097831744"
+        }
+      };
+    } else if (type === 'branches' && responseData.rows && responseData.rows.length > 0) {
+      const branchesData = responseData.rows.map((row: { data: any }) => ({
+        id: row.data.id || "",
+        title: row.data.title || "",
+        address: row.data.address || "",
+        operatingHours: row.data.operatingHours || "",
+        mapEmbedUrl: row.data.mapEmbedUrl || ""
+      }));
+      
+      result = {
+        branches: branchesData
+      };
+    } else if (type === 'gallery') {
+      result = responseData;
+    }
+    
+    return NextResponse.json(result);
+  } catch (error) {
+    console.error("Unexpected error in CMS API route (GET):", error);
+    const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
+    
+    return NextResponse.json(
+      {
+        error: "Internal server error",
+        message: errorMessage,
+      },
+      { status: 500 }
     );
   }
 }

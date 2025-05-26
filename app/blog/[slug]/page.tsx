@@ -198,7 +198,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
                   href="/blog"
                   className="flex items-center justify-center w-full px-4 py-3 bg-[#4C9A2A] hover:bg-[#3e7e22] text-white font-medium rounded-lg transition-colors mb-3"
                 >
-                  Back to Blog
+                  Back to Insights
                 </Link>
                 <Link 
                   href="/contact"

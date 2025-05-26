@@ -105,10 +105,13 @@ const Programmes = () => {
                   </div>
                 </div>
                 <div className="px-6 pb-6 pt-2">
-                  <Link href={`/programmes#${program.title.toLowerCase().replace(/\s+/g, '')}`}>
+                  <Link href={program.title === 'Primary School' ? '/programmes#primary' : 
+                    program.title === 'Secondary School' ? '/programmes#secondary' : 
+                    program.title === 'Adult Learners' ? '/programmes#adult' : 
+                    '/programmes#preschool'}>
                     <Button 
                       className="w-full" 
-                      style={{ backgroundColor: program.color, color: program.title === 'Preschool' ? '#333' : 'white' }}
+                      style={{ backgroundColor: program.color, color: 'white' }}
                     >
                       Learn More
                     </Button>
@@ -128,14 +131,11 @@ const Programmes = () => {
           <Button 
             variant="outline" 
             className="border-[#4CAF50] text-[#4CAF50] hover:bg-[#4CAF50]/10 text-base h-12 px-8"
-            onClick={() => {
-              const contactSection = document.getElementById('contact');
-              if (contactSection) {
-                contactSection.scrollIntoView({ behavior: 'smooth' });
-              }
-            }}
+            asChild
           >
-            Book a Free Trial Class
+            <Link href="/contact">
+              Book a Free Trial Class
+            </Link>
           </Button>
         </motion.div>
       </div>
