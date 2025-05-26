@@ -160,15 +160,23 @@ class Program {
 
 ### 2025-05-26
 - Enhanced Contact page with comprehensive CMS integration:
-  - Integrated branches information with CMS model
+  - Integrated branches information with CMS model to display multiple locations
+  - Improved data handling to properly prioritize CMS data with fallbacks only when needed
+  - Added validation for CMS data completeness to ensure reliable display
+  - Refactored operating hours to use raw text format from CMS instead of structured JSON
+  - Improved spacing between multiple branch locations with clear visual separation
+  - Fixed Google Maps display on homepage by integrating with CMS data
+  - Enhanced error handling for maps with appropriate fallbacks for different scenarios
+  - Reorganized contact page sections for better UX on both mobile and desktop:
+    - Mobile: Get in Touch → Book a Trial → Send Message → General Enquiries → Locations
+    - Desktop: Left column (Trial, Enquiries, Locations), Right column (Send Message)
   - Created utility function to fetch branch data from CMS
-  - Added loading state to location section with animated placeholder
+  - Added loading state to location sections with animated placeholder
   - Updated API endpoint to handle branches data type
-  - Improved branch data parsing to handle multi-line operating hours
   - Created new ContactInfo model in CMS to store contact information
   - Added API endpoint to fetch contact information from CMS
   - Simplified hero text to be more concise
-  - Connected Book a Trial button to Calendly URL from CMS (https://calendly.com/contact-dadi/2hrs)
+  - Updated Book a Trial Class button to link to Calendly URL from CMS (https://calendly.com/contact-dadi/2hrs)
   - All contact information (phone, email, social media links) now dynamically loaded from CMS
 - Improved consistency across blog/insights section:
   - Changed "Insights & Articles" to "Insights" on the blog page header

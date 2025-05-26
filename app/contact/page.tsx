@@ -13,11 +13,7 @@ interface Location {
   phone: string;
   email: string;
   mapEmbedUrl: string;
-  operatingHours: {
-    weekdays: string;
-    saturday: string;
-    sunday: string;
-  };
+  operatingHours: string; // Single string with complete operating hours information
 }
 
 interface FormData {
@@ -39,12 +35,13 @@ const ContactPage = () => {
     childAge: ''
   });
   
+  // Initialize with empty values, will be populated from CMS
   const [contactInfo, setContactInfo] = useState<ContactInfo>({
-    phone: "+6586998667",
-    email: "contact@dadi.com.sg",
-    calendlyUrl: "https://calendly.com/contact-dadi/2hrs",
-    instagramLink: "https://www.instagram.com/dadilearningstudio",
-    facebookLink: "https://www.facebook.com/profile.php?id=61575097831744"
+    phone: "",
+    email: "",
+    calendlyUrl: "",
+    instagramLink: "",
+    facebookLink: ""
   });
   
   const [locations, setLocations] = useState<Location[]>([]);
@@ -58,8 +55,20 @@ const ContactPage = () => {
       try {
         // Fetch contact info
         const info = await fetchContactInfo();
-        setContactInfo(info);
-        console.log('Contact info loaded from CMS:', info);
+        // Only update if we got valid data
+        if (info && info.phone && info.email) {
+          setContactInfo(info);
+          console.log('Contact info loaded from CMS:', info);
+        } else {
+          console.warn('Contact info from CMS is incomplete, using fallbacks');
+          setContactInfo({
+            phone: "+6586998667",
+            email: "contact@dadi.com.sg",
+            calendlyUrl: "https://calendly.com/contact-dadi/2hrs",
+            instagramLink: "https://www.instagram.com/dadilearningstudio",
+            facebookLink: "https://www.facebook.com/profile.php?id=61575097831744"
+          });
+        }
         
         // Fetch branches
         const branches = await fetchBranches();
@@ -68,14 +77,6 @@ const ContactPage = () => {
         // Convert branch data to location format
         if (branches.length > 0) {
           const formattedLocations = branches.map(branch => {
-            // Parse operating hours from the CMS text field
-            const hoursLines = branch.operatingHours.split('\n');
-            let weekdays = '', saturday = '', sunday = '';
-            
-            if (hoursLines.length >= 1) weekdays = hoursLines[0];
-            if (hoursLines.length >= 2) saturday = hoursLines[1];
-            if (hoursLines.length >= 3) sunday = hoursLines[2];
-            
             return {
               id: branch.id,
               title: branch.title,
@@ -83,14 +84,11 @@ const ContactPage = () => {
               phone: info.phone,
               email: info.email,
               mapEmbedUrl: branch.mapEmbedUrl,
-              operatingHours: {
-                weekdays,
-                saturday,
-                sunday
-              }
+              operatingHours: branch.operatingHours // Use the operating hours directly as a string
             };
           });
           
+          console.log(`Loaded ${formattedLocations.length} locations from CMS`);
           setLocations(formattedLocations);
         } else {
           // Fallback location if no branches found
@@ -101,28 +99,29 @@ const ContactPage = () => {
             phone: info.phone,
             email: info.email,
             mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.785197998048!2d103.89041258255615!3d1.319989299999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da18335cf5ef73%3A0xdf6e31cfca048cfd!2sDa%20Di%20Learning%20Studio!5e0!3m2!1sen!2ssg!4v1716347995637!5m2!1sen!2ssg',
-            operatingHours: {
-              weekdays: 'Wednesday to Sunday: 9:00 AM - 6:00 PM',
-              saturday: 'Monday and Tuesday: Closed',
-              sunday: 'Public Holidays: Closed'
-            }
+            operatingHours: 'Wednesday to Sunday: 9:00 AM - 6:00 PM\nMonday and Tuesday: Closed\nPublic Holidays: Closed'
           }]);
         }
       } catch (error) {
         console.error('Error loading data:', error);
+        // Set fallback contact info if data fetching fails
+        setContactInfo({
+          phone: "+6586998667",
+          email: "contact@dadi.com.sg",
+          calendlyUrl: "https://calendly.com/contact-dadi/2hrs",
+          instagramLink: "https://www.instagram.com/dadilearningstudio",
+          facebookLink: "https://www.facebook.com/profile.php?id=61575097831744"
+        });
+        
         // Set fallback location if data fetching fails
         setLocations([{
           id: 'eunos',
           title: 'Eunos Branch (Main Studio)',
           address: '10 Jalan Ubi, Kampong Ubi Community Centre, #02-03, Singapore 409075 (Opposite Eunos MRT)',
-          phone: contactInfo.phone,
-          email: contactInfo.email,
+          phone: "+6586998667", // Use hardcoded fallback instead of potentially empty contactInfo
+          email: "contact@dadi.com.sg", // Use hardcoded fallback instead of potentially empty contactInfo
           mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.785197998048!2d103.89041258255615!3d1.319989299999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da18335cf5ef73%3A0xdf6e31cfca048cfd!2sDa%20Di%20Learning%20Studio!5e0!3m2!1sen!2ssg!4v1716347995637!5m2!1sen!2ssg',
-          operatingHours: {
-            weekdays: 'Wednesday to Sunday: 9:00 AM - 6:00 PM',
-            saturday: 'Monday and Tuesday: Closed',
-            sunday: 'Public Holidays: Closed'
-          }
+          operatingHours: 'Wednesday to Sunday: 9:00 AM - 6:00 PM\nMonday and Tuesday: Closed\nPublic Holidays: Closed'
         }]);
       } finally {
         setIsLoading(false);
@@ -223,159 +222,158 @@ const ContactPage = () => {
     <div className="min-h-screen bg-background">
       <main className="container mx-auto px-4 py-8">
         {/* Hero Section */}
-        <section className="py-12 md:py-16 bg-background">
-          <div className="max-w-4xl mx-auto text-center px-4">
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-              Get in Touch
-            </h1>
-            <div className="w-24 h-1.5 bg-primary mx-auto mb-6"></div>
-            <p className="text-xl text-foreground/80 max-w-2xl mx-auto leading-relaxed">
-              Start your child's learning journey with Da Di today.
-            </p>
-          </div>
-        </section>
+        <div className="text-center mb-16">
+          <h1 className="text-4xl font-bold mb-4">Contact Us</h1>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Start your child&apos;s learning journey with Da Di today.
+          </p>
+        </div>
         
-        <div className="space-y-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Contact Information */}
-            <div className="space-y-8">
-              {/* General Enquiries Section */}
-              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                <h2 className="text-2xl font-semibold mb-6 text-gray-900">General Enquiries</h2>
-                <div className="space-y-4">
-                  <div className="flex items-center gap-4">
-                    <div className="p-2 bg-[#F0F7E6] rounded-lg">
-                      <Phone className="h-5 w-5 text-[#4C9A2A]" />
-                    </div>
-                    <div>
-                      <p className="text-gray-700">{contactInfo.phone}</p>
-                      <button 
-                        className="text-sm text-[#4C9A2A] hover:underline mt-1 flex items-center"
-                        onClick={() => handleCopy(contactInfo.phone)}
-                      >
-                        <Copy className="h-3.5 w-3.5 mr-1" /> Copy Number
-                      </button>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center gap-4">
-                    <div className="p-2 bg-[#F0F7E6] rounded-lg">
-                      <Mail className="h-5 w-5 text-[#4C9A2A]" />
-                    </div>
-                    <div>
-                      <p className="text-gray-700">{contactInfo.email}</p>
-                      <button 
-                        className="text-sm text-[#4C9A2A] hover:underline mt-1 flex items-center"
-                        onClick={() => handleCopy(contactInfo.email)}
-                      >
-                        <Copy className="h-3.5 w-3.5 mr-1" /> Copy Email
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="pt-2">
-                    <div className="flex items-center gap-4 mb-3">
-                      <div className="p-2 bg-[#F0F7E6] rounded-lg">
-                        <MessageSquare className="h-5 w-5 text-[#4C9A2A]" />
-                      </div>
-                      <p className="text-gray-700 font-medium">Connect with us on social media:</p>
-                    </div>
-                    <div className="flex space-x-6 pl-14">
-                      <a 
-                        href={contactInfo.instagramLink} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-gray-600 hover:text-[#4C9A2A] transition-colors flex flex-col items-center group"
-                        aria-label="Instagram"
-                      >
-                        <div className="p-2 bg-[#F0F7E6] rounded-full group-hover:bg-[#E0EDD1] transition-colors">
-                          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <rect x="2" y="2" width="20" height="20" rx="5" strokeWidth="1.5" />
-                            <circle cx="12" cy="12" r="4.5" strokeWidth="1.5" />
-                            <circle cx="18" cy="6" r="1" fill="currentColor" />
-                          </svg>
-                        </div>
-                        <span className="text-xs mt-1">Instagram</span>
-                      </a>
-                      
-                      <a 
-                        href={contactInfo.facebookLink} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-gray-600 hover:text-[#4C9A2A] transition-colors flex flex-col items-center group"
-                        aria-label="Facebook"
-                      >
-                        <div className="p-2 bg-[#F0F7E6] rounded-full group-hover:bg-[#E0EDD1] transition-colors">
-                          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" strokeWidth="1.5" />
-                          </svg>
-                        </div>
-                        <span className="text-xs mt-1">Facebook</span>
-                      </a>
-                    </div>
-                  </div>
+        {/* Mobile order is different from desktop */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          {/* Left column for desktop, top sections for mobile */}
+          <div className="space-y-10 flex flex-col lg:order-1 order-2">
+            {/* Book a Trial Section - Order 2 on mobile, 1 in left column on desktop */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 order-1">
+              <h2 className="text-2xl font-semibold mb-6 text-gray-900">Book a Trial Class</h2>
+              <div className="space-y-6">
+                <p className="text-gray-700">
+                  Ready to experience our teaching style? Book a free trial class with us!
+                </p>
+                <div className="pt-2">
+                  <a
+                    href={contactInfo.calendlyUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium text-white bg-[#4C9A2A] border border-transparent rounded-md shadow-sm hover:bg-[#3e7e22] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4C9A2A] transition-colors"
+                  >
+                    <svg className="w-5 h-5 mr-2 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                      <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+                    </svg>
+                    Book a Free Trial
+                  </a>
                 </div>
               </div>
+            </div>
+            
+            {/* Contact Information Section (General Enquiries) - Order 4 on mobile, 2 in left column on desktop */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 order-3 lg:order-2">
+              <h2 className="text-2xl font-semibold mb-6 text-gray-900">General Enquiries</h2>
               
-              {/* Book a Trial Section */}
-              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                <h2 className="text-2xl font-semibold mb-6 text-gray-900">Book a Trial Class</h2>
-                <div className="space-y-6">
-                  <p className="text-gray-700">
-                    Ready to experience our teaching style? Book a free trial class with us!
-                  </p>
-                  <div className="pt-2">
-                    <a
-                      href={contactInfo.calendlyUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium text-white bg-[#4C9A2A] border border-transparent rounded-md shadow-sm hover:bg-[#3e7e22] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4C9A2A] transition-colors"
+              <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                  <div className="p-2 bg-[#F0F7E6] rounded-lg">
+                    <Phone className="h-5 w-5 text-[#4C9A2A]" />
+                  </div>
+                  <div>
+                    <p className="text-gray-700">{contactInfo.phone}</p>
+                    <button 
+                      className="text-sm text-[#4C9A2A] hover:underline mt-1 flex items-center"
+                      onClick={() => handleCopy(contactInfo.phone)}
                     >
-                      <svg className="w-5 h-5 mr-2 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
-                      </svg>
-                      Book a Free Trial
+                      <Copy className="h-3.5 w-3.5 mr-1" /> Copy Number
+                    </button>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-4">
+                  <div className="p-2 bg-[#F0F7E6] rounded-lg">
+                    <Mail className="h-5 w-5 text-[#4C9A2A]" />
+                  </div>
+                  <div>
+                    <p className="text-gray-700">{contactInfo.email}</p>
+                    <button 
+                      className="text-sm text-[#4C9A2A] hover:underline mt-1 flex items-center"
+                      onClick={() => handleCopy(contactInfo.email)}
+                    >
+                      <Copy className="h-3.5 w-3.5 mr-1" /> Copy Email
+                    </button>
+                  </div>
+                </div>
+
+                <div className="pt-2">
+                  <div className="flex items-center gap-4 mb-3">
+                    <div className="p-2 bg-[#F0F7E6] rounded-lg">
+                      <MessageSquare className="h-5 w-5 text-[#4C9A2A]" />
+                    </div>
+                    <p className="text-gray-700 font-medium">Connect with us on social media:</p>
+                  </div>
+                  <div className="flex space-x-6 pl-14">
+                    <a 
+                      href={contactInfo.instagramLink} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-gray-600 hover:text-[#4C9A2A] transition-colors flex flex-col items-center group"
+                      aria-label="Instagram"
+                    >
+                      <div className="p-2 bg-[#F0F7E6] rounded-full group-hover:bg-[#E0EDD1] transition-colors">
+                        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <rect x="2" y="2" width="20" height="20" rx="5" strokeWidth="1.5" />
+                          <circle cx="12" cy="12" r="4.5" strokeWidth="1.5" />
+                          <circle cx="18" cy="6" r="1" fill="currentColor" />
+                        </svg>
+                      </div>
+                      <span className="text-xs mt-1">Instagram</span>
+                    </a>
+
+                    <a 
+                      href={contactInfo.facebookLink} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-gray-600 hover:text-[#4C9A2A] transition-colors flex flex-col items-center group"
+                      aria-label="Facebook"
+                    >
+                      <div className="p-2 bg-[#F0F7E6] rounded-full group-hover:bg-[#E0EDD1] transition-colors">
+                        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" strokeWidth="1.5" />
+                        </svg>
+                      </div>
+                      <span className="text-xs mt-1">Facebook</span>
                     </a>
                   </div>
                 </div>
               </div>
-              
-              {/* Our Locations Section */}
-              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                <h2 className="text-2xl font-semibold mb-6 text-gray-900">Our Location(s)</h2>
-                {isLoading ? (
-                  <div className="animate-pulse space-y-4">
-                    <div className="h-6 bg-gray-200 rounded w-3/4"></div>
-                    <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-                    <div className="h-20 bg-gray-200 rounded"></div>
-                  </div>
-                ) : locations.map((location) => (
-                  <div key={location.id} className="space-y-4">
+            </div>
+            
+            {/* Our Locations Section - Order 5 on mobile, 3 in left column on desktop */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 order-4 lg:order-3">
+              <h2 className="text-2xl font-semibold mb-6 text-gray-900">Our Location(s)</h2>
+              {isLoading ? (
+                <div className="animate-pulse space-y-4">
+                  <div className="h-6 bg-gray-200 rounded w-3/4"></div>
+                  <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                  <div className="h-20 bg-gray-200 rounded"></div>
+                </div>
+              ) : (
+                locations.map((location, index) => (
+                  <div key={location.id} className={`space-y-6 ${index > 0 ? 'mt-16 pt-16 border-t-2 border-gray-200' : ''}`}>
                     <h3 className="text-xl font-medium text-gray-900">{location.title}</h3>
                     <div className="space-y-4">
                       <div className="flex items-start gap-4">
-                        <div className="mt-1 p-2 bg-[#F0F7E6] rounded-lg">
+                        <div className="p-2 bg-[#F0F7E6] rounded-lg">
                           <MapPin className="h-5 w-5 text-[#4C9A2A]" />
                         </div>
-                        <div>
-                          <p className="text-gray-700">{location.address}</p>
+                        <div className="text-base text-gray-700">
+                          {location.address}
                           <button 
-                            className="text-sm text-[#4C9A2A] hover:underline mt-1 flex items-center"
+                            className="text-sm text-[#4C9A2A] hover:underline mt-1 block"
                             onClick={() => handleCopy(location.address)}
                           >
-                            <Copy className="h-3.5 w-3.5 mr-1" /> Copy Address
+                            <span className="flex items-center">
+                              <Copy className="h-3.5 w-3.5 mr-1" /> Copy Address
+                            </span>
                           </button>
                         </div>
                       </div>
                       
-                      <div className="flex items-start gap-4 pt-2">
+                      <div className="flex items-start gap-4">
                         <div className="p-2 bg-[#F0F7E6] rounded-lg">
                           <Clock className="h-5 w-5 text-[#4C9A2A]" />
                         </div>
                         <div className="text-base text-gray-700">
-                          <p>Mon - Fri: {location.operatingHours.weekdays}</p>
-                          <p>Sat: {location.operatingHours.saturday}</p>
-                          <p>Sun: {location.operatingHours.sunday}</p>
+                          {location.operatingHours.split('\n').map((line, index) => (
+                            <p key={index} className="mb-2">{line}</p>
+                          ))}
                         </div>
                       </div>
                       
@@ -407,189 +405,143 @@ const ContactPage = () => {
                       </div>
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
-            
-            {/* Contact Form */}
-            <div id="enquiryform" className="scroll-mt-20">
-              <div className="mb-6">
-                <h2 className="text-2xl font-semibold mb-2">Send Us a Message</h2>
-                <p className="text-gray-600">We'll get back to you within 1 working day.</p>
-              </div>
-              
-              <form 
-                id="contact-form"
-                className="space-y-6"
-                onSubmit={handleSubmit}
-              >
-                {submitStatus && (
-                  <div className={`p-5 rounded-md ${
-                    submitStatus.success 
-                      ? 'bg-green-50 text-green-800 border border-green-200' 
-                      : 'bg-red-50 text-red-800 border border-red-200'
-                  } flex items-start`}>
-                    <div className={`mr-3 flex-shrink-0 ${submitStatus.success ? 'text-green-600' : 'text-red-600'}`}>
-                      {submitStatus.success ? (
-                        <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                        </svg>
-                      ) : (
-                        <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                        </svg>
-                      )}
-                    </div>
-                    <div>
-                      <p className="font-medium">{submitStatus.success ? 'Success!' : 'Error!'}</p>
-                      <p className="mt-1">{submitStatus.message}</p>
-                    </div>
-                  </div>
-                )}
-                
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                    Your Name <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#4C9A2A] focus:border-[#4C9A2A] outline-none transition"
-                    placeholder="De Cheng Lim"
-                  />
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                      Email <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#4C9A2A] focus:border-[#4C9A2A] outline-none transition"
-                      placeholder="you@example.com"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
-                      Phone
-                    </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#4C9A2A] focus:border-[#4C9A2A] outline-none transition"
-                      placeholder="+65 xxxx xxxx"
-                    />
-                  </div>
-                </div>
-                
-                <div>
-                  <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
-                    Enquiry Type <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    id="subject"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#4C9A2A] focus:border-[#4C9A2A] outline-none transition"
-                  >
-                    <option value="general">General Enquiry</option>
-                    <option value="programme">Programme Information</option>
-                    <option value="trial">Book a Trial Class</option>
-                    <option value="fees">Fee Structure</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-                
-                <div>
-                  <label htmlFor="childAge" className="block text-sm font-medium text-gray-700 mb-1">
-                    Child's Age (if applicable)
-                  </label>
-                  <input
-                    type="text"
-                    id="childAge"
-                    name="childAge"
-                    value={formData.childAge}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#4C9A2A] focus:border-[#4C9A2A] outline-none transition"
-                    placeholder="e.g. 5 years old"
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-                    Message <span className="text-red-500">*</span>
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                    rows={5}
-                    className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#4C9A2A] focus:border-[#4C9A2A] outline-none transition"
-                    placeholder="Please provide details about your enquiry..."
-                  ></textarea>
-                </div>
-                
-                <div className="pt-2">
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className={`w-full sm:w-auto px-6 py-3 text-white font-medium rounded-lg transition-colors ${isSubmitting ? 'bg-[#78B86C] cursor-not-allowed' : 'bg-[#4C9A2A] hover:bg-[#3A7420]'}`}
-                  >
-                    {isSubmitting ? (
-                      <span className="flex items-center justify-center">
-                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        Sending...
-                      </span>
-                    ) : 'Send Message'}
-                  </button>
-                </div>
-              </form>
+                ))
+              )}
             </div>
           </div>
           
-          {/* Careers Banner */}
-          <div className="mt-16 bg-[#F8F9F7] rounded-2xl p-8 text-center">
-            <div className="max-w-3xl mx-auto">
-              <h3 className="text-2xl font-semibold text-gray-900 mb-3">Join Our Team</h3>
-              <p className="text-gray-700 mb-6">Passionate about teaching Mandarin? We're always looking for dedicated educators to join our growing family.</p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a 
-                  href="mailto:contact@dadi.com.sg" 
-                  className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-[#4C9A2A] hover:bg-[#3a7a21] transition-colors"
+          {/* Contact Form - Order 3 on mobile, right column on desktop */}
+          <div id="enquiryform" className="scroll-mt-20 order-2 lg:order-2">
+            <div className="mb-6">
+              <h2 className="text-2xl font-semibold mb-2">Send Us a Message</h2>
+              <p className="text-gray-600">We'll get back to you within 1 working day.</p>
+            </div>
+            
+            <form 
+              id="contact-form"
+              className="space-y-6"
+              onSubmit={handleSubmit}
+            >
+              {submitStatus && (
+                <div className={`p-4 ${submitStatus.success ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'} rounded-md flex gap-3 items-start`}>
+                  <div className="shrink-0 pt-0.5">
+                    <svg className={`h-5 w-5 ${submitStatus.success ? 'text-green-500' : 'text-red-500'}`} fill="currentColor" viewBox="0 0 20 20">
+                      {submitStatus.success ? (
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      ) : (
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                      )}
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="font-medium">{submitStatus.success ? 'Success!' : 'Error!'}</p>
+                    <p className="mt-1">{submitStatus.message}</p>
+                  </div>
+                </div>
+              )}
+              
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                  Your Name <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#4C9A2A] focus:border-[#4C9A2A] text-gray-900"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                  Email <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#4C9A2A] focus:border-[#4C9A2A] text-gray-900"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
+                  Phone Number
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#4C9A2A] focus:border-[#4C9A2A] text-gray-900"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="childAge" className="block text-sm font-medium text-gray-700 mb-1">
+                  Child&apos;s Age (if applicable)
+                </label>
+                <input
+                  type="text"
+                  id="childAge"
+                  name="childAge"
+                  value={formData.childAge}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#4C9A2A] focus:border-[#4C9A2A] text-gray-900"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
+                  Subject <span className="text-red-500">*</span>
+                </label>
+                <select
+                  id="subject"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#4C9A2A] focus:border-[#4C9A2A] text-gray-900"
                 >
-                  <Mail className="mr-2 h-5 w-5" />
-                  contact@dadi.com.sg
-                </a>
-                <button 
-                  onClick={() => handleCopy('contact@dadi.com.sg')}
-                  className="inline-flex items-center px-4 py-2 text-sm font-medium text-[#4C9A2A] hover:text-[#3a7a21]"
+                  <option value="general">General Inquiry</option>
+                  <option value="trial">Book a Trial Class</option>
+                  <option value="feedback">Feedback</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              
+              <div>
+                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+                  Message <span className="text-red-500">*</span>
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows={6}
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#4C9A2A] focus:border-[#4C9A2A] text-gray-900"
+                ></textarea>
+              </div>
+              
+              <div>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className={`w-full py-3 px-6 bg-[#4C9A2A] hover:bg-[#3e7e22] focus:ring-4 focus:ring-[#4C9A2A] focus:ring-opacity-50 text-white font-medium rounded-md shadow transition-colors ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
                 >
-                  <Copy className="mr-1.5 h-4 w-4" />
-                  Copy Email
+                  {isSubmitting ? 'Sending...' : 'Send Message'}
                 </button>
               </div>
-            </div>
+            </form>
           </div>
         </div>
       </main>
