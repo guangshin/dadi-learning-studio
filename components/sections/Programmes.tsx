@@ -133,7 +133,7 @@ const Programmes = () => {
             className="border-[#4CAF50] text-[#4CAF50] hover:bg-[#4CAF50]/10 text-base h-12 px-8"
             asChild
           >
-            <Link href="/contact">
+            <Link href="/contact#BookTrialClass">
               Book a Free Trial Class
             </Link>
           </Button>

@@ -235,7 +235,7 @@ const ContactPage = () => {
           {/* Left Column - Desktop & Top Sections - Mobile */}
           <div className="lg:w-1/2 space-y-10">
             {/* Book a Trial Class Section */}
-            <section className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+            <section id="BookTrialClass" className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
               <h2 className="text-2xl font-semibold mb-4">Book a Trial Class</h2>
               <p className="text-gray-700 mb-6">
                 Ready to experience our teaching style? Book a free trial class with us!

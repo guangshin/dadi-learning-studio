@@ -13,7 +13,7 @@ export function AboutCTA() {
             Experience the Da Di difference with a trial class and see how we make learning Mandarin joyful and effective.
           </p>
           <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-white">
-            <Link href="/contact">
+            <Link href="/contact#BookTrialClass">
               Book a Trial Class
             </Link>
           </Button>

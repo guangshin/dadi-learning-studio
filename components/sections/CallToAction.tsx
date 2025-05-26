@@ -11,7 +11,7 @@ export function CallToAction() {
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <a
-              href="/contact"
+              href="/contact#BookTrialClass"
               className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-accent hover:bg-primary transition-colors duration-200"
             >
               Book a Trial Class

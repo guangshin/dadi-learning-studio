@@ -19,7 +19,7 @@ export function ProgrammeHero() {
               Explore Our Programmes
             </Link>
             <Link 
-              href="/contact?subject=Trial%20Class"
+              href="/contact#BookTrialClass"
               className="px-8 py-4 bg-white text-primary border-2 border-primary font-medium rounded-lg hover:bg-primary/5 transition-colors duration-200"
             >
               Book a Trial Class

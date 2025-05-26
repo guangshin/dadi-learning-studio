@@ -38,7 +38,7 @@ export function PhilosophyCTA() {
               Book a trial class and discover how Mandarin can be joyful, grounded, and deeply human.
             </p>
             <Link 
-              href="/contact" 
+              href="/contact#BookTrialClass" 
               className="inline-block bg-[#A5D66F] hover:bg-[#8BC34A] text-white font-medium py-3 px-8 rounded-full transition-colors duration-300 shadow-md hover:shadow-lg font-quicksand"
             >
               Book a Trial Class

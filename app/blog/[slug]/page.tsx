@@ -198,7 +198,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
                   Back to Insights
                 </Link>
                 <Link 
-                  href="/contact"
+                  href="/contact#BookTrialClass"
                   className="flex items-center justify-center w-full px-4 py-3 bg-[#F0F7E6] hover:bg-[#E0EDD1] text-[#4C9A2A] font-medium rounded-lg transition-colors"
                 >
                   Book a Trial Class
@@ -222,7 +222,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
               Read More Articles
             </Link>
             <Link 
-              href="/contact"
+              href="/contact#BookTrialClass"
               className="px-6 py-3 bg-[#4C9A2A] hover:bg-[#3e7e22] text-white font-medium rounded-lg transition-colors shadow-sm"
             >
               Book a Trial Class

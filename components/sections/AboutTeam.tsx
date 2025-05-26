@@ -90,6 +90,11 @@ export function AboutTeam({
       </section>
     );
   }
+  
+  // Hide the entire section if no teachers are found
+  if (teachers.length === 0) {
+    return null;
+  }
 
   return (
     <section className="py-16 md:py-24 lg:py-28 bg-gray-50">
