@@ -165,7 +165,9 @@ class Program {
     - Desktop Order: Top (Get in Touch), Left column (Book a Trial Class, General Enquiries, Our Locations), Right column (Send us a Message)
   - Added proper spacing to hero section to prevent header overlap
   - Fixed Google Maps integration:
-    - Added fallback URL when CMS data is empty for map embeds
+    - Completely reworked the map embed implementation to use proper iframe embed URLs
+    - Added Google Maps API key for reliable embedding with the proper format
+    - Implemented more robust error handling with visual fallbacks
     - Improved "Open in Google Maps" link to extract coordinates from embed URL when available
     - Added multiple fallback options for map links to ensure they always work
   - Fixed form styling by explicitly setting white background for input fields with both className and inline styles
@@ -187,6 +189,7 @@ class Program {
   - Added proper ID anchor tag to Book a Trial Class section in the contact page
   - Updated all "Book a Trial Class" buttons site-wide to link directly to /contact#BookTrialClass
   - Implemented consistent navigation across all pages (homepage, programmes, philosophy, blog posts)
+  - Added scroll-margin-top and extra padding to the Book a Trial Class section to prevent content from being hidden behind the fixed header when using anchor links
 - Improved CMS data fetching reliability and performance:
   - Added robust timeout and retry mechanism to handle connection issues
   - Implemented fetchWithRetry utility function for all CMS API calls

@@ -235,7 +235,7 @@ const ContactPage = () => {
           {/* Left Column - Desktop & Top Sections - Mobile */}
           <div className="lg:w-1/2 space-y-10">
             {/* Book a Trial Class Section */}
-            <section id="BookTrialClass" className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+            <section id="BookTrialClass" className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 scroll-mt-32 pt-8">
               <h2 className="text-2xl font-semibold mb-4">Book a Trial Class</h2>
               <p className="text-gray-700 mb-6">
                 Ready to experience our teaching style? Book a free trial class with us!
@@ -375,24 +375,32 @@ const ContactPage = () => {
                       </div>
                       
                       <div className="mt-4 aspect-video rounded-lg overflow-hidden relative group">
-                        {/* Fallback if mapEmbedUrl is empty */}
-                        {location.mapEmbedUrl ? (
-                          <iframe
-                            src={location.mapEmbedUrl}
-                            width="100%"
-                            height="100%"
-                            style={{ border: 0 }}
-                            allowFullScreen
-                            loading="lazy"
-                            referrerPolicy="no-referrer-when-downgrade"
-                            title={`${location.title} on Google Maps`}
-                            onError={() => console.log(`Failed to load map for ${location.title}`)}
-                          />
-                        ) : (
-                          <div className="flex items-center justify-center h-full bg-gray-200 text-gray-600">
-                            <p>Map not available</p>
-                          </div>
-                        )}
+                        {/* Always show Google Maps embed with proper URL format */}
+                        <iframe
+                          src={location.mapEmbedUrl ? 
+                            // If we have a mapEmbedUrl from CMS, use it
+                            location.mapEmbedUrl : 
+                            // Otherwise create a proper embed URL from the address
+                            `https://www.google.com/maps/embed/v1/place?key=AIzaSyAE9gxJQQNuC0lzGw2INXM9D9ATxh_6y54&q=${encodeURIComponent(location.address)}`
+                          }
+                          width="100%"
+                          height="100%"
+                          style={{ border: 0 }}
+                          allowFullScreen
+                          loading="lazy"
+                          referrerPolicy="no-referrer-when-downgrade"
+                          title={`${location.title} on Google Maps`}
+                          onError={(e) => {
+                            console.log(`Failed to load map for ${location.title}`);
+                            // If the iframe fails to load, fallback to a static placeholder
+                            e.currentTarget.style.display = 'none';
+                            e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                          }}
+                        />
+                        {/* Fallback placeholder if iframe fails to load */}
+                        <div className="hidden flex items-center justify-center h-full bg-gray-200 text-gray-600 absolute inset-0">
+                          <p>Map not available</p>
+                        </div>
                         <a 
                           href={location.mapEmbedUrl ? 
                             // Extract coordinates from the embed URL if available
