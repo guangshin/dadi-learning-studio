@@ -378,32 +378,30 @@ const ContactPage = () => {
                         </div>
                       </div>
                       
-                      <div className="mt-4 aspect-video rounded-lg overflow-hidden relative group">
-                        {/* Use iframe content from CMS if available */}
+                      <div className="mt-4 rounded-lg overflow-hidden relative group">
                         {location.iframe ? (
-                          <div dangerouslySetInnerHTML={{ __html: location.iframe }} />
-                        ) : (
-                          <iframe
-                            src={location.mapEmbedUrl ? 
-                              // If we have a mapEmbedUrl from CMS, use it
-                              location.mapEmbedUrl : 
-                              // Otherwise create a proper embed URL from the address
-                              `https://www.google.com/maps/embed/v1/place?key=AIzaSyAE9gxJQQNuC0lzGw2INXM9D9ATxh_6y54&q=${encodeURIComponent(location.address)}`
-                            }
-                            width="100%"
-                            height="100%"
-                            style={{ border: 0 }}
-                            allowFullScreen
-                            loading="lazy"
-                            referrerPolicy="no-referrer-when-downgrade"
-                            title={`${location.title} on Google Maps`}
-                            onError={(e) => {
-                              console.log(`Failed to load map for ${location.title}`);
-                              // If the iframe fails to load, fallback to a static placeholder
-                              e.currentTarget.style.display = 'none';
-                              e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                          <div 
+                            className="w-full min-h-[300px] rounded-lg overflow-hidden"
+                            dangerouslySetInnerHTML={{ 
+                              __html: location.iframe.replace(
+                                /width="(\d+)" height="(\d+)"/,
+                                'width="100%" height="100%" style="border:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; min-height: 300px;"'
+                              )
                             }}
+                            style={{ position: 'relative', paddingBottom: '75%', height: 0 }}
                           />
+                        ) : (
+                          <div className="w-full min-h-[300px] rounded-lg overflow-hidden" style={{ position: 'relative', paddingBottom: '75%', height: 0 }}>
+                            <iframe
+                              src={location.mapEmbedUrl || `https://www.google.com/maps/embed?q=${encodeURIComponent(location.address)}`}
+                              className="rounded-lg"
+                              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                              allowFullScreen
+                              loading="lazy"
+                              referrerPolicy="no-referrer-when-downgrade"
+                              title={`${location.title} on Google Maps`}
+                            />
+                          </div>
                         )}
                         {/* Fallback placeholder if iframe fails to load */}
                         <div className="hidden flex items-center justify-center h-full bg-gray-200 text-gray-600 absolute inset-0">
