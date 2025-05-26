@@ -251,6 +251,16 @@ class Program {
 - Changed "Our Philosophy" to "Philosophy" in both header and footer for consistency
 - Removed the "Scroll to explore" mouse animation from the homepage hero section
 
+### 2025-05-26
+- Fixed deployment build errors to ensure successful Vercel deployment:
+  - Created client component wrapper for Footer to resolve React Server Components errors
+  - Updated Branch interface to include the iframe field for Google Maps embed
+  - Added fallback iframe HTML content to ensure map display when CMS data is unavailable
+  - Ensured LocationMap component properly handles the iframe field
+- Updated all Call-to-Action buttons to link to BookTrialClass section on contact page
+- Implemented dynamic Google Maps iframe display using data from CMS
+- Enhanced Footer component to pull social media links, phone, email, and address dynamically from CMS
+
 ### 2025-05-20
 - Updated contact form to send emails directly to contact@dadi.com.sg
 - Improved Google Maps embed on Contact page with specific marker for Da Di Learning Studio at "10 Jalan Ubi, Kampong Ubi Community Centre, #02-03, Singapore 409075"

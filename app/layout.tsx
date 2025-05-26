@@ -5,7 +5,7 @@ import { ThemeProvider } from '@/components/layout/ThemeProvider';
 import { Toaster } from '@/components/ui/toaster';
 // import { siteConfig } from '@/config/site';
 import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
+import FooterWrapper from '@/components/client-wrappers/FooterWrapper';
 import WhatsAppButton from '@/components/shared/WhatsAppButton';
 
 // Load fonts
@@ -97,7 +97,7 @@ export default function RootLayout({
         >
           <Navbar />
           {children}
-          <Footer />
+          <FooterWrapper />
           <WhatsAppButton />
           <Toaster />
         </ThemeProvider>
