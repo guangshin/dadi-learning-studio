@@ -163,8 +163,13 @@ class Program {
   - Fixed section ordering to follow the specified sequence:
     - Mobile Order (top to bottom): Get in Touch → Book a Trial Class → Send us a Message → General Enquiries → Our Locations
     - Desktop Order: Top (Get in Touch), Left column (Book a Trial Class, General Enquiries, Our Locations), Right column (Send us a Message)
-  - Fixed form styling by explicitly setting white background for input fields
+  - Added proper spacing to hero section to prevent header overlap
+  - Fixed Google Maps embed to use fallback URL when CMS data is empty
+  - Fixed form styling by explicitly setting white background for input fields with both className and inline styles
   - Changed form label from "Subject" to "Enquiry Type" for clarity
+  - Updated "Book a Trial" button in header to link directly to Calendly
+- Philosophy page improvements:
+  - Increased top padding in hero section (from py-16 to pt-24 on mobile and pt-32 on desktop) to prevent content from being covered by the header on smaller screens
 - Improved CMS data fetching reliability and performance:
   - Added robust timeout and retry mechanism to handle connection issues
   - Implemented fetchWithRetry utility function for all CMS API calls

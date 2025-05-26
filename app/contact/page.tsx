@@ -83,7 +83,8 @@ const ContactPage = () => {
               address: branch.address,
               phone: info.phone,
               email: info.email,
-              mapEmbedUrl: branch.mapEmbedUrl,
+              // If mapEmbedUrl is empty from CMS, use a default URL generated from the address
+              mapEmbedUrl: branch.mapEmbedUrl || `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent(branch.address)}`,
               operatingHours: branch.operatingHours // Use the operating hours directly as a string
             };
           });
@@ -221,43 +222,40 @@ const ContactPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <main className="container mx-auto px-4 py-8">
-        {/* 1. Hero Section - First on both mobile and desktop */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl font-bold mb-4">Get in Touch</h1>
+        {/* Hero Section - Black text with proper spacing */}
+        <div className="text-center mb-16 mt-16">
+          <h1 className="text-4xl font-bold mb-4 text-black">Get in Touch</h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Start your child&apos;s learning journey with Da Di today.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-          {/* LEFT COLUMN FOR DESKTOP */}
-          <div className="flex flex-col space-y-10">
-            {/* 2. Book a Trial Class - Second on mobile */}
-            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 order-2 lg:order-none">
-              <h2 className="text-2xl font-semibold mb-6 text-gray-900">Book a Trial Class</h2>
-              <div className="space-y-6">
-                <p className="text-gray-700">
-                  Ready to experience our teaching style? Book a free trial class with us!
-                </p>
-                <div className="pt-2">
-                  <a
-                    href={contactInfo.calendlyUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium text-white bg-[#4C9A2A] border border-transparent rounded-md shadow-sm hover:bg-[#3e7e22] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4C9A2A] transition-colors"
-                  >
-                    <svg className="w-5 h-5 mr-2 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                      <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
-                    </svg>
-                    Book a Free Trial
-                  </a>
-                </div>
-              </div>
-            </div>
+        {/* Content Layout */}
+        <div className="flex flex-col lg:flex-row gap-10">
+          {/* Left Column - Desktop & Top Sections - Mobile */}
+          <div className="lg:w-1/2 space-y-10">
+            {/* Book a Trial Class Section */}
+            <section className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+              <h2 className="text-2xl font-semibold mb-4">Book a Trial Class</h2>
+              <p className="text-gray-700 mb-6">
+                Ready to experience our teaching style? Book a free trial class with us!
+              </p>
+              <a
+                href={contactInfo.calendlyUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center w-full px-6 py-3 text-base font-medium text-white bg-[#4C9A2A] border border-transparent rounded-md shadow-sm hover:bg-[#3e7e22] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4C9A2A] transition-colors"
+              >
+                <svg className="w-5 h-5 mr-2 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+                </svg>
+                Book a Free Trial
+              </a>
+            </section>
             
-            {/* 4. General Enquiries - Fourth on mobile */}
-            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 order-4 lg:order-none">
-              <h2 className="text-2xl font-semibold mb-6 text-gray-900">General Enquiries</h2>
+            {/* General Enquiries Section */}
+            <section className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+              <h2 className="text-2xl font-semibold mb-6">General Enquiries</h2>
               
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
@@ -289,7 +287,7 @@ const ContactPage = () => {
                     </button>
                   </div>
                 </div>
-
+                
                 <div className="pt-2">
                   <div className="flex items-center gap-4 mb-3">
                     <div className="p-2 bg-[#F0F7E6] rounded-lg">
@@ -332,11 +330,11 @@ const ContactPage = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </section>
             
-            {/* 5. Our Locations - Fifth on mobile */}
-            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 order-5 lg:order-none">
-              <h2 className="text-2xl font-semibold mb-6 text-gray-900">Our Location(s)</h2>
+            {/* Our Locations Section */}
+            <section className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+              <h2 className="text-2xl font-semibold mb-6">Our Location(s)</h2>
               {isLoading ? (
                 <div className="animate-pulse space-y-4">
                   <div className="h-6 bg-gray-200 rounded w-3/4"></div>
@@ -377,16 +375,24 @@ const ContactPage = () => {
                       </div>
                       
                       <div className="mt-4 aspect-video rounded-lg overflow-hidden relative group">
-                        <iframe
-                          src={location.mapEmbedUrl}
-                          width="100%"
-                          height="100%"
-                          style={{ border: 0 }}
-                          allowFullScreen
-                          loading="lazy"
-                          referrerPolicy="no-referrer-when-downgrade"
-                          title={`${location.title} on Google Maps`}
-                        />
+                        {/* Fallback if mapEmbedUrl is empty */}
+                        {location.mapEmbedUrl ? (
+                          <iframe
+                            src={location.mapEmbedUrl}
+                            width="100%"
+                            height="100%"
+                            style={{ border: 0 }}
+                            allowFullScreen
+                            loading="lazy"
+                            referrerPolicy="no-referrer-when-downgrade"
+                            title={`${location.title} on Google Maps`}
+                            onError={() => console.log(`Failed to load map for ${location.title}`)}
+                          />
+                        ) : (
+                          <div className="flex items-center justify-center h-full bg-gray-200 text-gray-600">
+                            <p>Map not available</p>
+                          </div>
+                        )}
                         <a 
                           href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.address)}`}
                           target="_blank"
@@ -406,141 +412,147 @@ const ContactPage = () => {
                   </div>
                 ))
               )}
-            </div>
+            </section>
           </div>
           
-          {/* RIGHT COLUMN - Form - 3rd on mobile */}
-          <div id="enquiryform" className="order-3 lg:order-none scroll-mt-20">
-            <div className="mb-6">
+          {/* Right Column - Form */}
+          <div className="lg:w-1/2 order-first lg:order-last mb-10 lg:mb-0">
+            <section className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
               <h2 className="text-2xl font-semibold mb-2">Send Us a Message</h2>
-              <p className="text-gray-600">We'll get back to you within 1 working day.</p>
-            </div>
-            
-            <form 
-              id="contact-form"
-              className="space-y-6"
-              onSubmit={handleSubmit}
-            >
-              {submitStatus && (
-                <div className={`p-4 ${submitStatus.success ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'} rounded-md flex gap-3 items-start`}>
-                  <div className="shrink-0 pt-0.5">
-                    <svg className={`h-5 w-5 ${submitStatus.success ? 'text-green-500' : 'text-red-500'}`} fill="currentColor" viewBox="0 0 20 20">
-                      {submitStatus.success ? (
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      ) : (
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                      )}
-                    </svg>
+              <p className="text-gray-600 mb-6">We&apos;ll get back to you within 1 working day.</p>
+              
+              <form 
+                id="contact-form"
+                className="space-y-6"
+                onSubmit={handleSubmit}
+              >
+                {submitStatus && (
+                  <div className={`p-4 ${submitStatus.success ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'} rounded-md flex gap-3 items-start`}>
+                    <div className="shrink-0 pt-0.5">
+                      <svg className={`h-5 w-5 ${submitStatus.success ? 'text-green-500' : 'text-red-500'}`} fill="currentColor" viewBox="0 0 20 20">
+                        {submitStatus.success ? (
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        ) : (
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                        )}
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="font-medium">{submitStatus.success ? 'Success!' : 'Error!'}</p>
+                      <p className="mt-1">{submitStatus.message}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-medium">{submitStatus.success ? 'Success!' : 'Error!'}</p>
-                    <p className="mt-1">{submitStatus.message}</p>
-                  </div>
+                )}
+                
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                    Your Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:ring-[#4C9A2A] focus:border-[#4C9A2A] text-gray-900"
+                    style={{ backgroundColor: "white" }}
+                  />
                 </div>
-              )}
-              
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                  Your Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:ring-[#4C9A2A] focus:border-[#4C9A2A] text-gray-900"
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                  Email <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:ring-[#4C9A2A] focus:border-[#4C9A2A] text-gray-900"
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:ring-[#4C9A2A] focus:border-[#4C9A2A] text-gray-900"
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="childAge" className="block text-sm font-medium text-gray-700 mb-1">
-                  Child&apos;s Age (if applicable)
-                </label>
-                <input
-                  type="text"
-                  id="childAge"
-                  name="childAge"
-                  value={formData.childAge}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:ring-[#4C9A2A] focus:border-[#4C9A2A] text-gray-900"
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
-                  Enquiry Type <span className="text-red-500">*</span>
-                </label>
-                <select
-                  id="subject"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:ring-[#4C9A2A] focus:border-[#4C9A2A] text-gray-900"
-                >
-                  <option value="general">General Enquiry</option>
-                  <option value="trial">Book a Trial Class</option>
-                  <option value="feedback">Feedback</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-              
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-                  Message <span className="text-red-500">*</span>
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={6}
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:ring-[#4C9A2A] focus:border-[#4C9A2A] text-gray-900"
-                ></textarea>
-              </div>
-              
-              <div>
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className={`w-full py-3 px-6 bg-[#4C9A2A] hover:bg-[#3e7e22] focus:ring-4 focus:ring-[#4C9A2A] focus:ring-opacity-50 text-white font-medium rounded-md shadow transition-colors ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
-                >
-                  {isSubmitting ? 'Sending...' : 'Send Message'}
-                </button>
-              </div>
-            </form>
+                
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                    Email <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:ring-[#4C9A2A] focus:border-[#4C9A2A] text-gray-900"
+                    style={{ backgroundColor: "white" }}
+                  />
+                </div>
+                
+                <div>
+                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:ring-[#4C9A2A] focus:border-[#4C9A2A] text-gray-900"
+                    style={{ backgroundColor: "white" }}
+                  />
+                </div>
+                
+                <div>
+                  <label htmlFor="childAge" className="block text-sm font-medium text-gray-700 mb-1">
+                    Child&apos;s Age (if applicable)
+                  </label>
+                  <input
+                    type="text"
+                    id="childAge"
+                    name="childAge"
+                    value={formData.childAge}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:ring-[#4C9A2A] focus:border-[#4C9A2A] text-gray-900"
+                    style={{ backgroundColor: "white" }}
+                  />
+                </div>
+                
+                <div>
+                  <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
+                    Enquiry Type <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    id="subject"
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:ring-[#4C9A2A] focus:border-[#4C9A2A] text-gray-900"
+                    style={{ backgroundColor: "white" }}
+                  >
+                    <option value="general">General Enquiry</option>
+                    <option value="trial">Book a Trial Class</option>
+                    <option value="feedback">Feedback</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+                    Message <span className="text-red-500">*</span>
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows={6}
+                    value={formData.message}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:ring-[#4C9A2A] focus:border-[#4C9A2A] text-gray-900"
+                    style={{ backgroundColor: "white" }}
+                  ></textarea>
+                </div>
+                
+                <div>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className={`w-full py-3 px-6 bg-[#4C9A2A] hover:bg-[#3e7e22] focus:ring-4 focus:ring-[#4C9A2A] focus:ring-opacity-50 text-white font-medium rounded-md shadow transition-colors ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+                  >
+                    {isSubmitting ? 'Sending...' : 'Send Message'}
+                  </button>
+                </div>
+              </form>
+            </section>
           </div>
         </div>
       </main>

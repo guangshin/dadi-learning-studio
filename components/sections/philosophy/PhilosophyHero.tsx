@@ -16,7 +16,7 @@ export function PhilosophyHero({
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0 bg-[url('/images/patterns/cross-dots.svg')] bg-center"></div>
       </div>
-      <div className="container mx-auto px-4 py-16 md:py-24">
+      <div className="container mx-auto px-4 pt-24 pb-16 md:pt-32 md:pb-24">
         <div className="flex flex-col lg:flex-row items-center gap-12">
           {/* Left Column - Text */}
           <motion.div

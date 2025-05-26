@@ -145,9 +145,9 @@ const Navbar = () => {
             asChild
             className="bg-primary hover:bg-primary/90 text-white"
           >
-            <Link href="/contact">
+            <a href="https://calendly.com/contact-dadi/2hrs" target="_blank" rel="noopener noreferrer">
               Book a Trial
-            </Link>
+            </a>
           </Button>
         </div>
 

@@ -17,7 +17,7 @@ export function WhyDaDi() {
       <div className="container mx-auto px-4 max-w-5xl">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
-            The Heart Behind Dadi
+            The Heart Behind Da Di
           </h2>
           <div className="w-24 h-1.5 bg-primary mx-auto mb-8"></div>
         </div>
