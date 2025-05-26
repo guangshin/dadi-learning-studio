@@ -164,7 +164,10 @@ class Program {
     - Mobile Order (top to bottom): Get in Touch → Book a Trial Class → Send us a Message → General Enquiries → Our Locations
     - Desktop Order: Top (Get in Touch), Left column (Book a Trial Class, General Enquiries, Our Locations), Right column (Send us a Message)
   - Added proper spacing to hero section to prevent header overlap
-  - Fixed Google Maps embed to use fallback URL when CMS data is empty
+  - Fixed Google Maps integration:
+    - Added fallback URL when CMS data is empty for map embeds
+    - Improved "Open in Google Maps" link to extract coordinates from embed URL when available
+    - Added multiple fallback options for map links to ensure they always work
   - Fixed form styling by explicitly setting white background for input fields with both className and inline styles
   - Changed form label from "Subject" to "Enquiry Type" for clarity
   - Updated "Book a Trial" button in header to link directly to Calendly

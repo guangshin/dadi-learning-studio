@@ -394,7 +394,15 @@ const ContactPage = () => {
                           </div>
                         )}
                         <a 
-                          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.address)}`}
+                          href={location.mapEmbedUrl ? 
+                            // Extract coordinates from the embed URL if available
+                            location.mapEmbedUrl.includes('@') ? 
+                              `https://www.google.com/maps/place/${location.mapEmbedUrl.split('@')[1].split(',')[0]},${location.mapEmbedUrl.split('@')[1].split(',')[1]}` :
+                              // Fallback to search by address
+                              `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.address)}` :
+                            // Default fallback to Da Di's location
+                            `https://www.google.com/maps/place/1.319989,103.8904126`
+                          }
                           target="_blank"
                           rel="noopener noreferrer"
                           className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
