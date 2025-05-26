@@ -1,8 +1,31 @@
 import Link from 'next/link';
 import Logo from '@/components/shared/Logo';
 import { PhoneCall, Mail, MapPin, Facebook, Instagram } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { ContactInfo, fetchContactInfo } from '@/lib/fetchContactInfo';
 
 const Footer = () => {
+  const [contactInfo, setContactInfo] = useState<ContactInfo>({
+    phone: "+6586998667",
+    email: "contact@dadi.com.sg",
+    calendlyUrl: "https://calendly.com/contact-dadi/2hrs",
+    instagramLink: "https://www.instagram.com/dadilearningstudio",
+    facebookLink: "https://www.facebook.com/people/Da-Di-Learning-Studio/61575097831744/"
+  });
+  
+  useEffect(() => {
+    const loadContactInfo = async () => {
+      try {
+        const info = await fetchContactInfo();
+        setContactInfo(info);
+      } catch (error) {
+        console.error('Failed to load contact info for footer:', error);
+      }
+    };
+    
+    loadContactInfo();
+  }, []);
+  
   return (
     <footer className="bg-gray-50 py-12">
       <div className="container mx-auto px-4">
@@ -16,7 +39,7 @@ const Footer = () => {
             </p>
             <div className="flex space-x-4">
               <a 
-                href="https://www.facebook.com/people/Da-Di-Learning-Studio/61575097831744/" 
+                href={contactInfo.facebookLink} 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="h-10 w-10 rounded-full bg-[#4C9A2A]/10 flex items-center justify-center text-[#4C9A2A] hover:bg-[#4C9A2A]/20 transition-colors"
@@ -27,7 +50,7 @@ const Footer = () => {
                 </svg>
               </a>
               <a 
-                href="https://www.instagram.com/dadilearningstudio" 
+                href={contactInfo.instagramLink} 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="h-10 w-10 rounded-full bg-[#4C9A2A]/10 flex items-center justify-center text-[#4C9A2A] hover:bg-[#4C9A2A]/20 transition-colors"
@@ -60,11 +83,11 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-3">
                 <PhoneCall className="h-5 w-5 text-[#9BC53D]" />
-                <span className="text-gray-600">+65 8699 8667</span>
+                <span className="text-gray-600">{contactInfo.phone}</span>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="h-5 w-5 text-[#9BC53D]" />
-                <span className="text-gray-600">contact@dadi.com.sg</span>
+                <span className="text-gray-600">{contactInfo.email}</span>
               </li>
             </ul>
           </div>

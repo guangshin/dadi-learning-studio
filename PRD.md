@@ -190,6 +190,11 @@ class Program {
   - Updated all "Book a Trial Class" buttons site-wide to link directly to /contact#BookTrialClass
   - Implemented consistent navigation across all pages (homepage, programmes, philosophy, blog posts)
   - Added scroll-margin-top and extra padding to the Book a Trial Class section to prevent content from being hidden behind the fixed header when using anchor links
+  - Updated CTABanner component to direct users to BookTrialClass section instead of the enquiry form
+- CMS integration improvements:
+  - Enhanced Footer component to pull contact information dynamically from the CMS
+  - Added social media links, phone, and email in footer to use live data from CMS
+  - Implemented proper fallbacks if CMS data is unavailable
 - Improved CMS data fetching reliability and performance:
   - Added robust timeout and retry mechanism to handle connection issues
   - Implemented fetchWithRetry utility function for all CMS API calls

@@ -22,7 +22,7 @@ export function CTABanner({
   const isExternal = buttonLink?.startsWith('http');
   // Add hash to contact page links
   const href = isExternal ? buttonLink : 
-    buttonLink === '/contact' ? `${buttonLink}#enquiryform` : buttonLink;
+    buttonLink === '/contact' ? `${buttonLink}#BookTrialClass` : buttonLink;
   
   const containerClasses = cn(
     'py-16 px-4 sm:px-6 lg:px-8',
