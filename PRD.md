@@ -170,6 +170,13 @@ class Program {
   - Updated "Book a Trial" button in header to link directly to Calendly
 - Philosophy page improvements:
   - Increased top padding in hero section (from py-16 to pt-24 on mobile and pt-32 on desktop) to prevent content from being covered by the header on smaller screens
+- Programmes page improvements:
+  - Fixed the Moments gallery carousel to smoothly loop through all photos without abruptly resetting
+  - Implemented a more robust infinite scroll by using three sets of images and seamless position transitioning
+  - Added proper TypeScript type annotations to improve code quality
+- Build improvements:
+  - Fixed build errors by removing temporary files
+  - Ensured successful production build with no critical errors
 - Improved CMS data fetching reliability and performance:
   - Added robust timeout and retry mechanism to handle connection issues
   - Implemented fetchWithRetry utility function for all CMS API calls

@@ -59,25 +59,31 @@ export function MomentsGallery() {
 
   const scrollInterval = useRef<NodeJS.Timeout>();
 
-  // Duplicate the images for infinite scroll effect
-  const duplicatedImages = [...galleryImages, ...galleryImages];
+  // Triple the images for smoother infinite scroll effect (original + 2 copies)
+  const triplicatedImages = [...galleryImages, ...galleryImages, ...galleryImages];
 
   useEffect(() => {
     const scrollContainer = containerRef.current;
-    if (!scrollContainer) return;
+    if (!scrollContainer || galleryImages.length === 0) return;
 
     const scrollSpeed = 1; // pixels per frame
     let scrollPosition = 0;
-    const maxScroll = scrollContainer.scrollWidth / 2;
+    // Use single set width instead of full width/2 for smoother transitions
+    const singleSetWidth = scrollContainer.scrollWidth / 3;
+
+    // Start from the middle set to allow scrolling in both directions
+    scrollPosition = singleSetWidth;
+    scrollContainer.scrollLeft = scrollPosition;
 
     const scroll = () => {
       if (isPaused) return;
       
       scrollPosition += scrollSpeed;
       
-      // Reset scroll position for infinite effect
-      if (scrollPosition >= maxScroll) {
-        scrollPosition = 0;
+      // When we reach the end of middle set, jump back to the first set's equivalent position
+      if (scrollPosition >= singleSetWidth * 2) {
+        // Reset to the same relative position in the first set
+        scrollPosition = scrollPosition - singleSetWidth;
       }
       
       scrollContainer.scrollLeft = scrollPosition;
@@ -90,7 +96,7 @@ export function MomentsGallery() {
         clearInterval(scrollInterval.current);
       }
     };
-  }, [isPaused]);
+  }, [isPaused, galleryImages.length]);
 
   return (
     <section className="py-16 bg-[#FAF9F6]">
@@ -128,7 +134,7 @@ export function MomentsGallery() {
           className="flex overflow-x-auto no-scrollbar pb-8 -mx-4 md:-mx-8 px-4 md:px-8"
         >
           <div className="flex space-x-6">
-            {duplicatedImages.map((image, index) => (
+            {triplicatedImages.map((image: ImageItem, index: number) => (
               <div 
                 key={`${image.src}-${index}`}
                 className="flex-shrink-0 w-64 md:w-80 h-48 md:h-64 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 hover:scale-[1.02]"
