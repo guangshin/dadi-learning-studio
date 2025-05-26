@@ -379,23 +379,37 @@ const ContactPage = () => {
                       </div>
                       
                       <div className="mt-4 rounded-lg overflow-hidden relative group">
-                        <div className="w-full min-h-[300px] rounded-lg overflow-hidden" style={{ position: 'relative', paddingBottom: '75%', height: 0 }}>
-                          <iframe
-                            src={location.iframe || location.mapEmbedUrl || `https://www.google.com/maps/embed?q=${encodeURIComponent(location.address)}`}
-                            className="rounded-lg"
-                            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
-                            allowFullScreen
-                            loading="lazy"
-                            referrerPolicy="no-referrer-when-downgrade"
-                            title={`${location.title} on Google Maps`}
-                            onError={(e) => {
-                              console.log(`Failed to load map for ${location.title}`);
-                              // If the iframe fails to load, show the fallback
-                              e.currentTarget.style.display = 'none';
-                              e.currentTarget.parentElement?.nextElementSibling?.classList.remove('hidden');
+                        {/* Check if iframe is a complete HTML string (containing '<iframe') */}
+                        {location.iframe && location.iframe.includes('<iframe') ? (
+                          <div 
+                            className="w-full min-h-[300px] rounded-lg overflow-hidden"
+                            dangerouslySetInnerHTML={{ 
+                              __html: location.iframe.replace(
+                                /width="(\d+)" height="(\d+)"/,
+                                'width="100%" height="100%" style="border:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; min-height: 300px;"'
+                              )
                             }}
+                            style={{ position: 'relative', paddingBottom: '75%', height: 0 }}
                           />
-                        </div>
+                        ) : (
+                          <div className="w-full min-h-[300px] rounded-lg overflow-hidden" style={{ position: 'relative', paddingBottom: '75%', height: 0 }}>
+                            <iframe
+                              src={location.iframe || location.mapEmbedUrl || `https://www.google.com/maps/embed?q=${encodeURIComponent(location.address)}`}
+                              className="rounded-lg"
+                              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                              allowFullScreen
+                              loading="lazy"
+                              referrerPolicy="no-referrer-when-downgrade"
+                              title={`${location.title} on Google Maps`}
+                              onError={(e) => {
+                                console.log(`Failed to load map for ${location.title}`);
+                                // If the iframe fails to load, show the fallback
+                                e.currentTarget.style.display = 'none';
+                                e.currentTarget.parentElement?.nextElementSibling?.classList.remove('hidden');
+                              }}
+                            />
+                          </div>
+                        )}
                         {/* Fallback placeholder if iframe fails to load */}
                         <div className="hidden flex items-center justify-center h-full bg-gray-200 text-gray-600 absolute inset-0">
                           <p>Map not available</p>
