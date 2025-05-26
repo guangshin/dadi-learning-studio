@@ -158,6 +158,30 @@ class Program {
 
 ## 7. Changelog
 
+### 2025-05-27
+- Contact page improvements:
+  - Fixed section ordering to follow the specified sequence:
+    - Mobile Order (top to bottom): Get in Touch → Book a Trial Class → Send us a Message → General Enquiries → Our Locations
+    - Desktop Order: Top (Get in Touch), Left column (Book a Trial Class, General Enquiries, Our Locations), Right column (Send us a Message)
+  - Fixed form styling by explicitly setting white background for input fields
+  - Changed form label from "Subject" to "Enquiry Type" for clarity
+- Improved CMS data fetching reliability and performance:
+  - Added robust timeout and retry mechanism to handle connection issues
+  - Implemented fetchWithRetry utility function for all CMS API calls
+  - Enhanced error handling and logging for better debugging
+  - Extended timeout duration to 15 seconds with 3 retry attempts
+  - Added exponential backoff strategy for failed API requests
+- Fixed gallery images loading issue:
+  - Improved error handling in MomentsGallery component
+  - Added fallback for failed image loads to prevent UI breaking
+  - Enhanced URL processing to ensure compatibility with Next.js Image component
+  - Added better debugging tools including console logging of image data structure
+  - Implemented filter to remove invalid image entries with empty URLs
+- General system improvements:
+  - Created reusable fetchWithRetry utility for all network requests
+  - Improved error messages to provide more actionable information
+  - Enhanced loading states with better visual feedback
+
 ### 2025-05-26
 - Enhanced Contact page with comprehensive CMS integration:
   - Integrated branches information with CMS model to display multiple locations
@@ -167,9 +191,9 @@ class Program {
   - Improved spacing between multiple branch locations with clear visual separation
   - Fixed Google Maps display on homepage by integrating with CMS data
   - Enhanced error handling for maps with appropriate fallbacks for different scenarios
-  - Reorganized contact page sections for better UX on both mobile and desktop:
-    - Mobile: Get in Touch → Book a Trial → Send Message → General Enquiries → Locations
-    - Desktop: Left column (Trial, Enquiries, Locations), Right column (Send Message)
+  - Fixed contact page section order for proper mobile and desktop experience:
+    - Mobile (top to bottom): Get in Touch → Book a Trial Class → Send us a Message → General Enquiries → Our Locations
+    - Desktop: Top (Get in Touch), Left column (Book a Trial Class, General Enquiries, Our Locations), Right column (Send us a Message)
   - Created utility function to fetch branch data from CMS
   - Added loading state to location sections with animated placeholder
   - Updated API endpoint to handle branches data type
@@ -180,9 +204,10 @@ class Program {
   - All contact information (phone, email, social media links) now dynamically loaded from CMS
 - Improved consistency across blog/insights section:
   - Changed "Insights & Articles" to "Insights" on the blog page header
-  - Changed "Blog" to "Insights" in the footer quick links
-  - Changed "Back to Blog" to "Back to Insights" on blog post pages
-  - Fixed HTML entity rendering in blog post previews to properly handle &nbsp; and other entities
+  - Updated footer to change "Blog" to "Insights"
+  - Changed "Back to Blog" button to "Back to Insights" on individual blog posts
+  - Removed hardcoded author description from blog post pages
+  - Fixed HTML entity rendering issues in blog previews to properly handle &nbsp; and other entities
 - Fixed images on Philosophy page: swapped the incorrectly assigned images between "修 · Apply" and "静 · Stillness" sections
 - Reordered homepage sections to follow the sequence: Meet the Founder, Media Features, What the Community Says
 - Fixed programme section links in the homepage:

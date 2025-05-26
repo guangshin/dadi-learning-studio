@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
+import { fetchWithRetry } from "@/lib/fetchWithRetry";
 
 // Helper function to validate environment variables
 function validateEnvVars() {
@@ -71,12 +72,18 @@ export async function GET(request: Request) {
     
     console.log(`Fetching from Plasmic CMS: ${apiUrl}`);
     
-    const response = await fetch(apiUrl, {
-      method: "GET",
-      headers: {
-        "x-plasmic-api-cms-tokens": authToken,
+    // Use our fetchWithRetry utility with a longer timeout for local development
+    const response = await fetchWithRetry(
+      apiUrl, 
+      {
+        headers: {
+          "x-plasmic-api-cms-tokens": authToken,
+        },
+        next: { revalidate: 60 },  // Cache for 60 seconds
       },
-    });
+      3,  // 3 retries
+      15000  // 15 second timeout
+    );
     
     if (!response.ok) {
       console.error(`CMS API responded with status: ${response.status} ${response.statusText}`);
@@ -135,22 +142,12 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-
-
   try {
-    // Log request details
-
-
-
     // Validate environment variables
-
     validateEnvVars();
-
+    
     // Parse request body
-
     const requestBody = await request.json();
-
-
     const { collection, filters, limit } = requestBody;
 
     if (!collection) {
@@ -178,22 +175,28 @@ export async function POST(request: Request) {
     if (limit) {
       queryObj.limit = limit;
     }
-    // If no limit is specified, fetch all (do not set limit)
-    const query = "?q=" + encodeURIComponent(JSON.stringify(queryObj));
-    const url = `https://data.plasmic.app/api/v1/cms/databases/${CMS_ID}/tables/${collection}/query${query}`;
+    // If no limit is specified, fetch all    // Construct the API URL
+    const query = encodeURIComponent(JSON.stringify(queryObj));
+    const apiUrl = `https://data.plasmic.app/api/v1/cms/databases/${CMS_ID}/tables/${collection}/query?q=${query}`;
 
+    // Log the API URL being called
+    console.log(`POST request fetching from Plasmic CMS: ${apiUrl}`);
 
-
-    // Use public token for read
+    // Set up authentication headers
     const authToken = `${CMS_ID}:${PUBLIC_TOKEN}`;
 
-
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "x-plasmic-api-cms-tokens": authToken,
+    // Make the API request with retry logic and timeout
+    const response = await fetchWithRetry(
+      apiUrl, 
+      {
+        method: "GET",
+        headers: {
+          "x-plasmic-api-cms-tokens": authToken,
+        },
       },
-    });
+      3,  // 3 retries
+      15000  // 15 second timeout
+    );
 
     if (!response.ok) {
       console.error(

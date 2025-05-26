@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import { processImageUrl } from '@/lib/clientUtils';
 
 type ImageItem = {
   src: string;
@@ -20,23 +21,39 @@ export function MomentsGallery() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isPaused, setIsPaused] = useState(false);
+  const [imagesLoaded, setImagesLoaded] = useState(0); // Track loaded images
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let mounted = true;
     setLoading(true);
+    
+    // Fetch gallery images with proper error handling
     fetchGalleryImages()
       .then(images => {
         if (mounted) {
-          setGalleryImages(images);
+          console.log(`Received ${images.length} gallery images`);
+          
+          // Filter out any images with empty src
+          const validImages = images.filter((img: ImageItem) => img.src && img.src.trim() !== '');
+          
+          if (validImages.length === 0 && images.length > 0) {
+            // We got images but all URLs are empty - likely a data structure issue
+            console.error('Gallery images returned but all have empty URLs');
+            setError('Image data format issue. Please check console for details.');
+          } else {
+            setGalleryImages(validImages);
+          }
+          
           setLoading(false);
-
         }
       })
       .catch(e => {
+        console.error('Error in gallery fetch:', e);
         setError(e.message || 'Failed to load gallery');
         setLoading(false);
       });
+      
     return () => { mounted = false; };
   }, []);
 
@@ -119,16 +136,23 @@ export function MomentsGallery() {
                 <div className="relative w-full h-full bg-gray-100">
                   {image.src ? (
                     <Image
-                      src={image.src}
-                      alt={image.alt}
-                      width={image.width}
-                      height={image.height}
+                      src={processImageUrl(image.src)} // Process URL to ensure compatibility
+                      alt={image.alt || 'Da Di Learning Studio gallery image'}
+                      width={image.width || 800}
+                      height={image.height || 600}
                       className="w-full h-full object-cover"
                       priority={index < 4}
+                      onLoadingComplete={() => setImagesLoaded(prev => prev + 1)}
+                      onError={(e) => {
+                        console.error(`Failed to load image: ${image.src}`, e);
+                        // Show the error but don't break the UI
+                        (e.target as HTMLImageElement).style.display = 'none';
+                      }}
+                      unoptimized // Use this if Next.js image optimization causes issues
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-gray-400">
-                      {image.alt}
+                      Image Unavailable
                     </div>
                   )}
                 </div>

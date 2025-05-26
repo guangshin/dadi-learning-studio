@@ -221,20 +221,19 @@ const ContactPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <main className="container mx-auto px-4 py-8">
-        {/* Hero Section */}
+        {/* 1. Hero Section - First on both mobile and desktop */}
         <div className="text-center mb-16">
-          <h1 className="text-4xl font-bold mb-4">Contact Us</h1>
+          <h1 className="text-4xl font-bold mb-4">Get in Touch</h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Start your child&apos;s learning journey with Da Di today.
           </p>
         </div>
         
-        {/* Mobile order is different from desktop */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-          {/* Left column for desktop, top sections for mobile */}
-          <div className="space-y-10 flex flex-col lg:order-1 order-2">
-            {/* Book a Trial Section - Order 2 on mobile, 1 in left column on desktop */}
-            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 order-1">
+          {/* LEFT COLUMN FOR DESKTOP */}
+          <div className="flex flex-col space-y-10">
+            {/* 2. Book a Trial Class - Second on mobile */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 order-2 lg:order-none">
               <h2 className="text-2xl font-semibold mb-6 text-gray-900">Book a Trial Class</h2>
               <div className="space-y-6">
                 <p className="text-gray-700">
@@ -256,8 +255,8 @@ const ContactPage = () => {
               </div>
             </div>
             
-            {/* Contact Information Section (General Enquiries) - Order 4 on mobile, 2 in left column on desktop */}
-            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 order-3 lg:order-2">
+            {/* 4. General Enquiries - Fourth on mobile */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 order-4 lg:order-none">
               <h2 className="text-2xl font-semibold mb-6 text-gray-900">General Enquiries</h2>
               
               <div className="space-y-6">
@@ -335,8 +334,8 @@ const ContactPage = () => {
               </div>
             </div>
             
-            {/* Our Locations Section - Order 5 on mobile, 3 in left column on desktop */}
-            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 order-4 lg:order-3">
+            {/* 5. Our Locations - Fifth on mobile */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 order-5 lg:order-none">
               <h2 className="text-2xl font-semibold mb-6 text-gray-900">Our Location(s)</h2>
               {isLoading ? (
                 <div className="animate-pulse space-y-4">
@@ -410,8 +409,8 @@ const ContactPage = () => {
             </div>
           </div>
           
-          {/* Contact Form - Order 3 on mobile, right column on desktop */}
-          <div id="enquiryform" className="scroll-mt-20 order-2 lg:order-2">
+          {/* RIGHT COLUMN - Form - 3rd on mobile */}
+          <div id="enquiryform" className="order-3 lg:order-none scroll-mt-20">
             <div className="mb-6">
               <h2 className="text-2xl font-semibold mb-2">Send Us a Message</h2>
               <p className="text-gray-600">We'll get back to you within 1 working day.</p>
@@ -451,7 +450,7 @@ const ContactPage = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#4C9A2A] focus:border-[#4C9A2A] text-gray-900"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:ring-[#4C9A2A] focus:border-[#4C9A2A] text-gray-900"
                 />
               </div>
               
@@ -466,7 +465,7 @@ const ContactPage = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#4C9A2A] focus:border-[#4C9A2A] text-gray-900"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:ring-[#4C9A2A] focus:border-[#4C9A2A] text-gray-900"
                 />
               </div>
               
@@ -480,7 +479,7 @@ const ContactPage = () => {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#4C9A2A] focus:border-[#4C9A2A] text-gray-900"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:ring-[#4C9A2A] focus:border-[#4C9A2A] text-gray-900"
                 />
               </div>
               
@@ -494,13 +493,13 @@ const ContactPage = () => {
                   name="childAge"
                   value={formData.childAge}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#4C9A2A] focus:border-[#4C9A2A] text-gray-900"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:ring-[#4C9A2A] focus:border-[#4C9A2A] text-gray-900"
                 />
               </div>
               
               <div>
                 <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
-                  Subject <span className="text-red-500">*</span>
+                  Enquiry Type <span className="text-red-500">*</span>
                 </label>
                 <select
                   id="subject"
@@ -508,9 +507,9 @@ const ContactPage = () => {
                   value={formData.subject}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#4C9A2A] focus:border-[#4C9A2A] text-gray-900"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:ring-[#4C9A2A] focus:border-[#4C9A2A] text-gray-900"
                 >
-                  <option value="general">General Inquiry</option>
+                  <option value="general">General Enquiry</option>
                   <option value="trial">Book a Trial Class</option>
                   <option value="feedback">Feedback</option>
                   <option value="other">Other</option>
@@ -528,7 +527,7 @@ const ContactPage = () => {
                   value={formData.message}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#4C9A2A] focus:border-[#4C9A2A] text-gray-900"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:ring-[#4C9A2A] focus:border-[#4C9A2A] text-gray-900"
                 ></textarea>
               </div>
               

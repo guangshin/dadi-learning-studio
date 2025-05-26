@@ -177,7 +177,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
               <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6">
                 <div className="flex flex-col">
                   <h3 className="font-bold text-gray-800 mb-3 text-lg">About the Author</h3>
-                  <div className="flex items-center mb-4">
+                  <div className="flex items-center">
                     <div className="w-12 h-12 bg-[#4C9A2A]/20 rounded-full flex items-center justify-center text-[#4C9A2A] font-bold mr-3">
                       {post.author.charAt(0)}
                     </div>
@@ -186,9 +186,6 @@ export default async function BlogPost({ params }: { params: { slug: string } })
                       <p className="text-sm text-[#4C9A2A]/80">Da Di Learning Studio</p>
                     </div>
                   </div>
-                  <p className="text-sm text-gray-600 mb-4">
-                    Passionate about making Mandarin learning enjoyable and effective for students of all ages.
-                  </p>
                 </div>
               </div>
               
