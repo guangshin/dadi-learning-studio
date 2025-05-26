@@ -165,9 +165,10 @@ class Program {
     - Desktop Order: Top (Get in Touch), Left column (Book a Trial Class, General Enquiries, Our Locations), Right column (Send us a Message)
   - Added proper spacing to hero section to prevent header overlap
   - Fixed Google Maps integration:
-    - Completely reworked the map embed implementation to use proper iframe embed URLs
-    - Added Google Maps API key for reliable embedding with the proper format
-    - Implemented more robust error handling with visual fallbacks
+    - Completely reworked the map embed implementation to use CMS-provided iframe HTML
+    - Updated the Location interface to include the iframe field from CMS Branches model
+    - Added fallback iframe content when CMS data is unavailable
+    - Implemented robust error handling with visual fallbacks
     - Improved "Open in Google Maps" link to extract coordinates from embed URL when available
     - Added multiple fallback options for map links to ensure they always work
   - Fixed form styling by explicitly setting white background for input fields with both className and inline styles
@@ -195,6 +196,7 @@ class Program {
   - Enhanced Footer component to pull contact information dynamically from the CMS
   - Added social media links, phone, and email in footer to use live data from CMS
   - Implemented proper fallbacks if CMS data is unavailable
+  - Added 'use client' directive to Footer component to fix build error with React hooks
 - Improved CMS data fetching reliability and performance:
   - Added robust timeout and retry mechanism to handle connection issues
   - Implemented fetchWithRetry utility function for all CMS API calls

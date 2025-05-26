@@ -116,7 +116,8 @@ export async function GET(request: Request) {
         title: row.data.title || "",
         address: row.data.address || "",
         operatingHours: row.data.operatingHours || "",
-        mapEmbedUrl: row.data.mapEmbedUrl || ""
+        mapEmbedUrl: row.data.mapEmbedUrl || "",
+        iframe: row.data.iframe || "" // Added iframe field from Branches model
       }));
       
       result = {

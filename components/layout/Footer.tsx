@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import Logo from '@/components/shared/Logo';
 import { PhoneCall, Mail, MapPin, Facebook, Instagram } from 'lucide-react';

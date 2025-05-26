@@ -13,6 +13,7 @@ interface Location {
   phone: string;
   email: string;
   mapEmbedUrl: string;
+  iframe: string; // Added iframe field from CMS Branches model
   operatingHours: string; // Single string with complete operating hours information
 }
 
@@ -85,6 +86,7 @@ const ContactPage = () => {
               email: info.email,
               // If mapEmbedUrl is empty from CMS, use a default URL generated from the address
               mapEmbedUrl: branch.mapEmbedUrl || `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent(branch.address)}`,
+              iframe: branch.iframe || "", // Added iframe field
               operatingHours: branch.operatingHours // Use the operating hours directly as a string
             };
           });
@@ -100,6 +102,7 @@ const ContactPage = () => {
             phone: info.phone,
             email: info.email,
             mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.785197998048!2d103.89041258255615!3d1.319989299999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da18335cf5ef73%3A0xdf6e31cfca048cfd!2sDa%20Di%20Learning%20Studio!5e0!3m2!1sen!2ssg!4v1716347995637!5m2!1sen!2ssg',
+            iframe: '', // Added empty iframe field for fallback location
             operatingHours: 'Wednesday to Sunday: 9:00 AM - 6:00 PM\nMonday and Tuesday: Closed\nPublic Holidays: Closed'
           }]);
         }
@@ -122,6 +125,7 @@ const ContactPage = () => {
           phone: "+6586998667", // Use hardcoded fallback instead of potentially empty contactInfo
           email: "contact@dadi.com.sg", // Use hardcoded fallback instead of potentially empty contactInfo
           mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.785197998048!2d103.89041258255615!3d1.319989299999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da18335cf5ef73%3A0xdf6e31cfca048cfd!2sDa%20Di%20Learning%20Studio!5e0!3m2!1sen!2ssg!4v1716347995637!5m2!1sen!2ssg',
+          iframe: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.763132830001!2d103.90070659999999!3d1.3177573999999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31da181a92e11a3d%3A0x484e3638ce52c330!2sKampong%20Ubi%20Community%20Centre!5e0!3m2!1sen!2smy!4v1748256926235!5m2!1sen!2smy" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
           operatingHours: 'Wednesday to Sunday: 9:00 AM - 6:00 PM\nMonday and Tuesday: Closed\nPublic Holidays: Closed'
         }]);
       } finally {
@@ -375,28 +379,32 @@ const ContactPage = () => {
                       </div>
                       
                       <div className="mt-4 aspect-video rounded-lg overflow-hidden relative group">
-                        {/* Always show Google Maps embed with proper URL format */}
-                        <iframe
-                          src={location.mapEmbedUrl ? 
-                            // If we have a mapEmbedUrl from CMS, use it
-                            location.mapEmbedUrl : 
-                            // Otherwise create a proper embed URL from the address
-                            `https://www.google.com/maps/embed/v1/place?key=AIzaSyAE9gxJQQNuC0lzGw2INXM9D9ATxh_6y54&q=${encodeURIComponent(location.address)}`
-                          }
-                          width="100%"
-                          height="100%"
-                          style={{ border: 0 }}
-                          allowFullScreen
-                          loading="lazy"
-                          referrerPolicy="no-referrer-when-downgrade"
-                          title={`${location.title} on Google Maps`}
-                          onError={(e) => {
-                            console.log(`Failed to load map for ${location.title}`);
-                            // If the iframe fails to load, fallback to a static placeholder
-                            e.currentTarget.style.display = 'none';
-                            e.currentTarget.nextElementSibling?.classList.remove('hidden');
-                          }}
-                        />
+                        {/* Use iframe content from CMS if available */}
+                        {location.iframe ? (
+                          <div dangerouslySetInnerHTML={{ __html: location.iframe }} />
+                        ) : (
+                          <iframe
+                            src={location.mapEmbedUrl ? 
+                              // If we have a mapEmbedUrl from CMS, use it
+                              location.mapEmbedUrl : 
+                              // Otherwise create a proper embed URL from the address
+                              `https://www.google.com/maps/embed/v1/place?key=AIzaSyAE9gxJQQNuC0lzGw2INXM9D9ATxh_6y54&q=${encodeURIComponent(location.address)}`
+                            }
+                            width="100%"
+                            height="100%"
+                            style={{ border: 0 }}
+                            allowFullScreen
+                            loading="lazy"
+                            referrerPolicy="no-referrer-when-downgrade"
+                            title={`${location.title} on Google Maps`}
+                            onError={(e) => {
+                              console.log(`Failed to load map for ${location.title}`);
+                              // If the iframe fails to load, fallback to a static placeholder
+                              e.currentTarget.style.display = 'none';
+                              e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                            }}
+                          />
+                        )}
                         {/* Fallback placeholder if iframe fails to load */}
                         <div className="hidden flex items-center justify-center h-full bg-gray-200 text-gray-600 absolute inset-0">
                           <p>Map not available</p>
