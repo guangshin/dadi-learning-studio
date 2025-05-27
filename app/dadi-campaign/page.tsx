@@ -7,30 +7,42 @@ import { CampaignContactForm } from '@/components/sections/contact/CampaignConta
 import { ReviewsComponent } from '@/components/shared/ReviewsComponent';
 import Image from 'next/image';
 import Programmes from '@/components/sections/Programmes';
+import { fetchContactInfo, type ContactInfo } from '@/lib/fetchContactInfo';
 
 // Reusing existing components but with campaign-specific content
 export default function CampaignPage() {
-  const [calendlyUrl, setCalendlyUrl] = useState(
-    "https://calendly.com/contact-dadi/30min"
-  );
+  const [contactInfo, setContactInfo] = useState<ContactInfo>({
+    phone: "+6586998667",
+    email: "contact@dadi.com.sg",
+    calendlyUrl: "https://calendly.com/contact-dadi/30min",
+    instagramLink: "https://www.instagram.com/dadilearningstudio",
+    facebookLink: "https://www.facebook.com/profile.php?id=61575097831744"
+  });
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Fetch calendly URL from CMS (reusing same contact info as contact page)
+  // Fetch contact info from CMS using the same method as the contact page
   useEffect(() => {
-    const fetchCalendlyUrl = async () => {
+    const loadData = async () => {
       try {
-        const response = await fetch("/api/cms?type=contactInfo");
-        if (response.ok) {
-          const data = await response.json();
-          if (data.calendlyUrl) {
-            setCalendlyUrl(data.calendlyUrl);
-          }
-        }
+        setIsLoading(true);
+        const info = await fetchContactInfo();
+        setContactInfo(info);
       } catch (error) {
-        console.error("Error fetching calendly URL:", error);
+        console.error("Error loading contact info:", error);
+        // Use fallback values if fetching fails
+        setContactInfo({
+          phone: "+6586998667",
+          email: "contact@dadi.com.sg",
+          calendlyUrl: "https://calendly.com/contact-dadi/30min",
+          instagramLink: "https://www.instagram.com/dadilearningstudio",
+          facebookLink: "https://www.facebook.com/profile.php?id=61575097831744"
+        });
+      } finally {
+        setIsLoading(false);
       }
     };
-
-    fetchCalendlyUrl();
+    
+    loadData();
   }, []);
 
   return (
@@ -51,7 +63,7 @@ export default function CampaignPage() {
               </p>
               <div className="hidden lg:block">
                 <Link
-                  href={calendlyUrl}
+                  href={contactInfo.calendlyUrl}
                   target="_blank"
                   className="inline-flex items-center text-lg font-semibold text-[#4C9A2A] hover:text-[#3e7e22] transition-colors"
                 >
@@ -78,13 +90,17 @@ export default function CampaignPage() {
             <div className="lg:w-1/2">
               <CampaignContactForm />
               <div className="mt-6 lg:hidden text-center">
-                <Link
-                  href={calendlyUrl}
+                <a
+                  href={contactInfo.calendlyUrl}
                   target="_blank"
-                  className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-[#A5D66F] hover:bg-[#8BC34A] transition-colors duration-200 w-full"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-[#4C9A2A] hover:bg-[#3e7e22] transition-colors w-full"
                 >
-                  Or Book a Trial Class Instantly
-                </Link>
+                  <svg className="w-5 h-5 mr-2 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+                  </svg>
+                  Book a Free Trial
+                </a>
               </div>
             </div>
           </div>
