@@ -225,17 +225,22 @@ const ContactPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="container mx-auto px-4 py-8">
-        {/* Hero Section - Black text with proper spacing */}
-        <div className="text-center mb-16 mt-16">
-          <h1 className="text-4xl font-bold mb-4 text-black">Get in Touch</h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Start your child&apos;s learning journey with Da Di today.
-          </p>
-        </div>
+      <main>
+        {/* Hero Section - Styled like programmes page */}
+        <section className="relative py-20 md:py-28 bg-gradient-to-b from-background to-[#f5f7f0]">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-text mb-6 leading-tight">Get in Touch</h1>
+              <p className="text-xl text-text/80 mb-8 max-w-3xl mx-auto">
+                Start your child&apos;s learning journey with Da Di today.
+              </p>
+            </div>
+          </div>
+        </section>
         
-        {/* Content Layout */}
-        <div className="flex flex-col lg:flex-row gap-10">
+        <div className="container mx-auto px-4 py-8">
+          {/* Content Layout */}
+          <div className="flex flex-col lg:flex-row gap-10">
           {/* Left Column - Desktop & Top Sections - Mobile */}
           <div className="lg:w-1/2 space-y-10">
             {/* Book a Trial Class Section */}
@@ -582,6 +587,7 @@ const ContactPage = () => {
                 </div>
               </form>
             </section>
+            </div>
           </div>
         </div>
       </main>

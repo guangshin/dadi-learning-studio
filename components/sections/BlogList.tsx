@@ -73,15 +73,7 @@ export function BlogList() {
         // Process the image URL to ensure it's valid
         const imageUrl = processImageUrl(post.coverImage?.url, PLACEHOLDER_IMAGE);
         
-        // Categorize posts based on content (just a simple example)
-        const category = post.title.toLowerCase().includes('mandarin') 
-          ? 'Mandarin' 
-          : post.title.toLowerCase().includes('chinese') 
-            ? 'Chinese' 
-            : 'Education';
-            
-        // Calculate read time using utility function
-        const readTime = calculateReadTime(post.content);
+        // No longer categorizing posts based on content keywords
         
         return (
           <article key={post.id} className="group">
@@ -94,11 +86,7 @@ export function BlogList() {
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute top-4 right-4">
-                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-[#4C9A2A]/10 text-[#4C9A2A]">
-                      {category}
-                    </span>
-                  </div>
+                  {/* Category tag removed per client request */}
                 </div>
                 <div className="p-6 flex-1 flex flex-col">
                   <div className="flex-1">
@@ -106,8 +94,6 @@ export function BlogList() {
                       <time dateTime={post.date}>
                         {format(new Date(post.date), 'MMM d, yyyy')}
                       </time>
-                      <span className="mx-2">•</span>
-                      <span>{readTime}</span>
                     </div>
                     <h3 className="text-xl font-bold text-text mb-3 group-hover:text-[#4C9A2A] transition-colors">
                       {post.title}

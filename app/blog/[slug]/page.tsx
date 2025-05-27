@@ -108,16 +108,6 @@ export default async function BlogPost({ params }: { params: { slug: string } })
   // Format the date
   const formattedDate = format(new Date(post.date), 'MMMM d, yyyy');
   
-  // Calculate estimated read time using utility function
-  const readTime = calculateReadTime(post.content);
-  
-  // Determine category based on title content
-  const category = post.title.toLowerCase().includes('mandarin') 
-    ? 'Mandarin' 
-    : post.title.toLowerCase().includes('chinese') 
-      ? 'Chinese' 
-      : 'Education';
-  
   // Process the image URL to ensure it's valid
   const imageUrl = processImageUrl(post.coverImage?.url, PLACEHOLDER_IMAGE);
 
@@ -152,10 +142,6 @@ export default async function BlogPost({ params }: { params: { slug: string } })
                 {formattedDate}
               </time>
             </div>
-            
-            <span className="inline-block bg-[#4C9A2A]/10 text-[#4C9A2A] px-3 py-1 rounded-full text-xs font-medium">
-              {category}
-            </span>
           </div>
         </div>
 
