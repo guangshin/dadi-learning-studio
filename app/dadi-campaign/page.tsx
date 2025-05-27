@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { ContactForm } from "@/components/sections/contact/ContactForm";
-import { ReviewsComponent } from "@/components/shared/ReviewsComponent";
-import Image from "next/image";
-import Programmes from "@/components/sections/Programmes";
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { CampaignContactForm } from '@/components/sections/contact/CampaignContactForm';
+import { ReviewsComponent } from '@/components/shared/ReviewsComponent';
+import Image from 'next/image';
+import Programmes from '@/components/sections/Programmes';
 
 // Reusing existing components but with campaign-specific content
 export default function CampaignPage() {
@@ -76,7 +76,7 @@ export default function CampaignPage() {
 
             {/* Right column - Contact form */}
             <div className="lg:w-1/2">
-              <ContactForm />
+              <CampaignContactForm />
               <div className="mt-6 lg:hidden text-center">
                 <Link
                   href={calendlyUrl}
@@ -220,7 +220,7 @@ export default function CampaignPage() {
       <Programmes />
 
       {/* Testimonials */}
-      <section className="py-16 bg-[#F5F7F0]">
+      <section className="py-16">
         <ReviewsComponent
           title="What Parents and Students Say"
           subtitle="Hear from families who have experienced the Da Di difference."
