@@ -4,13 +4,6 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 type FormData = {
   name: string;
@@ -38,22 +31,10 @@ export function CampaignContactForm() {
   } | null>(null);
 
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSelectChange = (field: string, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -62,30 +43,51 @@ export function CampaignContactForm() {
     setSubmitStatus(null);
 
     try {
-      // In a real app, you would send this data to your API
+      const formDataToSend = new FormData();
+      for (const key in formData) {
+        formDataToSend.append(key, formData[key as keyof typeof formData]);
+      }
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await fetch(
+        "https://formsubmit.co/ajax/contact@dadi.com.sg",
+        {
+          method: "POST",
+          body: formDataToSend,
+        }
+      );
 
-      setSubmitStatus({
-        success: true,
-        message:
-          "Your message has been sent successfully! We'll get back to you soon.",
-      });
+      const responseData = await response.json();
 
-      // Reset form
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        childAge: "",
-        subject: "general",
-        message: "",
-      });
+      if (response.ok) {
+        setSubmitStatus({
+          success: true,
+          message: "Thank you for your message! We will get back to you soon.",
+        });
+
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          childAge: "",
+          subject: "general",
+          message: "",
+        });
+
+        const formElement = document.getElementById("campaign-contact-form");
+        if (formElement) {
+          formElement.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      } else {
+        setSubmitStatus({
+          success: false,
+          message: responseData.message || "There was an error sending your message. Please try again.",
+        });
+      }
     } catch (error) {
+      console.error("Error submitting form:", error);
       setSubmitStatus({
         success: false,
-        message: "Something went wrong. Please try again later.",
+        message: "There was an error sending your message. Please try again.",
       });
     } finally {
       setIsSubmitting(false);
@@ -96,6 +98,7 @@ export function CampaignContactForm() {
     <form
       onSubmit={handleSubmit}
       className="bg-white p-6 rounded-lg shadow-sm border border-gray-100"
+      id="campaign-contact-form"
     >
       <h2 className="text-2xl font-semibold mb-2">Send Us a Message</h2>
       <p className="text-gray-600 mb-6">
