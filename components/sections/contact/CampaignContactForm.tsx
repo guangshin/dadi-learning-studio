@@ -31,7 +31,9 @@ export function CampaignContactForm() {
   } | null>(null);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -80,7 +82,9 @@ export function CampaignContactForm() {
       } else {
         setSubmitStatus({
           success: false,
-          message: responseData.message || "There was an error sending your message. Please try again.",
+          message:
+            responseData.message ||
+            "There was an error sending your message. Please try again.",
         });
       }
     } catch (error) {
