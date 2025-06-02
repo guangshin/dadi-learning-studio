@@ -99,6 +99,16 @@ const Footer = () => {
           <p className="text-center text-gray-500 text-sm">
             © {new Date().getFullYear()} Da Di Learning Studio. All rights reserved.
           </p>
+          <p className="text-center text-gray-500 text-xs mt-2">
+            Designed by <a 
+              href="https://www.zerotoonestudios.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hover:underline hover:text-gray-600 transition-colors"
+            >
+              Zero To One Studios
+            </a>
+          </p>
         </div>
       </div>
     </footer>
